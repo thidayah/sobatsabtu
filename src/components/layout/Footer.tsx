@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
+import { useTheme } from "next-themes";
 
 const contacts = [
   { name: 'Whatsapp', icon: 'mdi:whatsapp', url: process.env.NEXT_PUBLIC_WHATSAPP, color: '#FC4C02' },
@@ -18,7 +19,9 @@ export const Footer = () => {
   const [loopNum, setLoopNum] = useState(0);
   const [isDark, setIsDark] = useState(false);
 
-  const theme = localStorage.getItem('theme');
+  
+
+  // const { theme, setTheme } = useTheme();  
 
   const BlueLogo = '/icons/blue.svg'
   const WhiteLogo = '/icons/white.svg'
@@ -58,9 +61,11 @@ export const Footer = () => {
   }, [displayText, isDeleting, loopNum]);
 
   useEffect(() => {
+    const theme = localStorage.getItem('theme') || 'light'
     const isDarkMode = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setIsDark(isDarkMode);
-  }, [theme]);
+    setIsDark(isDarkMode);    
+    // console.log({theme});
+  }, []);
 
   return (
     // <footer ref={sectionRef} className="relative bg-gray-900 dark:bg-black text-white overflow-hidden">

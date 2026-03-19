@@ -142,7 +142,6 @@ export const Hero = () => {
             className="mt-12"
           >
             <Button
-              // size="sm"
               onClick={scrollToActivities}
               className="bg-white text-black hover:bg-white/90 py-4 group cursor-pointer"
             >
