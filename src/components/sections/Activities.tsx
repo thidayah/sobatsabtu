@@ -119,16 +119,15 @@ export const Activities = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
-  const filteredActivities = selectedCategory === 'All'
-    ? activities
-    : activities.filter(a => a.category === selectedCategory);
+  const filteredActivities = activities
+  // const filteredActivities = selectedCategory === 'All'
+  //   ? activities
+  //   : activities.filter(a => a.category === selectedCategory);
 
   // Check scroll position for arrows
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      console.log({ scrollLeft });
-
       setShowLeftArrow(scrollLeft > 20);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10); // 10px threshold
     }
