@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Theme variables untuk warna Sobat Sabtu */
+@theme {
+  /* Warna dasar */
+  --color-sobat-blue: #0928d5;
+  --color-sobat-yellow: #fac202;
+  --color-sobat-gray: #b1afab;
+  --color-sobat-black: #000000;
+  --color-sobat-white: #ffffff;
+  
+  /* Variasi dengan opacity - menggunakan format RGB */
+  --color-sobat-blue-50: rgba(9, 40, 213, 0.5);
+  --color-sobat-blue-20: rgba(9, 40, 213, 0.2);
+  --color-sobat-blue-10: rgba(9, 40, 213, 0.1);
+  
+  --color-sobat-yellow-50: rgba(250, 194, 2, 0.5);
+  --color-sobat-yellow-20: rgba(250, 194, 2, 0.2);
+  --color-sobat-yellow-10: rgba(250, 194, 2, 0.1);
+  
+  /* Gradasi */
+  --gradient-primary: linear-gradient(135deg, #0928d5 0%, #4a6cf7 100%);
+  --gradient-secondary: linear-gradient(135deg, #fac202 0%, #ffd966 100%);
+  --gradient-accent: linear-gradient(135deg, #0928d5 0%, #fac202 100%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Dark mode variables */
+.dark {
+  --bg-primary: #000000;
+  --text-primary: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom utilities */
+@layer utilities {
+  .text-gradient {
+    /* background: linear-gradient(135deg, #0928d5 0%, #fac202 100%); */
+    background: linear-gradient(135deg, #0928d5 0%, #ffffff 95%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .dark .glass {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.03);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-sobat-blue);
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-sobat-yellow-50);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-sobat-blue-50);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-sobat-yellow);
+}
+
+/* Base styles */
+@layer base {
+  * {
+    /* @apply border-border; */
+  }
+  
+  body {
+    @apply bg-white text-black;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  .dark body {
+    @apply bg-black text-white;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Gradient backgrounds */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, var(--tw-gradient-stops));
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
