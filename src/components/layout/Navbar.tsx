@@ -50,7 +50,7 @@ export const Navbar = () => {
           : 'bg-transparent py-8 md:py-10'
       }`}
     >
-      <div className=" mx-auto px-6 md:px-8">
+      <div className=" mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center">
           {/* Logo Sobat Sabtu */}
           <Link href="/">
@@ -81,7 +81,7 @@ export const Navbar = () => {
                   SABTU
                 </span>
               </div> */}
-              <img src={isDark ? WhiteLogo : BlueLogo} className=" w-40 transition-all duration-500" alt="Blue Logo" />
+              <img src={isDark ? WhiteLogo : BlueLogo} className=" w-24 lg:w-40 transition-all duration-500" alt="Blue Logo" />
             </motion.div>
           </Link>
 
@@ -99,9 +99,9 @@ export const Navbar = () => {
             aria-label="Toggle theme"
           >
             {isDark ? (
-              <Icon icon="lucide:sun" width="24" height="24" className="text-white" />
+              <Icon icon="lucide:sun" width="20" height="20" className="text-white" />
             ) : (
-              <Icon icon="lucide:moon" width="24" height="24" className="text-gray-500" />
+              <Icon icon="lucide:moon" width="20" height="20" className="text-gray-500" />
             )}
           </motion.button>
 
