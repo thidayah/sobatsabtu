@@ -94,31 +94,29 @@ export const Collaboration = () => {
       </div>
 
       <Container fullWidth>
-        <div ref={sectionRef} className="relative z-10 px-4 sm:px-6 lg:px-8 py-16 lg:py-24 ">
+        <div ref={sectionRef} className="relative z-10 px-4 sm:px-6 lg:px-8 py-0 lg:py-16 ">
           {/* Header */}
-          <div className=" flex items-center justify-between mb-16 lg:mb-20">
+          <div className=" flex items-center justify-between mb-8 lg:mb-16">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
               className=" "
             >
-
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6 border-l-8 border-sobat-blue pl-4"
+                className="text-2xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
               >
-                Trusted By
-                <span className=" text-gradient"> The Best</span>
+                Trusted By <span className=" text-gradient"> The Best</span>
               </motion.h2>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-lg sm:text-xl text-white/70"
+                className="text-xs sm:text-xl text-white/70"
               >
                 We're proud to collaborate with leading brands that share our passion
                 for sports and community building.
@@ -130,16 +128,18 @@ export const Collaboration = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 1.2 }}
-              className=" text-center"
+              className=" hidden md:block text-center"
             >
-              <motion.button
+              <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-white text-black rounded-full font-semibold hover:shadow-xl hover:shadow-white/25 transition-all duration-300 inline-flex items-center gap-2 group cursor-pointer"
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
+                target="_blank"
               >
                 <Icon icon="mdi:handshake" width="20" height="20" className="group-hover:rotate-12 transition-transform" />
                 Become a Partner
-              </motion.button>
+              </motion.a>
             </motion.div>
           </div>
 
@@ -150,7 +150,7 @@ export const Collaboration = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border-2 border-white/10 rounded-full z-0" />
 
             {/* Floating Logo Circles */}
-            <div className="relative grid grid-cols-3 md:grid-cols-4 lg:grid-cols-12 gap-6 lg:gap-8">
+            <div className="relative grid grid-cols-6 lg:grid-cols-12 gap-2 lg:gap-6">
               {partners.map((partner, index) => {
                 // Hitung posisi untuk efek floating yang berbeda-beda
                 const delay = index * 0.1;
@@ -181,7 +181,7 @@ export const Collaboration = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-sobat-blue/50 to-sobat-yellow/50 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                     {/* Logo container */}
-                    <div className="relative aspect-square bg-white/10 backdrop-blur-lg border border-white/20 p-4 flex items-center justify-center group-hover:bg-white/20 transition-all duration-300">
+                    <div className="relative aspect-square bg-white/10 backdrop-blur-lg border border-white/20 p-1 md:p-4 flex items-center justify-center group-hover:bg-white/20 transition-all duration-300">
                       {/* Animated border */}
                       <div className="absolute inset-0  overflow-hidden">
                         <motion.div
@@ -210,6 +210,24 @@ export const Collaboration = () => {
               })}
             </div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 1.2 }}
+            className=" md:hidden text-center mt-8 relative"
+          >
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-3 bg-white text-black rounded-full text-xs font-semibold inline-flex items-center gap-2 group cursor-pointer"
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
+              target="_blank"
+            >
+              <Icon icon="mdi:handshake" width="16" height="16" className="group-hover:rotate-12 transition-transform" />
+              Become a Partner
+            </motion.a>
+          </motion.div>
         </div>
       </Container>
     </Section>
