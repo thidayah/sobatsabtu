@@ -169,23 +169,22 @@ export const Activities = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className=" mb-12 lg:mb-16 "
+            className=" mb-8 lg:mb-16 "
           >
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 border-sobat-blue border-l-8 pl-4"
+              className="text-2xl sm:text-5xl lg:text-7xl font-bold mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
             >
-              Upcoming
-              <span className=" text-gradient"> Activities &nbsp;</span>
+              Upcoming <span className=" text-gradient"> Activities &nbsp;</span>
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-lg sm:text-xl text-gray-600 dark:text-gray-400"
+              className="text-xs sm:text-xl text-gray-600 dark:text-gray-400"
             >
               Don't miss out on the exciting and challenging activities we'll be hosting
             </motion.p>
@@ -252,7 +251,7 @@ export const Activities = () => {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="flex overflow-x-auto gap-6 pb-20 pt-4 px-4 -mx-4 no-scrollbar snap-x"
+              className="flex overflow-x-auto gap-3 md:gap-6 pb-12 px-4 -mx-4 no-scrollbar snap-x"
               style={{
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
@@ -266,7 +265,7 @@ export const Activities = () => {
                   transition={{ duration: 0.5, delay: 0.1 * index }}
                   onHoverStart={() => setHoveredCard(activity.id)}
                   onHoverEnd={() => setHoveredCard(null)}
-                  className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
+                  className={`flex-shrink-0 w-[280px] sm:w-[320px] snap-start`}
                 >
                   <ActivityCard activity={activity} isHovered={hoveredCard === activity.id} />
                 </motion.div>
@@ -298,13 +297,13 @@ export const Activities = () => {
             </motion.div>
 
             {/* Scroll Hint untuk mobile */}
-            <div className="flex justify-center mt-4 lg:hidden">
+            {/* <div className="flex justify-center lg:hidden">
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                 <Icon icon="lucide:chevron-left" width="16" height="16" />
                 <span>Scroll to explore</span>
                 <Icon icon="lucide:chevron-right" width="16" height="16" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Container>
@@ -331,7 +330,7 @@ const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boole
 
         {/* Category Badge */}
         <div className="absolute top-4 left-4 z-10">
-          <span className={`px-3 py-2 text-xs font-medium rounded-full bg-sobat-blue-50 text-white shadow-lg`}>
+          <span className={`px-3 py-2 text-[10px] md:text-xs font-medium rounded-full bg-sobat-blue-50 text-white shadow-lg`}>
             {activity.eventType}
           </span>
         </div>
@@ -343,7 +342,7 @@ const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boole
             animate={{ y: isHovered ? -5 : 0 }}
             className="mb-4"
           >
-            <h3 className="text-2xl font-extrabold text-white leading-tight mb-1 line-clamp-2">
+            <h3 className="md:text-2xl font-extrabold text-white leading-tight mb-1 line-clamp-2">
               {activity.title}
             </h3>
             {/* <p className="text-sm text-white/80">{activity.category}</p> */}
@@ -356,15 +355,15 @@ const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boole
           >
             <div className="flex items-center gap-2 text-white/80">
               <Icon icon="lucide:calendar" width="14" height="14" />
-              <span className="line-clamp-1">{activity.date}</span>
+              <span className="line-clamp-1 text-xs md:text-base">{activity.date}</span>
             </div>
             <div className="flex items-center gap-2 text-white/80">
               <Icon icon="lucide:clock" width="14" height="14" />
-              <span>{activity.time}</span>
+              <span className=" text-xs md:text-base">{activity.time}</span>
             </div>
             <div className="flex items-center gap-2 text-white/80">
               <Icon icon="lucide:map-pin" width="14" height="14" />
-              <span className="truncate">{activity.location}</span>
+              <span className="truncate text-xs md:text-base">{activity.location}</span>
             </div>
           </motion.div>
 
@@ -376,7 +375,7 @@ const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boole
                 whileTap={{ scale: 0.98 }}
                 className={`w-full py-2.5 rounded-full font-medium text-sm transition-all duration-300 bg-white text-gray-900 hover:bg-white/90 cursor-pointer`}
               >
-                <span className="flex items-center justify-center gap-2">
+                <span className="flex text-xs md:text-base items-center justify-center gap-2">
                   <Icon icon="mdi:sign-in" width="16" height="16" />
                   Register
                 </span>
@@ -389,7 +388,7 @@ const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boole
                 whileTap={{ scale: 0.98 }}
                 className="w-full py-2.5 rounded-full font-medium text-sm bg-white/20 text-white backdrop-blur-sm hover:bg-white/30 transition-all duration-300 border border-white/30 cursor-pointer"
               >
-                <span className="flex items-center justify-center gap-2">
+                <span className="flex text-xs md:text-base items-center justify-center gap-2">
                   <Icon icon="lucide:list" width="16" height="16" />
                   {/* Participants */}
                 </span>

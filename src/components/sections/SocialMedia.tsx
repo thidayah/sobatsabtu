@@ -74,37 +74,35 @@ export const SocialMedia = () => {
       </div>
 
       <Container fullWidth>
-        <div ref={sectionRef} className="relative px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div ref={sectionRef} className="relative px-4 sm:px-6 lg:px-8 py-0">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className=" mb-16 lg:mb-20"
+            className=" mb-8 lg:mb-16"
           >
-
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 border-l-8 border-sobat-blue pl-4"
+              className="text-2xl sm:text-5xl lg:text-7xl font-bold mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
             >
-              Stay
-              <span className=" text-gradient"> Connected</span>
+              Stay <span className=" text-gradient"> Connected</span>
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-lg sm:text-xl text-gray-600 dark:text-gray-400"
+              className="text-xs sm:text-xl text-gray-600 dark:text-gray-400"
             >
               Follow our journey across all platforms and be part of the Sobat Sabtu community
             </motion.p>
           </motion.div>
 
           {/* Social Media Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
             {socialMedia.map((social, index) => (
               <motion.a
                 key={social.name}
@@ -119,7 +117,7 @@ export const SocialMedia = () => {
                 className="group relative block"
               >
                 {/* Card dengan efek glassmorphism */}
-                <div className="relative p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="relative p-2 md:p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
                   {/* Hover Gradient Background */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -147,7 +145,7 @@ export const SocialMedia = () => {
                   <div className="relative z-10">
                     {/* Header dengan Icon dan Action */}
                     <div className="flex items-start justify-between ">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         {/* Icon - Grayscale, berwarna saat hover */}
                         <motion.div
                           animate={{
@@ -169,8 +167,8 @@ export const SocialMedia = () => {
                           />
                         </motion.div>
                         <div>
-                          <h3 className="font-bold text-lg">{social.name}</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{social.description}</p>
+                          <h3 className="font-bold text-sm md:text-lg">{social.name}</h3>
+                          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{social.description}</p>
                         </div>
                       </div>
 
@@ -181,7 +179,7 @@ export const SocialMedia = () => {
                           backgroundColor: hoveredId === social.name ? social.color : 'transparent',
                           color: hoveredId === social.name ? 'white' : 'currentColor',
                         }}
-                        className="px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-300"
+                        className="hidden md:block px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-300"
                         style={{
                           borderColor: hoveredId === social.name ? social.color : 'currentColor'
                         }}
