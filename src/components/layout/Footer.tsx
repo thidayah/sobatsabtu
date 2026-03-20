@@ -19,8 +19,6 @@ export const Footer = () => {
   const [loopNum, setLoopNum] = useState(0);
   const [isDark, setIsDark] = useState(false);
 
-  
-
   // const { theme, setTheme } = useTheme();  
 
   const BlueLogo = '/icons/blue.svg'
@@ -29,7 +27,7 @@ export const Footer = () => {
   // Animasi mengetik
   useEffect(() => {
     const phrases = [
-      'Still Untalented Runners',
+      'Untalented Runners',
       'Pelari Konten',
       'Run With Us'
     ];
@@ -63,7 +61,7 @@ export const Footer = () => {
   useEffect(() => {
     const theme = localStorage.getItem('theme') || 'light'
     const isDarkMode = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setIsDark(isDarkMode);    
+    setIsDark(isDarkMode);
     // console.log({theme});
   }, []);
 
@@ -79,15 +77,15 @@ export const Footer = () => {
       </div>
 
       <Container fullWidth>
-        <div className="relative px-4 sm:px-6 lg:px-8 py-16 lg:py-16">
+        <div className="relative px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
           {/* Main Heading dengan Animasi Mengetik */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="mb-20 lg:mb-32 text-center"
+            className="mb-8 lg:mb-16 text-center"
           >
-            <h2 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight">
+            <h2 className="text-3xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight">
               <span className="text-sobat-blue dark:text-gray-100">#</span>
               <span className="bg-gradient-to-r from-sobat-blue to-gray-100 dark:from-white dark:to-gray-600 bg-clip-text text-transparent">
                 {displayText}
@@ -101,7 +99,7 @@ export const Footer = () => {
           </motion.div>
 
           {/* Footer Content Grid */}
-          <div className="flex justify-between items-end border-t pt-8 border-gray-200 dark:border-white/10">
+          <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 md:items-end border-t pt-8 border-gray-200 dark:border-white/10">
             {/* Brand Column */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -110,24 +108,16 @@ export const Footer = () => {
               className=" max-w-xl"
             >
               <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                {/* <div className="flex items-center gap-3 mb-6 cursor-pointer">
-                  <div className="w-12 h-12 rounded-full bg-sobat-blue dark:bg-white" />
-                  <div>
-                    <span className="block text-2xl font-bold text-sobat-blue dark:text-white">SOBAT</span>
-                    <span className="block text-2xl font-bold text-sobat-blue dark:text-white">SABTU</span>
-                  </div>
-                </div> */}
-                <img src={isDark ? WhiteLogo : BlueLogo} className=" w-40" alt="Blue Logo" />
+                <img src={isDark ? WhiteLogo : BlueLogo} className=" w-24 lg:w-40" alt="Blue Logo" />
               </button>
-              <p className="text-gray-600 dark:text-white/60 leading-relaxed">
+              <p className="text-xs md:text-base text-gray-600 dark:text-white/60 leading-relaxed mt-2">
                 Since 2019, we've been transforming the "Mager" culture into positive energy through fun and inclusive sports activities in Bandung.
               </p>
             </motion.div>
 
-
             <div>
-              {/* Social Media Icons */}
-              <div className="flex gap-3 justify-end mb-6">
+              {/* Contact Us Icons */}
+              <div className="flex gap-3 md:justify-end mb-6">
                 {contacts.map((social) => (
                   <motion.a
                     key={social.name}
@@ -153,16 +143,16 @@ export const Footer = () => {
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="flex flex-col items-end gap-2"
+                className="flex flex-col md:items-end gap-2"
               >
                 {/* Copyright */}
-                <div className="text-gray-600 dark:text-white/60 text-sm text-center sm:text-left">
+                <div className="text-gray-600 dark:text-white/60 text-xs md:text-sm md:text-center">
                   © {new Date().getFullYear()} Sobat Sabtu. All rights reserved.
                 </div>
 
                 {/* Developed By */}
                 <div className="flex items-center gap-1">
-                  <span className="text-gray-600 dark:text-white/60 text-sm">Developed by</span>
+                  <span className="text-gray-600 dark:text-white/60 text-xs md:text-sm">Developed by</span>
                   <motion.a
                     href="https://thidayah.github.io"
                     target="_blank"
@@ -170,19 +160,9 @@ export const Footer = () => {
                     whileHover={{ scale: 1.05 }}
                     className="flex  "
                   >
-                    <span className="text-gray-800 dark:text-white/80 text-sm font-medium"> Runminders</span>
+                    <span className="text-gray-800 dark:text-white/80 text-xs md:text-sm font-medium"> Runminders</span>
                   </motion.a>
                 </div>
-
-                {/* Back to Top */}
-                {/* <motion.button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              whileHover={{ y: -5 }}
-              className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
-            >
-              <Icon icon="lucide:arrow-up" width="16" height="16" />
-              Back to Top
-            </motion.button> */}
               </motion.div>
             </div>
           </div>
