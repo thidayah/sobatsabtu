@@ -134,7 +134,7 @@ export const Collaboration = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-white text-black rounded-full font-semibold hover:shadow-xl hover:shadow-white/25 transition-all duration-300 inline-flex items-center gap-2 group cursor-pointer"
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
+                href={process.env.NEXT_PUBLIC_WHATSAPP}
                 target="_blank"
               >
                 <Icon icon="mdi:handshake" width="20" height="20" className="group-hover:rotate-12 transition-transform" />
@@ -221,7 +221,7 @@ export const Collaboration = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-4 py-3 bg-white text-black rounded-full text-xs font-semibold inline-flex items-center gap-2 group cursor-pointer"
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
+              href={process.env.NEXT_PUBLIC_WHATSAPP}
               target="_blank"
             >
               <Icon icon="mdi:handshake" width="16" height="16" className="group-hover:rotate-12 transition-transform" />

@@ -50,7 +50,7 @@ const socialMedia = [
   },
   {
     name: 'Email',
-    url: `mailto:${process.env.NEXT_PUBLIC_EMAIL}`,
+    url: process.env.NEXT_PUBLIC_EMAIL,
     icon: 'mdi:email',
     color: '#000000', // Threads black
     action: 'Contact Us',
