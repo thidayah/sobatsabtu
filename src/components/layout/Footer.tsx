@@ -4,11 +4,10 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
-import { useTheme } from "next-themes";
 
 const contacts = [
   { name: 'Whatsapp', icon: 'mdi:whatsapp', url: process.env.NEXT_PUBLIC_WHATSAPP, color: '#FC4C02' },
-  { name: 'Email', icon: 'mdi:email-outline', url: `mailto:${process.env.NEXT_PUBLIC_EMAIL}`, color: '#E4405F' },
+  { name: 'Email', icon: 'mdi:email-outline', url: process.env.NEXT_PUBLIC_EMAIL, color: '#E4405F' },
 ];
 
 export const Footer = () => {
@@ -18,8 +17,6 @@ export const Footer = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
   const [isDark, setIsDark] = useState(false);
-
-  // const { theme, setTheme } = useTheme();  
 
   const BlueLogo = '/icons/blue.svg'
   const WhiteLogo = '/icons/white.svg'
@@ -58,12 +55,31 @@ export const Footer = () => {
     return () => clearTimeout(timer);
   }, [displayText, isDeleting, loopNum]);
 
+  // Deteksi tema dari class HTML
   useEffect(() => {
-    const theme = localStorage.getItem('theme') || 'light'
-    const isDarkMode = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setIsDark(isDarkMode);
-    // console.log({theme});
+    const checkTheme = () => {
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      setIsDark(isDarkMode);
+    };
+
+    // Check initial theme
+    checkTheme();
+
+    // Observer untuk perubahan class dark
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          checkTheme();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => observer.disconnect();
   }, []);
+
+  const logoSrc = isDark ? WhiteLogo : BlueLogo
 
   return (
     // <footer ref={sectionRef} className="relative bg-gray-900 dark:bg-black text-white overflow-hidden">
@@ -108,7 +124,7 @@ export const Footer = () => {
               className=" max-w-xl"
             >
               <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                <img src={isDark ? WhiteLogo : BlueLogo} className=" w-24 lg:w-40" alt="Blue Logo" />
+                <img src={logoSrc} className=" w-24 lg:w-40" alt="Blue Logo" />
               </button>
               <p className="text-xs md:text-base text-gray-600 dark:text-white/60 leading-relaxed mt-2">
                 Since 2019, we've been transforming the "Mager" culture into positive energy through fun and inclusive sports activities in Bandung.
@@ -125,7 +141,7 @@ export const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, y: -5 }}
-                    className="w-10 h-10 rounded-full bg-gray-600/90 hover:bg-gray-600 dark:bg-white/10 dark:hover:bg-white/20 flex items-center justify-center transition-all duration-300"
+                    className="w-8 h-8 rounded-full bg-gray-600/90 hover:bg-gray-600 dark:bg-white/10 dark:hover:bg-white/20 flex items-center justify-center transition-all duration-300"
                     style={{
                       filter: 'grayscale(100%)',
                       transition: 'filter 0.3s ease'
@@ -133,7 +149,7 @@ export const Footer = () => {
                     onMouseEnter={(e) => e.currentTarget.style.filter = 'grayscale(0%)'}
                     onMouseLeave={(e) => e.currentTarget.style.filter = 'grayscale(100%)'}
                   >
-                    <Icon icon={social.icon} width="20" height="20" className="text-white" />
+                    <Icon icon={social.icon} width="16" height="16" className="text-white" />
                   </motion.a>
                 ))}
               </div>
