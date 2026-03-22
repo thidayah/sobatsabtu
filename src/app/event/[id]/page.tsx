@@ -299,16 +299,16 @@ export default function EventDetailPage() {
                   </div>
                 ) : (
                   <div>
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 hidden">
                       <h2 className="md:text-2xl font-bold">Participants ({eventData.participants})</h2>
 
                       {/* Search and Export */}
                       <div className="flex gap-2 w-full sm:w-auto">
-                        <div className="relative w-[75%] md:w-full sm:flex-initial">
+                        <div className="relative">
                           <input
                             type="text"
                             placeholder="Search participants..."
-                            className=" w-full sm:w-80 px-4 py-2 pl-10 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all text-sm md:text-base"
+                            className=" sm:w-80 px-4 py-2 pl-10 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all text-sm md:text-base"
                           />
                           <Icon
                             icon="lucide:search"
@@ -318,7 +318,7 @@ export default function EventDetailPage() {
                           />
                         </div>
                         <button
-                          className="px-6 py-2 w-[25%] bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center"
+                          className="px-6 py-2  bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center"
                         >
                           <Icon icon="lucide:search" width="18" height="18" className="md:hidden" />
                           <span className="hidden sm:inline">Search</span>
@@ -327,9 +327,9 @@ export default function EventDetailPage() {
                     </div>
 
                     {/* Participants Table */}
-                    <div className="bg-white dark:bg-gray-900  border-gray-200 dark:border-gray-800 overflow-hidden mb-6 w-[50%] md:w-full ">
+                    <div className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 mb-6 ">
                       <div className="overflow-x-auto">
-                        <table className="w-full">
+                        <table className=" w-full">
                           <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                             <tr>
                               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">No</th>
