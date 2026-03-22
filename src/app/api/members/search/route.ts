@@ -56,10 +56,6 @@ export async function GET(request: NextRequest) {
           success: true,
           message: 'No member found',
           data: null,
-          // search_params: {
-          //   email: email || null,
-          //   ig_username: igUsername || null,
-          // },
         },
         { status: 200 }
       );
@@ -72,11 +68,6 @@ export async function GET(request: NextRequest) {
         ? 'Member found successfully' 
         : `${members.length} members found`,
       data: members.length === 1 ? members[0] : members,
-      // search_params: {
-      //   email: email || null,
-      //   ig_username: igUsername || null,
-      // },
-      // count: members.length,
     });
   } catch (error) {
     console.error('Unexpected error:', error);
