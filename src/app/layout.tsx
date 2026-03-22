@@ -11,9 +11,36 @@ const poppins = Poppins({
   variable: '--font-poppins'
 });
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL!
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: 'Sobat Sabtu - Komunitas Olahraga Anak Muda Bandung',
-  description: 'Komunitas olahraga untuk anak muda Bandung dengan konsep Mager yang seru! Lari, badminton, futsal, basket, dan billiard.',
+  description: 'Komunitas olahraga untuk anak muda Bandung dengan konsep Mager yang seru! Lari, badminton, sepak bola, basket, dan billiard.',
+  keywords: ['lari', 'olahraga', 'komunitas', 'Bandung', 'badminton', 'sepak bola', 'basket', 'billiard'],
+  alternates: {
+    canonical: new URL(BASE_URL),
+  },
+  openGraph: {
+    title: 'Sobat Sabtu - Komunitas Olahraga Anak Muda Bandung',
+    description: 'Komunitas olahraga untuk anak muda Bandung dengan konsep Mager yang seru! Lari, badminton, sepak bola, basket, dan billiard.',
+    url: new URL(BASE_URL),
+    siteName: "Sobat Sabtu",
+    images: [
+      {
+        url: "/images/sobatsabtu.jpg",
+        width: 900,
+        height: 600,
+        alt: "Sobat Sabtu - Komunitas Olahraga Anak Muda Bandung",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/images/sobatsabtu.jpg"],
+  },
 };
 
 export default function RootLayout({
