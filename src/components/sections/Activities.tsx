@@ -192,7 +192,7 @@ export const Activities = () => {
   return (
     <Section id="activities" className="bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <Container fullWidth>
-        <div ref={sectionRef} className="relative px-4 sm:px-6 lg:px-8">
+        <div ref={sectionRef} className="relative px-4 sm:px-6 lg:px-8 pt-16 md:pt-0">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}

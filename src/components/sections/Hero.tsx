@@ -142,7 +142,7 @@ export const Hero = () => {
             >
               <button
                 onClick={scrollToActivities}
-                className="rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center hover:shadow-lg hover:shadow-white/25 px-4 md:px-6 py-2 md:py-3 text-xs md:text-base text-white hover:bg-white/20 group cursor-pointer animate-bounce"
+                className="rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 text-xs md:text-base text-white hover:bg-white/20 group cursor-pointer animate-bounce"
               >
                 Let's Explore
                 <Icon icon="lucide:chevron-down" width="20" height="20" className="ml-2 " />
