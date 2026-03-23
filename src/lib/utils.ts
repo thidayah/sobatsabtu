@@ -58,6 +58,11 @@ export function formatDate(dateString: string) {
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
-    year: 'numeric'
+    year: 'numeric',
+    weekday: 'long'
   });
 };
+
+export function formatTime(timeString: string) {
+  return timeString.substring(0, 5) + ' WIB';
+}; 
