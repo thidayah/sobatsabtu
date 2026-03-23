@@ -6,17 +6,18 @@ import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
 import Link from 'next/link';
+import { ActivityCard } from "../ui/ActivityCard";
 
-// Data activities - dalam format 9:16 poster/flyer
-const activities = [
+// Data activities - dalam format 9:16 image_url/flyer
+const activitiesMock = [
   {
     id: 'asmr-1',
     title: 'ASMR #42 - Bandung City Run',
-    eventType: 'ASMR',
+    type: 'ASMR',
     date: 'Saturday, 24 May 2025',
     time: '06:30 WIB',
     location: 'Start: Bandung City Hall',
-    poster: 'https://images.unsplash.com/photo-1638886050954-dbd7208412c0?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1638886050954-dbd7208412c0?q=80&w=987&auto=format&fit=crop',
     participants: 48,
     maxParticipants: 60,
     isOpen: false,
@@ -24,11 +25,11 @@ const activities = [
   {
     id: 'night-run-12',
     title: 'Night Run #12 - Lights & Night',
-    eventType: 'Night Run',
+    type: 'Night Run',
     date: 'Tuesday, 20 May 2025',
     time: '19:30 WIB',
     location: 'Start: Gasibu Field',
-    poster: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=987&auto=format&fit=crop',
     participants: 32,
     maxParticipants: 50,
     isOpen: false,
@@ -36,11 +37,11 @@ const activities = [
   {
     id: 'exercise-5',
     title: 'Exercise Session #5 - Core Strength',
-    eventType: 'Exercise Session',
+    type: 'Exercise Session',
     date: 'Thursday, 22 May 2025',
     time: '19:00 WIB',
     location: 'Taman Lalu Lintas',
-    poster: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=987&auto=format&fit=crop',
     participants: 18,
     maxParticipants: 30,
     isOpen: true,
@@ -48,11 +49,11 @@ const activities = [
   {
     id: 'run-wood-8',
     title: 'Run in the Wood #8 - Pine Forest',
-    eventType: 'Run in the Wood',
+    type: 'Run in the Wood',
     date: 'Sunday, 1 June 2025',
     time: '06:00 WIB',
     location: 'Start: Curug Malela',
-    poster: 'https://images.unsplash.com/photo-1540539234-c14a20fb7c7b?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1540539234-c14a20fb7c7b?q=80&w=987&auto=format&fit=crop',
     participants: 24,
     maxParticipants: 35,
     isOpen: false,
@@ -60,11 +61,11 @@ const activities = [
   {
     id: 'nepak-3',
     title: 'Sobat Nepak #3 - Badminton Night',
-    eventType: 'Sobat Nepak',
+    type: 'Sobat Nepak',
     date: 'Friday, 23 May 2025',
     time: '19:00 WIB',
     location: 'GOR Badminton Buah Batu',
-    poster: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=987&auto=format&fit=crop',
     participants: 12,
     maxParticipants: 20,
     isOpen: false,
@@ -72,11 +73,11 @@ const activities = [
   {
     id: 'nyepak-2',
     title: 'Sobat Nyepak #2 - Futsal Fun',
-    eventType: 'Sobat Nyepak',
+    type: 'Sobat Nyepak',
     date: 'Saturday, 24 May 2025',
     time: '16:00 WIB',
     location: 'Lapangan Futsal Saparua',
-    poster: 'https://images.unsplash.com/photo-1575361204480-a3d5b3544f2b?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1575361204480-a3d5b3544f2b?q=80&w=987&auto=format&fit=crop',
     participants: 14,
     maxParticipants: 20,
     isOpen: true,
@@ -84,11 +85,11 @@ const activities = [
   {
     id: 'hoops-1',
     title: 'Sobat Hoops #1 - Basketball Session',
-    eventType: 'Sobat Hoops',
+    type: 'Sobat Hoops',
     date: 'Sunday, 25 May 2025',
     time: '08:00 WIB',
     location: 'Lapangan Basket Gasibu',
-    poster: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=989&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=989&auto=format&fit=crop',
     participants: 10,
     maxParticipants: 20,
     isOpen: false,
@@ -96,11 +97,11 @@ const activities = [
   {
     id: 'nyodok-4',
     title: 'Sobat Nyodok #4 - Billiard Night',
-    eventType: 'Sobat Nyodok',
+    type: 'Sobat Nyodok',
     date: 'Monday, 26 May 2025',
     time: '19:00 WIB',
     location: 'Rocket Billiard Dago',
-    poster: 'https://images.unsplash.com/photo-1623182081166-9e5b5e5b5b5b?q=80&w=987&auto=format&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1623182081166-9e5b5e5b5b5b?q=80&w=987&auto=format&fit=crop',
     participants: 8,
     maxParticipants: 16,
     isOpen: false,
@@ -108,10 +109,11 @@ const activities = [
 ];
 
 // Categories for filtering
-const categories = ['All', 'Running Series', 'Multi-Sport Series'];
+// const categories = ['All', 'Running Series', 'Multi-Sport Series'];
 
 export const Activities = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -119,17 +121,44 @@ export const Activities = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
-  const filteredActivities = activities
+  // Fetch activities from API
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          '/api/events?page=1&limit=8&sort_by=date&sort_order=desc'
+        );
+        const result = await response.json();
+
+        if (result.success) {
+          setActivities(result.data.items || []);
+        } else {
+          console.error('Failed to fetch activities:', result.message);
+        }
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
+  // const filteredActivities = activitiesMock;
+  const filteredActivities = activities;
   // const filteredActivities = selectedCategory === 'All'
   //   ? activities
   //   : activities.filter(a => a.category === selectedCategory);
+
 
   // Check scroll position for arrows
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setShowLeftArrow(scrollLeft > 20);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10); // 10px threshold
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
     }
   };
 
@@ -169,7 +198,7 @@ export const Activities = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className=" mb-8 lg:mb-16 "
+            className="mb-8 lg:mb-16"
           >
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -177,7 +206,7 @@ export const Activities = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-2xl sm:text-5xl lg:text-7xl font-bold mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
             >
-              Upcoming <span className=" text-gradient"> Activities &nbsp;</span>
+              Upcoming <span className="text-gradient">Activities &nbsp;</span>
             </motion.h2>
 
             <motion.p
@@ -189,6 +218,27 @@ export const Activities = () => {
               Don't miss out on the exciting and challenging activities we'll be hosting
             </motion.p>
           </motion.div>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center flex-col gap-4 items-center py-20">
+              <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent rounded-full animate-spin" />
+              <span className=" text-xs md:text-base">Loading ...</span>
+            </div>
+          )}
+
+          {/* No Activities State */}
+          {!loading && filteredActivities.length === 0 && (
+            <div className="text-center py-20">
+              <Icon icon="mdi:calendar-blank" width="64" height="64" className="mx-auto text-gray-400 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                No Upcoming Activities
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                Check back soon for new events and activities!
+              </p>
+            </div>
+          )}
 
           {/* Category Filter */}
           {/* <motion.div
@@ -212,200 +262,102 @@ export const Activities = () => {
           </motion.div> */}
 
           {/* Horizontal Scroll Section */}
-          <div className="relative ">
-            {/* Left Arrow */}
-            {showLeftArrow && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                onClick={() => scroll('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 transition-all duration-300 -ml-6 hidden lg:flex"
-                aria-label="Scroll left"
+          {!loading && filteredActivities.length > 0 && (
+            <div className="relative">
+              {/* Left Arrow */}
+              {showLeftArrow && (
+                <ArrowButton
+                  name="left"
+                  onClick={() => scroll('left')}
+                />
+              )}
+
+              {/* Right Arrow */}
+              {showRightArrow && (
+                <ArrowButton
+                  name="right"
+                  onClick={() => scroll('right')}
+                />
+              )}
+
+              {/* Gradient Overlays */}
+              {showLeftArrow && (
+                <div className="absolute -left-5 top-0 bottom-0 w-24 bg-gradient-to-r from-gray-50/50 dark:from-gray-900 to-transparent z-10 pointer-events-none hidden lg:block" />
+              )}
+              {showRightArrow && (
+                <div className="absolute -right-5 top-0 bottom-0 w-24 bg-gradient-to-l from-gray-50/50 dark:from-gray-900 to-transparent z-10 pointer-events-none hidden lg:block" />
+              )}
+
+              {/* Horizontal Scroll Container */}
+              <motion.div
+                ref={scrollContainerRef}
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="flex overflow-x-auto gap-3 md:gap-6 pb-12 px-4 -mx-4 no-scrollbar snap-x"
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
               >
-                <Icon icon="lucide:chevron-left" width="24" height="24" />
-              </motion.button>
-            )}
+                {filteredActivities.map((activity: any, index) => (
+                  <motion.div
+                    key={activity.id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.1 * index }}
+                    onHoverStart={() => setHoveredCard(activity.id)}
+                    onHoverEnd={() => setHoveredCard(null)}
+                    className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
+                  >
+                    <ActivityCard activity={activity} isHovered={hoveredCard === activity.id} />
+                  </motion.div>
+                ))}
 
-            {/* Right Arrow */}
-            {showRightArrow && (
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                onClick={() => scroll('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 transition-all duration-300 -mr-6 hidden lg:flex"
-                aria-label="Scroll right"
-              >
-                <Icon icon="lucide:chevron-right" width="24" height="24" />
-              </motion.button>
-            )}
-
-            {/* Gradient Overlays */}
-            {showLeftArrow && <div className="absolute -left-5 top-0 bottom-0 w-24 bg-gradient-to-r from-gray-50/50 dark:from-gray-900 to-transparent z-10 pointer-events-none hidden lg:block" />}
-            {showRightArrow && <div className="absolute -right-5 top-0 bottom-0 w-24 bg-gradient-to-l from-gray-50/50 dark:from-gray-900 to-transparent z-10 pointer-events-none hidden lg:block" />}
-
-            {/* Horizontal Scroll Container */}
-            <motion.div
-              ref={scrollContainerRef}
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="flex overflow-x-auto gap-3 md:gap-6 pb-12 px-4 -mx-4 no-scrollbar snap-x"
-              style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-              }}
-            >
-              {filteredActivities.map((activity, index) => (
+                {/* View All Card */}
                 <motion.div
-                  key={activity.id}
                   initial={{ opacity: 0, x: 50 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                  onHoverStart={() => setHoveredCard(activity.id)}
-                  onHoverEnd={() => setHoveredCard(null)}
-                  className={`flex-shrink-0 w-[280px] sm:w-[320px] snap-start`}
+                  transition={{ duration: 0.5, delay: 0.1 * filteredActivities.length }}
+                  className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
                 >
-                  <ActivityCard activity={activity} isHovered={hoveredCard === activity.id} />
+                  <Link href="/activities">
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      className="relative aspect-[9/16] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex flex-col items-center justify-center p-6 text-center cursor-pointer group"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <Icon icon="lucide:arrow-right" width="32" height="32" className="text-gray-900 dark:text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">View All</h3>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {filteredActivities.length} activities available
+                      </p>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </motion.div>
+                  </Link>
                 </motion.div>
-              ))}
-
-              {/* View All Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 * filteredActivities.length }}
-                className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
-              >
-                <Link href="/activities">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="relative aspect-[9/16] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex flex-col items-center justify-center p-6 text-center cursor-pointer group"
-                  >
-                    <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Icon icon="lucide:arrow-right" width="32" height="32" className="text-gray-900 dark:text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">View All</h3>
-                    <p className="text-gray-700 dark:text-gray-300">
-                      {filteredActivities.length} activities available
-                    </p>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </motion.div>
-                </Link>
               </motion.div>
-            </motion.div>
-
-            {/* Scroll Hint untuk mobile */}
-            {/* <div className="flex justify-center lg:hidden">
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                <Icon icon="lucide:chevron-left" width="16" height="16" />
-                <span>Scroll to explore</span>
-                <Icon icon="lucide:chevron-right" width="16" height="16" />
-              </div>
-            </div> */}
-          </div>
+            </div>
+          )}
         </div>
       </Container>
     </Section>
   );
 };
 
-// Activity Card Component - 9:16 poster style
-const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boolean }) => {
+const ArrowButton = ({ name, onClick }: { name: string; onClick: () => void }) => {
+  const isLeft: boolean = name === 'left'
   return (
-    <div className="relative w-full group">
-      {/* Card dengan rasio 9:16 (portrait) */}
-      <div className="relative aspect-[9/16] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500">
-        {/* Background Image dengan overlay gradient */}
-        <div className="absolute inset-0">
-          <img
-            src={activity.poster}
-            alt={activity.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
-        </div>
-
-        {/* Category Badge */}
-        <div className="absolute top-4 left-4 z-10">
-          <span className={`px-3 py-2 text-[10px] md:text-xs font-medium rounded-full bg-sobat-blue-50 text-white shadow-lg`}>
-            {activity.eventType}
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="absolute inset-x-0 bottom-0 p-5 z-10">
-          {/* Icon and Title */}
-          <motion.div
-            animate={{ y: isHovered ? -5 : 0 }}
-            className="mb-4"
-          >
-            <h3 className="md:text-2xl font-extrabold text-white leading-tight mb-1 line-clamp-2">
-              {activity.title}
-            </h3>
-            {/* <p className="text-sm text-white/80">{activity.category}</p> */}
-          </motion.div>
-
-          {/* Date, Time, Location */}
-          <motion.div
-            animate={{ opacity: isHovered ? 1 : 0.8 }}
-            className="space-y-2 mb-4 text-sm"
-          >
-            <div className="flex items-center gap-2 text-white/80">
-              <Icon icon="lucide:calendar" width="14" height="14" />
-              <span className="line-clamp-1 text-xs md:text-base">{activity.date}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white/80">
-              <Icon icon="lucide:clock" width="14" height="14" />
-              <span className=" text-xs md:text-base">{activity.time}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white/80">
-              <Icon icon="lucide:map-pin" width="14" height="14" />
-              <span className="truncate text-xs md:text-base">{activity.location}</span>
-            </div>
-          </motion.div>
-
-          {/* Action Buttons */}
-          <div className="grid grid-cols-3 gap-2">
-            <Link href={`/event/${activity.id}?tab=register`} className="w-full col-span-2">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`w-full py-2.5 rounded-full font-medium text-sm transition-all duration-300 bg-white text-gray-900 hover:bg-white/90 cursor-pointer`}
-              >
-                <span className="flex text-xs md:text-base items-center justify-center gap-2">
-                  <Icon icon="mdi:sign-in" width="16" height="16" />
-                  Register
-                </span>
-              </motion.button>
-            </Link>
-
-            <Link href={`/event/${activity.id}?tab=participants`} className="w-full">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full py-2.5 rounded-full font-medium text-sm bg-white/20 text-white backdrop-blur-sm hover:bg-white/30 transition-all duration-300 border border-white/30 cursor-pointer"
-              >
-                <span className="flex text-xs md:text-base items-center justify-center gap-2">
-                  <Icon icon="lucide:list" width="16" height="16" />
-                  {/* Participants */}
-                </span>
-              </motion.button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Status Badge jika sudah penuh */}
-        {activity.participants >= activity.maxParticipants && (
-          <div className="absolute top-4 right-4 z-10">
-            <span className="px-3 py-1.5 text-xs font-medium bg-red-500 text-white rounded-full shadow-lg">
-              Full
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+    <motion.button
+      initial={{ opacity: 0, x: isLeft ? - 20 : 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: isLeft ? - 20 : 20 }}
+      onClick={onClick}
+      className={` ${isLeft ? 'left-0 -ml-6' : 'right-0 -mr-6'} absolute top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 transition-all duration-300 hidden lg:flex`}
+      aria-label="Scroll left"
+    >
+      <Icon icon={`lucide:chevron-${name}`} width="24" height="24" />
+    </motion.button>
+  )
+}
