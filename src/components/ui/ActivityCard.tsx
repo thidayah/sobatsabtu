@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatTime } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -21,11 +21,6 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
 
   const closed = isEventClosed();  
   const soldOut = !closed && isSoldOut();
-
-  // Format time for display (remove seconds)
-  const formatTime = (timeString: string) => {
-    return timeString.substring(0, 5) + ' WIB';
-  }; 
 
   return (
     <div className="relative w-full group">
@@ -95,7 +90,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
           ) : (
             <div className="grid grid-cols-3 gap-2">
               {/* Register Button - Soldout or Normal */}
-              <Link href={soldOut ? '#' : `/event/${activity.id}?tab=register`} className="w-full col-span-2">
+              <Link href={soldOut ? '#' : `/event/${activity.slug}?tab=registration`} className="w-full col-span-2">
                 <motion.button
                   whileHover={!soldOut ? { scale: 1.02 } : {}}
                   whileTap={!soldOut ? { scale: 0.98 } : {}}
@@ -113,7 +108,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
               </Link>
 
               {/* Participants Button */}
-              <Link href={`/event/${activity.id}?tab=participants`} className="w-full">
+              <Link href={`/event/${activity.slug}?tab=participants`} className="w-full">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
