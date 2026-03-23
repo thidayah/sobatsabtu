@@ -300,7 +300,7 @@ export const Activities = () => {
                   msOverflowStyle: 'none',
                 }}
               >
-                {filteredActivities.map((activity, index) => (
+                {filteredActivities.map((activity: any, index) => (
                   <motion.div
                     key={activity.id}
                     initial={{ opacity: 0, x: 50 }}
