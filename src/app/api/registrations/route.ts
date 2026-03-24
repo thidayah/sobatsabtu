@@ -468,9 +468,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: isExistingMember 
-          ? 'Registration successful (existing member updated)'
-          : 'Registration successful (new member created)',
+        message: 'You have registered for this event. Check your email for confirmation.',
+        // message: isExistingMember 
+        //   ? 'Registration successful (existing member updated)'
+        //   : 'Registration successful (new member created)',
         data: {
           registration: completeRegistration || registration,
           member_status: isExistingMember ? 'updated' : 'created',
