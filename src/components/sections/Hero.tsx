@@ -90,7 +90,7 @@ export const Hero = () => {
             className="mb-4 md:mb-6"
           >
             <span className="px-4 py-2 text-[10px] md:text-sm italic font-medium bg-white/10 text-white/90 backdrop-blur rounded-full border border-white/20">
-              #untalentedrunners
+              #untalented
             </span>
           </motion.div>
 
