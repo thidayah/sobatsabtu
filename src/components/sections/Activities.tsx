@@ -324,7 +324,7 @@ export const Activities = () => {
                   <Link href="/activities">
                     <motion.div
                       whileHover={{ scale: 1.02 }}
-                      className="relative aspect-[9/16] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex flex-col items-center justify-center p-6 text-center cursor-pointer group"
+                      className="relative aspect-[9/16] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex flex-col items-center justify-center p-6 text-center cursor-pointer group"
                     >
                       <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                         <Icon icon="lucide:arrow-right" width="32" height="32" className="text-gray-900 dark:text-white" />
