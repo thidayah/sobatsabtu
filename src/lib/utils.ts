@@ -66,3 +66,25 @@ export function formatDate(dateString: string) {
 export function formatTime(timeString: string) {
   return timeString.substring(0, 5) + ' WIB';
 }; 
+
+export function normalizePhoneNumber(phone: string) {
+  if (!phone) return '';
+
+  // remove all characters except numbers
+  let cleaned = phone.replace(/\D/g, '');
+
+  // first 0 → 62
+  if (cleaned.startsWith('0')) {
+    cleaned = '62' + cleaned.slice(1);
+  }
+
+  else if (cleaned.startsWith('62')) {
+    return cleaned;
+  }
+
+  else if (cleaned.startsWith('8')) {
+    cleaned = '62' + cleaned;
+  }
+
+  return cleaned;
+}
