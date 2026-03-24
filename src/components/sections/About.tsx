@@ -31,25 +31,25 @@ const features = [
 
 const galleries = [
   {
-    video: 'https://cdn.jumpshare.com/preview/_9ON5QB1dLrCdCBqw49tv6wgiPw76NG2z1J9ijqaxjHzOr2n0cXOyrAbHADeRfU3tirdI8hEtNfBJY8wf1YP4EbnU8lh79r2WQEo9dxsphX8Smj1CWdc46BKRwc-sFl0jTkXB2zGrtMagGjDi_Utz26yjbN-I2pg_cnoHs_AmgI.mp4', // Running video
+    video: 'https://cdn.jumpshare.com/preview/rDchYgez1y5h3I4loVv20uhigJdZ-ks0B8DeEJ57D33zOr2n0cXOyrAbHADeRfU3tirdI8hEtNfBJY8wf1YP4EbnU8lh79r2WQEo9dxsphX8Smj1CWdc46BKRwc-sFl0kLC1Er44IWfLONBObgK5OG6yjbN-I2pg_cnoHs_AmgI.mp4', // Running video
     image: 'https://i.ibb.co.com/gMcTdFFs/IMG-1696.jpg',
     title: 'Casual city run every Saturday morning',
     type: 'video'
   },
   {
-    video: 'https://cdn.jumpshare.com/preview/kBnJR3enUfkGfvBw6L0M21hc5iZjTFNhlYl58N5LoI3tXi0QRoxs9KE-MrAvqGwy2L5MVocvuGkD62JLZF7InE7ZDyNr3NAHIAPLg2yNnixigNfcDo5V3o2oyzOpVPo02sVnLv8irKdVSIlaTwdRo26yjbN-I2pg_cnoHs_AmgI.mp4', // Basketball video
+    video: 'https://cdn.jumpshare.com/preview/IrXY0I5lb_xxk2joZ14qfHHgjdfd2rY1DkcPB_GWBoftXi0QRoxs9KE-MrAvqGwy2L5MVocvuGkD62JLZF7InE7ZDyNr3NAHIAPLg2yNnixigNfcDo5V3o2oyzOpVPo0kLC1Er44IWfLONBObgK5OG6yjbN-I2pg_cnoHs_AmgI.mp4', // Basketball video
     image: 'https://i.ibb.co.com/Nn7CdKgV/IMG-1698.jpg',
     title: 'Basketball matches by Sobat Hoops',
     type: 'video'
   },
   {
-    video: 'https://cdn.jumpshare.com/preview/yLRfBlybHAp_grUSLc6n90-8LuzLB_wYC-wwIXnsOTNAujVbE2CCYoTlvChK6IduYyxN4lBSuFYTq2X0_pbZ-fSsEd6TXKOTu7cEh0ZHuxitLGRBhR8-kGlGmKW3RHzBZmazeD4oNRQ4c9xZEs4lCG6yjbN-I2pg_cnoHs_AmgI.mp4', // Mini soccer video
+    video: 'https://cdn.jumpshare.com/preview/yLRfBlybHAp_grUSLc6n90-8LuzLB_wYC-wwIXnsOTNAujVbE2CCYoTlvChK6IduYyxN4lBSuFYTq2X0_pbZ-fSsEd6TXKOTu7cEh0ZHuxitLGRBhR8-kGlGmKW3RHzByLO-TVT5IcjHLn7SjsAHsm6yjbN-I2pg_cnoHs_AmgI.mp4', // Mini soccer video
     image: 'https://i.ibb.co.com/tThv7QXc/IMG-1693.jpg',
     title: 'Pressing, passing and then shooting',
     type: 'video'
   },
   {
-    video: 'https://cdn.jumpshare.com/preview/vurX5MJiR8lAhRCm0oM5sAnrFdJrpWxUI4wKVtdwhGsS-ElqYCTlp5508Gaz2e1ufcnahC5aOfw9GlUKQGUaodClVe9NgTDw_UEugaIzZew', // Night run video
+    video: 'https://cdn.jumpshare.com/preview/vurX5MJiR8lAhRCm0oM5sAnrFdJrpWxUI4wKVtdwhGsS-ElqYCTlp5508Gaz2e1u6Un6zm4-2Zm4kuPwvs2vwZRCeGeIwAj4WQO9KK2YHoE', // Night run video
     image: 'https://i.ibb.co.com/WvGhd98L/IMG-1697.jpg',
     title: 'Evening runs exploring Bandung at night',
     type: 'video'
