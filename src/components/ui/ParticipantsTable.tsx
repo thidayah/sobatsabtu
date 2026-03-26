@@ -128,36 +128,38 @@ export const ParticipantsTable = ({ id, slug, current_participants }: Participan
         <h2 className="md:text-2xl font-bold">Participants ({current_participants})</h2>
 
         {/* Search and Export */}
-        <div className="flex gap-2 w-full sm:w-auto">
-          <div className="relative flex-1 sm:flex-initial">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Search participants..."
-              className="w-full sm:w-80 px-4 py-2 pl-10 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all text-sm md:text-base"
-            />
-            <Icon
-              icon="lucide:search"
-              width="18"
-              height="18"
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
+        {participants.length > 0 && (
+          <div className="flex gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-initial">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Search participants..."
+                className="w-full sm:w-80 px-4 py-2 pl-10 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all text-sm md:text-base"
+              />
+              <Icon
+                icon="lucide:search"
+                width="18"
+                height="18"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+            </div>
+            <button
+              onClick={handleSearch}
+              disabled={searchLoading}
+              className="px-6 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {searchLoading ? (
+                <Icon icon="lucide:loader-2" width="18" height="18" className="animate-spin" />
+              ) : (
+                <Icon icon="lucide:search" width="18" height="18" className="md:hidden" />
+              )}
+              <span className="hidden sm:inline">{searchLoading ? "Searching..." : "Search"}</span>
+            </button>
           </div>
-          <button
-            onClick={handleSearch}
-            disabled={searchLoading}
-            className="px-6 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {searchLoading ? (
-              <Icon icon="lucide:loader-2" width="18" height="18" className="animate-spin" />
-            ) : (
-              <Icon icon="lucide:search" width="18" height="18" className="md:hidden" />
-            )}
-            <span className="hidden sm:inline">{searchLoading ? "Searching..." : "Search"}</span>
-          </button>
-        </div>
+        )}
       </div>
 
       {/* Loading State */}
