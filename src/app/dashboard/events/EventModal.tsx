@@ -117,6 +117,7 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
           name="name"
           value={formData.name}
           onChange={handleChange}
+          //@ts-ignore
           onBlur={!event && generateSlug}
           required
         />

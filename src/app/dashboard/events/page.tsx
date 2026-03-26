@@ -11,7 +11,9 @@ import { EventModal } from './EventModal';
 interface Event {
   id: string;
   name: string;
+  descriptions: string;
   slug: string;
+  image_url: string;
   date: string;
   time: string;
   location: string;
