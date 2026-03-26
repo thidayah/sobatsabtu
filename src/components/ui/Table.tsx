@@ -22,22 +22,6 @@ export function Table<T extends { id: string }>({
   loading = false,
   onRowClick,
 }: TableProps<T>) {
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (data.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <p className="text-gray-500 dark:text-gray-400">No data available</p>
-      </div>
-    );
-  }
-
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -54,7 +38,22 @@ export function Table<T extends { id: string }>({
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-          {data.map((item) => (
+          {loading && (
+            <tr>
+              <td colSpan={columns.length} className="px-6 py-4 ">
+                <div className="flex justify-center flex-col items-center py-8">
+                  <div className="size-6 border-2 border-sobat-blue border-t-transparent rounded-full animate-spin" />
+                  <span className="mt-2 text-sm md:text-base text-gray-700 dark:text-gray-300">Loading...</span>
+                </div>
+              </td>
+            </tr>
+          )}
+          {!loading && data.length === 0 && (
+            <tr>
+              <td colSpan={columns.length} className="px-6 py-4 text-center text-sm text-gray-700 dark:text-gray-300">No data available</td>
+            </tr>
+          )}
+          {!loading && data.map((item) => (
             <tr
               key={item.id}
               onClick={() => onRowClick?.(item)}

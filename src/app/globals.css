@@ -137,3 +137,9 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Hide calendar icon for WebKit browsers (Chrome, Edge, Safari) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
