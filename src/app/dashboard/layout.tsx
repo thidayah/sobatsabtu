@@ -1,35 +1,3 @@
-// 'use client';
-
-// import { useEffect, useState } from 'react';
-// import { useRouter } from 'next/navigation';
-// import { isAuthenticated, getAuth } from '@/lib/auth';
-
-// export default function DashboardLayout({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   const router = useRouter();
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   useEffect(() => {
-//     if (!isAuthenticated()) {
-//       router.push('/admin');
-//     }
-//     setIsLoading(false);
-//   }, [router]);
-
-//   if (isLoading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-//         <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent rounded-full animate-spin" />
-//       </div>
-//     );
-//   }
-
-//   return <>{children}</>;
-// }
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -37,13 +5,13 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { getAuth, isAuthenticated, clearAuth } from '@/lib/auth';
 
 const menuItems = [
   { href: '/dashboard', icon: 'lucide:layout-dashboard', label: 'Dashboard' },
   { href: '/dashboard/members', icon: 'lucide:users', label: 'Members' },
   { href: '/dashboard/events', icon: 'lucide:calendar', label: 'Events' },
+  { href: '/dashboard/registrations', icon: 'lucide:clipboard-list', label: 'Registrations' },
 ];
 
 export default function DashboardLayout({
@@ -61,7 +29,6 @@ export default function DashboardLayout({
   useEffect(() => {
     // Check authentication on client-side only
     const authenticated = isAuthenticated();
-    console.log({authenticated});
     
     setIsAuthenticatedState(authenticated);
     

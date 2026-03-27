@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Icon } from '@iconify/react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { Pagination } from '@/components/ui/Pagination';
+import { useDebounce } from "@/lib/helpers";
+import { Select } from "@/components/ui/Select";
 
 interface Member {
   id: string;
@@ -64,24 +65,45 @@ export default function MembersPage() {
 
   useEffect(() => {
     fetchMembers();
-  }, [pagination.page, filters]);
+  }, [pagination.page, filters.is_active, filters.start_date, filters.end_date]);
 
   const handleSearch = () => {
+    if (loading) return
     setPagination(prev => ({ ...prev, page: 1 }));
     fetchMembers();
   };
 
+  const debouncedSearch = useDebounce(filters.search, 500); // 500ms delay
+
+  useEffect(() => handleSearch(), [debouncedSearch]);
+
   const columns = [
-    { key: 'full_name', header: 'Name' },
-    { key: 'email', header: 'Email' },
-    { key: 'ig_username', header: 'Instagram', render: (item: Member) => item.ig_username ? `@${item.ig_username}` : '-' },
-    { key: 'gender', header: 'Gender', render: (item: Member) => item.gender === 'male' ? 'Male' : item.gender === 'female' ? 'Female' : 'Other' },
+    {
+      key: 'member',
+      header: 'Name',
+      render: (item: Member) => (
+        <div>
+          <p className="font-medium text-gray-900 dark:text-white">{item.full_name}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{item.gender}</p>
+        </div>
+      ),
+    },
+    {
+      key: 'email',
+      header: 'Email & Instagram',
+      render: (item: Member) => (
+        <div>
+          <p className="font-medium text-gray-900 dark:text-white">{item.email}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{item.ig_username ? `@${item.ig_username}` : '-'}</p>
+        </div>
+      ),
+    },
     { key: 'total_events', header: 'Events Joined' },
     {
       key: 'is_active',
       header: 'Status',
       render: (item: Member) => (
-        <span className={`px-2 py-1 text-xs font-medium ${item.is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+        <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
           {item.is_active ? 'Active' : 'Inactive'}
         </span>
       ),
@@ -92,6 +114,12 @@ export default function MembersPage() {
       render: (item: Member) => new Date(item.created_at).toLocaleDateString(),
     },
   ];
+
+  const statusOptions = [
+    { value: '', label: 'All Status' },
+    { value: 'true', label: 'Active' },
+    { value: 'false', label: 'Inactive' },
+  ]
 
   return (
     <div>
@@ -106,17 +134,13 @@ export default function MembersPage() {
             placeholder="Search by name, email, or IG..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+          // onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
-          <select
-            className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sobat-blue"
+          <Select
+            options={statusOptions}
             value={filters.is_active}
             onChange={(e) => setFilters({ ...filters, is_active: e.target.value })}
-          >
-            <option value="">All Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
+          />
           <Input
             type="date"
             placeholder="Start Date"

@@ -5,6 +5,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
+import { Select } from "@/components/ui/Select";
 
 interface Event {
   id?: string;
@@ -90,6 +91,7 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
+      setFormData(initialEvent)
     }
   };
 
@@ -102,6 +104,15 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
       .trim();
     setFormData(prev => ({ ...prev, slug }));
   };
+
+  const optionsEvent = [
+    'ASMR',
+    'Exercise',
+    'Run In The Wood',
+    'Hoops',
+    'Nyepak',
+    'Nepak',
+  ]
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={event ? 'Edit Event' : 'Create Event'} size="lg">
@@ -128,15 +139,18 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
             name="slug"
             value={formData.slug}
             onChange={handleChange}
+            disabled
             required
           />
-          <Input
+          <Select
+            options={optionsEvent.map((row) => ({
+              value: row,
+              label: row,
+            }))}
             label="Event Type"
             name="type"
             value={formData.type}
             onChange={handleChange}
-            placeholder="e.g., asmr, night-run, exercise"
-            required
           />
         </div>
 
