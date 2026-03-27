@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { ThemeToggle } from "../ui/ThemeToggle";
+// import { ThemeToggle } from "../ui/ThemeToggle";
 
 export const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
@@ -59,28 +59,6 @@ export const Navbar = () => {
               transition={{ duration: 0.2 }}
               className="flex items-center gap-3"
             >
-              {/* Logo circle - warna berubah sesuai background */}
-              {/* <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full transition-all duration-500 ${
-                scrolled 
-                  ? 'bg-sobat-blue dark:bg-white' 
-                  : 'bg-sobat-blue dark:bg-white'
-              }`} />
-              <div>
-                <span className={`block text-xl md:text-2xl font-bold leading-tight transition-colors duration-500 ${
-                  scrolled 
-                    ? 'text-sobat-blue dark:text-white' 
-                    : 'text-sobat-blue dark:text-white'
-                }`}>
-                  SOBAT
-                </span>
-                <span className={`block text-xl md:text-2xl font-bold leading-tight transition-colors duration-500 ${
-                  scrolled 
-                    ? 'text-sobat-blue dark:text-white' 
-                    : 'text-sobat-blue dark:text-white'
-                }`}>
-                  SABTU
-                </span>
-              </div> */}
               <img src={isDark ? WhiteLogo : BlueLogo} className=" w-24 lg:w-40 transition-all duration-500" alt="Blue Logo" />
             </motion.div>
           </Link>
