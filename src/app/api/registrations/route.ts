@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     const eventId = searchParams.get('event_id');
     const slug = searchParams.get('slug');
     const search = searchParams.get('search') || '';
+    const status = searchParams.get('status') || '';
 
     // Validate page and limit
     const validPage = Math.max(1, page);
@@ -30,6 +31,10 @@ export async function GET(request: NextRequest) {
     // Filter by event_id if provided
     if (eventId) {
       query = query.eq('event_id', eventId);
+    }
+
+    if (status) {
+      query = query.eq('status', status);
     }
 
     // Filter by slug if provided
@@ -62,6 +67,7 @@ export async function GET(request: NextRequest) {
               event_id: eventId || null,
               slug: slug || null,
               search: search || null,
+              status: status || null,
             }
           }
         });
@@ -98,6 +104,7 @@ export async function GET(request: NextRequest) {
               event_id: eventId || null,
               slug: slug || null,
               search: search || null,
+              status: status || null,
             }
           }
         });
@@ -146,6 +153,7 @@ export async function GET(request: NextRequest) {
           event_id: eventId || null,
           slug: slug || null,
           search: search || null,
+          status: status || null,
         },
       },
 

@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { Pagination } from '@/components/ui/Pagination';
 import { EventModal } from './EventModal';
+import { useDebounce } from "@/lib/helpers";
+import { formatDate, formatTime } from "@/lib/utils";
+import { Select } from "@/components/ui/Select";
 
 interface Event {
   id: string;
@@ -71,7 +74,19 @@ export default function EventsPage() {
 
   useEffect(() => {
     fetchEvents();
-  }, [pagination.page, filters]);
+  }, [pagination.page, filters.is_active, filters.sort_by, filters.sort_order]);
+
+  const handleSearch = () => {
+    if (loading) return
+    setPagination(prev => ({ ...prev, page: 1 }));
+    fetchEvents();
+  };
+
+  const debouncedSearch = useDebounce(filters.search, 500); // 500ms delay
+
+  useEffect(() => {
+    handleSearch()
+  }, [debouncedSearch]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this event?')) return;
@@ -92,14 +107,22 @@ export default function EventsPage() {
   };
 
   const columns = [
-    { key: 'name', header: 'Event Name' },
+    {
+      key: 'name',
+      header: 'Event Name',
+      render: (item: Event) => (
+        <div>
+          <p className="font-medium text-gray-900 dark:text-white">{item.name}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs truncate">{item.location}</p>
+        </div>
+      ),
+    },
     {
       key: 'date',
       header: 'Date',
-      render: (item: Event) => new Date(item.date).toLocaleDateString(),
+      render: (item: Event) => formatDate(item.date),
     },
-    { key: 'time', header: 'Time', render: (item: Event) => item.time.substring(0, 5) },
-    { key: 'location', header: 'Location', className: 'max-w-xs truncate' },
+    { key: 'time', header: 'Time', render: (item: Event) => formatTime(item.time) },
     {
       key: 'participants',
       header: 'Participants',
@@ -109,7 +132,7 @@ export default function EventsPage() {
       key: 'is_active',
       header: 'Status',
       render: (item: Event) => (
-        <span className={`px-2 py-1 text-xs font-medium ${item.is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+        <span className={`px-3 py-1 text-xs font-medium rounded-full ${item.is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
           {item.is_active ? 'Active' : 'Inactive'}
         </span>
       ),
@@ -139,6 +162,23 @@ export default function EventsPage() {
     },
   ];
 
+  const statusOptions = [
+    { value: '', label: 'All Status' },
+    { value: 'true', label: 'Active' },
+    { value: 'false', label: 'Inactive' },
+  ]
+
+  const sortByOptions = [
+    { value: 'date', label: 'Sort by Date' },
+    { value: 'name', label: 'Sort by Name' },
+    { value: 'created', label: 'Sort By Created' },
+  ]
+
+  const sortOrderOptions = [
+    { value: 'desc', label: 'Descending' },
+    { value: 'asc', label: 'Ascending' },
+  ]
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -158,34 +198,23 @@ export default function EventsPage() {
             placeholder="Search events..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            onKeyPress={(e) => e.key === 'Enter' && fetchEvents()}
+          // onKeyPress={(e) => e.key === 'Enter' && fetchEvents()}
           />
-          <select
-            className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sobat-blue"
+          <Select
+            options={statusOptions}
             value={filters.is_active}
             onChange={(e) => setFilters({ ...filters, is_active: e.target.value })}
-          >
-            <option value="">All Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-          <select
-            className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sobat-blue"
+          />
+          <Select
+            options={sortByOptions}
             value={filters.sort_by}
             onChange={(e) => setFilters({ ...filters, sort_by: e.target.value })}
-          >
-            <option value="date">Sort by Date</option>
-            <option value="name">Sort by Name</option>
-            <option value="created_at">Sort by Created</option>
-          </select>
-          <select
-            className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sobat-blue"
+          />
+          <Select
+            options={sortOrderOptions}
             value={filters.sort_order}
             onChange={(e) => setFilters({ ...filters, sort_order: e.target.value })}
-          >
-            <option value="desc">Descending</option>
-            <option value="asc">Ascending</option>
-          </select>
+          />
         </div>
         <div className="mt-4 flex justify-end">
           <Button onClick={fetchEvents} icon="lucide:search">
