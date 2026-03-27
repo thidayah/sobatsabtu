@@ -14,7 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
-      if (type === 'date') {
+      if (type === 'date' || type === 'time') {
         // Trigger native date picker
         if (inputRef.current) {
           //@ts-ignore
@@ -68,9 +68,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               } ${className}`}
             {...props}
           />
-          {type === 'date' && (
+          {(type === 'date' || type === 'time') && (
             <Icon
-              icon="lucide:calendar"
+              icon={`lucide:${type === 'date' ? 'calendar': 'clock'}`}
               width="18"
               height="18"
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"

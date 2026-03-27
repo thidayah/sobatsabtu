@@ -1,3 +1,4 @@
+import { formatDiff } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { useState, useEffect } from "react";
 
@@ -86,35 +87,6 @@ export const ParticipantsTable = ({ id, slug, current_participants }: Participan
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
-    }
-  };
-
-  // Format date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMilliseconds = now.getTime() - date.getTime();
-    const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    const diffInDays = Math.floor(diffInHours / 24);
-
-    if (diffInSeconds < 60) {
-      return "Just now";
-    } else if (diffInMinutes < 60) {
-      return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
-    } else if (diffInDays < 7) {
-      return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
-    } else {
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: diffInDays >= 365 ? 'numeric' : undefined,
-        hour: '2-digit',
-        minute: '2-digit'
-      });
     }
   };
 
@@ -232,7 +204,7 @@ export const ParticipantsTable = ({ id, slug, current_participants }: Participan
                             {participant.status === 'confirmed' ? 'Confirmed' : participant.status}
                           </span>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {formatDate(participant.created_at)}
+                            {formatDiff(participant.created_at)}
                           </p>
                         </div>
                       </td>
