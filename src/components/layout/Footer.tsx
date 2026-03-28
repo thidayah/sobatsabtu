@@ -24,9 +24,9 @@ export const Footer = () => {
   // Animasi mengetik
   useEffect(() => {
     const phrases = [
-      'Untalented Runners',
-      'Pelari Konten',
-      'Run With Us'
+      'UntalentedRunners',
+      'PelariKonten',
+      'MagerCulture'
     ];
 
     const currentPhrase = phrases[loopNum % phrases.length];
