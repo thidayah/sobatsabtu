@@ -158,6 +158,7 @@ export async function POST(request: NextRequest) {
       date: body.date,
       time: body.time,
       location: body.location,
+      location_url: body.location_url,
       current_participants: body.current_participants || 0,
       max_participants: body.max_participants,
       type: body.type,

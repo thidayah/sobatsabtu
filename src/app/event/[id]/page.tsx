@@ -54,7 +54,7 @@ export default function EventDetailPage() {
       try {
         setLoading(true);
         setError(null);
-        
+
         const identifier = params.id;
         const response = await fetch(`/api/events/${identifier}`);
         const result = await response.json();
@@ -154,7 +154,11 @@ export default function EventDetailPage() {
                   </div>
                   <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm md:text-base">
                     <Icon icon="lucide:map-pin" className="size-4 md:size-6 text-sobat-blue dark:text-sobat-yellow" />
-                    <span>{eventData.location}</span>
+                    {eventData.location_url ?
+                      <a href={eventData.location_url} target="_blank" className=" underline-offset-2 underline hover:opacity-85">{eventData.location}</a>
+                      :
+                      <span>{eventData.location}</span>
+                    }
                   </div>
                 </div>
 
@@ -188,11 +192,10 @@ export default function EventDetailPage() {
                     <button
                       key={index}
                       onClick={() => setActiveTab(row)}
-                      className={`pb-4 text-sm md:text-base font-medium transition-colors relative capitalize cursor-pointer ${
-                        activeTab === row
+                      className={`pb-4 text-sm md:text-base font-medium transition-colors relative capitalize cursor-pointer ${activeTab === row
                           ? 'text-sobat-blue dark:text-sobat-yellow'
                           : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-                      }`}
+                        }`}
                     >
                       {row}
                       {activeTab === row && (

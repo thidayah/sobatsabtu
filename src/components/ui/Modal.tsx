@@ -44,7 +44,7 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
             <Icon icon="lucide:x" width="20" height="20" />
           </button>
         </div>
-        <div className="p-6">{children}</div>
+        <div className="p-6 overflow-auto max-h-[650px]">{children}</div>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ interface Event {
   date: string;
   time: string;
   location: string;
+  location_url: string;
   current_participants: number;
   max_participants: number;
   type: string;
@@ -37,6 +38,7 @@ const initialEvent: Event = {
   date: '',
   time: '',
   location: '',
+  location_url: '',
   current_participants: 0,
   max_participants: 0,
   type: '',
@@ -128,8 +130,10 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
           name="name"
           value={formData.name}
           onChange={handleChange}
-          //@ts-ignore
-          onBlur={!event && generateSlug}
+          
+          onBlur={() => !event && generateSlug()}
+          // onMouseOver={!event && generateSlug}
+          
           required
         />
 
@@ -193,6 +197,14 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
           label="Location"
           name="location"
           value={formData.location}
+          onChange={handleChange}
+          required
+        />
+
+        <Input
+          label="Location URL"
+          name="location_url"
+          value={formData.location_url}
           onChange={handleChange}
           required
         />
