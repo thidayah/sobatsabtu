@@ -20,6 +20,7 @@ interface Event {
   date: string;
   time: string;
   location: string;
+  location_url: string;
   current_participants: number;
   max_participants: number;
   type: string;
