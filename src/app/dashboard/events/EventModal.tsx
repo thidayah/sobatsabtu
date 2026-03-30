@@ -129,11 +129,9 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
           label="Event Name"
           name="name"
           value={formData.name}
-          onChange={handleChange}
-          
+          onChange={handleChange}          
           onBlur={() => !event && generateSlug()}
-          // onMouseOver={!event && generateSlug}
-          
+          // onMouseOver={!event && generateSlug}          
           required
         />
 
