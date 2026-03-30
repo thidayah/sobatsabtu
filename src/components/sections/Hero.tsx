@@ -7,33 +7,61 @@ import { Container } from '../ui/Container';
 
 // Data untuk slides
 const slides = [
+  // {
+  //   id: 1,
+  //   type: 'image',
+  //   url: 'https://images.unsplash.com/photo-1590333748338-d629e4564ad9?q=80&w=2070&auto=format&fit=crop', // Lari di kota
+  //   title: 'A Saturday Morning Run',
+  //   description: 'Start your weekend with positive energy together with the community'
+  // },
+  // {
+  //   id: 2,
+  //   type: 'image',
+  //   url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop', // Exercise session
+  //   title: 'Exercise Session',
+  //   description: 'Strength training and functional fitness for all levels'
+  // },
+  // {
+  //   id: 3,
+  //   type: 'image',
+  //   url: 'https://images.unsplash.com/photo-1540539234-c14a20fb7c7b?q=80&w=2070&auto=format&fit=crop', // Trail running
+  //   title: 'Run in the Wood',
+  //   description: 'Explore the natural beauty of Bandung with Sobat Sabtu'
+  // },
+  // {
+  //   id: 4,
+  //   type: 'image',
+  //   url: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=2070&auto=format&fit=crop', // Badminton
+  //   title: 'Multi-Sport Fun',
+  //   description: 'Badminton, mini soccer, basketball, billiard - choose your activity!'
+  // },
   {
     id: 1,
     type: 'image',
-    url: 'https://images.unsplash.com/photo-1590333748338-d629e4564ad9?q=80&w=2070&auto=format&fit=crop', // Lari di kota
-    title: 'A Saturday Morning Run',
-    description: 'Start your weekend with positive energy together with the community'
+    url: "/images/estafet.jpg",
+    title: 'Estafet Arcamanik',
+    description: 'This year`s special jersey from Dyno for the Arcamanik relay'
   },
   {
     id: 2,
     type: 'image',
-    url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop', // Exercise session
-    title: 'Exercise Session',
-    description: 'Strength training and functional fitness for all levels'
+    url: "/images/syd.jpg",
+    title: 'Share Your Distance',
+    description: 'It`s not about who is the fastest, but about running together, encouraging each other and sharing the distance.'
   },
   {
     id: 3,
     type: 'image',
-    url: 'https://images.unsplash.com/photo-1540539234-c14a20fb7c7b?q=80&w=2070&auto=format&fit=crop', // Trail running
+    url: "/images/ritw.jpg",
     title: 'Run in the Wood',
-    description: 'Explore the natural beauty of Bandung with Sobat Sabtu'
+    description: 'This isn`t just a run, this is patience in motion, this is Sahur on the Trail'
   },
   {
     id: 4,
     type: 'image',
-    url: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=2070&auto=format&fit=crop', // Badminton
-    title: 'Multi-Sport Fun',
-    description: 'Badminton, mini soccer, basketball, billiard - choose your activity!'
+    url: "/images/huricane.jpg",
+    title: 'Huricane Collaborate',
+    description: 'Weekend miles hit diffrent when your running with the right crew and the right gear'
   }
 ];
 
@@ -46,7 +74,7 @@ export const Hero = () => {
 
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 7500);
 
     return () => clearInterval(timer);
   }, [isAutoPlay]);
@@ -67,15 +95,15 @@ export const Hero = () => {
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 1 }}
           className="absolute inset-0"
         >
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${slides[currentSlide].url})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-black via-black/40 to-transparent" />
+          {/* <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/80" /> */}
         </motion.div>
       </AnimatePresence>
 
@@ -101,7 +129,7 @@ export const Hero = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.75 }}
               className="text-2xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-white max-w-7xl mx-auto"
             >
               {slides[currentSlide].title}

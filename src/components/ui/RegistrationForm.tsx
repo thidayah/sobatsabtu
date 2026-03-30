@@ -28,7 +28,8 @@ export const RegistrationForm = ({
     ig_username: '',
     emergency_contact_name: '',
     emergency_contact_phone: '',
-    medical_notes: ''
+    medical_notes: '',
+    is_agree: false
   });
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -92,7 +93,7 @@ export const RegistrationForm = ({
     e.preventDefault();
 
     // Validate required fields
-    if (!formData.full_name || !formData.email || !formData.gender || !formData.emergency_contact_name || !formData.emergency_contact_phone) {
+    if (!formData.full_name || !formData.email || !formData.gender || !formData.emergency_contact_name || !formData.emergency_contact_phone || !formData.is_agree) {
       setPopupMessage({
         title: 'Missing Fields',
         message: 'Please fill in all required fields (*)',
@@ -140,7 +141,8 @@ export const RegistrationForm = ({
           ig_username: '',
           emergency_contact_name: '',
           emergency_contact_phone: '',
-          medical_notes: ''
+          medical_notes: '',
+          is_agree: false
         });
         setSearchQuery('');
       } else {
@@ -238,7 +240,7 @@ export const RegistrationForm = ({
 
       {/* Search Section */}
       <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-        <p className="text-xs md:text-base text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mb-4">
           Enter your email or instagram username to auto-fill your details if you've registered before.
         </p>
 
@@ -419,6 +421,27 @@ export const RegistrationForm = ({
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             This information helps us ensure your safety during the activity.
           </p>
+        </div>
+
+        <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+          <p className="text-xs md:text-sm font-medium  text-gray-600 dark:text-gray-400 mb-2">
+            I agree to the Terms & Conditions and Waiver of Liability <span className="text-red-500">*</span>
+          </p>
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="is_agree"
+              name="is_agree"
+              checked={formData.is_agree}
+              onChange={handleChange}
+              className="w-4 h-4 text-sobat-blue mt-1"
+              required
+            />
+            <label htmlFor="is_agree" className="text-sm text-gray-700 dark:text-gray-300">
+              By checking this box, I acknowledge that I have read, understood, and agree to the event terms, waiver of liability, and understand the risks associated with this activity.
+            </label>
+          </div>
+
         </div>
 
         {/* Submit Button */}
