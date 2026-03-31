@@ -63,7 +63,8 @@ export const RegistrationForm = ({
           ig_username: member.ig_username || '',
           emergency_contact_name: member.emergency_contact_name || '',
           emergency_contact_phone: member.emergency_contact_phone || '',
-          medical_notes: member.medical_notes || ''
+          medical_notes: member.medical_notes || '',
+          is_agree: false
         });
         setSearchResult(member);
 
