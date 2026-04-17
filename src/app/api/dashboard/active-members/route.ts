@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase';
 
+interface Member {
+  id: string;
+  full_name: string;
+  email: string;
+  ig_username: string;
+}
+
+interface Registrations {
+  member_id: string;
+  status: string;
+  member: Member | null;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -45,7 +58,8 @@ export async function GET(request: NextRequest) {
       `)
       .eq('status', 'confirmed')
       .gte('created_at', startDate)
-      .lte('created_at', endDate);
+      .lte('created_at', endDate)
+      .overrideTypes<Registrations[]>();
 
     if (regError) {
       console.error('Error fetching registrations:', regError);
@@ -74,10 +88,8 @@ export async function GET(request: NextRequest) {
 
     // Count registrations per member
     const memberParticipationMap = new Map();
-    
-    registrations.forEach(reg => {
+    (registrations ?? []).forEach(reg => {
       const member = reg.member;
-      // const member = reg.member?.[0];
       if (!member) return;
 
       const currentCount = memberParticipationMap.get(reg.member_id) || {
