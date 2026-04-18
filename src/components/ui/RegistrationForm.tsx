@@ -342,7 +342,7 @@ export const RegistrationForm = ({
             Gender <span className="text-red-500">*</span>
           </label>
           <div className="flex gap-4">
-            {['male', 'female', 'other'].map((g, index) => (
+            {['male', 'female'].map((g, index) => (
               <label key={index} className="flex items-center gap-2 cursor-pointer text-sm md:text-base">
                 <input
                   type="radio"

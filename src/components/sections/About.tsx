@@ -224,8 +224,8 @@ export const About = () => {
                 <div className="mt-4 flex items-center gap-3">
                   <div className="w-10 h-10 bg-sobat-blue/20 rounded-full" />
                   <div>
-                    <p className="font-semibold">Jane Doe</p>
-                    <p className="text-xs text-gray-500">Member since 2022</p>
+                    <p className="font-semibold">Pratama</p>
+                    <p className="text-xs text-gray-500">Member since 2021</p>
                   </div>
                 </div>
               </motion.div>
