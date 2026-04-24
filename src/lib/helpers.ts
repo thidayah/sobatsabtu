@@ -17,3 +17,14 @@ export function useDebounce(value: string, delay: number) {
 
   return debouncedValue;
 }
+
+export function useOptionEvent() {
+  return [
+    'ASMR',
+    'Exercise',
+    'Run In The Wood',
+    'Hoops',
+    'Nyepak',
+    'Nepak',
+  ]
+}
