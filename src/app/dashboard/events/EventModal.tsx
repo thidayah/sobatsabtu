@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
 import { Select } from "@/components/ui/Select";
+import { useOptionEvent } from "@/lib/helpers";
 
 interface Event {
   id?: string;
@@ -107,14 +108,16 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
     setFormData(prev => ({ ...prev, slug }));
   };
 
-  const optionsEvent = [
-    'ASMR',
-    'Exercise',
-    'Run In The Wood',
-    'Hoops',
-    'Nyepak',
-    'Nepak',
-  ]
+  // const optionsEvent = [
+  //   'ASMR',
+  //   'Exercise',
+  //   'Run In The Wood',
+  //   'Hoops',
+  //   'Nyepak',
+  //   'Nepak',
+  // ]
+
+  const optionsEvent = useOptionEvent();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={event ? 'Edit Event' : 'Create Event'} size="lg">
@@ -141,7 +144,7 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
             name="slug"
             value={formData.slug}
             onChange={handleChange}
-            disabled
+            // disabled
             required
           />
           <Select
