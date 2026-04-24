@@ -41,6 +41,11 @@ export const RegistrationForm = ({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: checked }));
+  };
+
   const handleGenderChange = (value: string) => {
     setFormData(prev => ({ ...prev, gender: value }));
   };
@@ -251,6 +256,7 @@ export const RegistrationForm = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
               placeholder="Type email or IG username..."
               className="w-full px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
             />
@@ -434,7 +440,7 @@ export const RegistrationForm = ({
               id="is_agree"
               name="is_agree"
               checked={formData.is_agree}
-              onChange={handleChange}
+              onChange={handleCheckboxChange}
               className="w-4 h-4 text-sobat-blue mt-1"
               required
             />
@@ -442,7 +448,6 @@ export const RegistrationForm = ({
               By checking this box, I acknowledge that I have read, understood, and agree to the event terms, waiver of liability, and understand the risks associated with this activity.
             </label>
           </div>
-
         </div>
 
         {/* Submit Button */}
