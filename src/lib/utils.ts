@@ -39,7 +39,6 @@ export function generateUniqueCode() {
 //   return `${prefix}${year}-${randomPart}`;
 // }
 
-// Helper function to generate slug from name
 export function generateSlug(name: string) {
   return name
     .toLowerCase()

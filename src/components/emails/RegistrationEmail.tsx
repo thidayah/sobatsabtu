@@ -65,15 +65,12 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
             <div style={eventDetailsStyle}>
               <div style={eventDetailsTitleStyle}>Event Details</div>
               <div style={eventDetailItemStyle}>
-                {/* <div style={eventIconStyle}>Title:</div> */}
                 <div><strong>{eventName}</strong></div>
               </div>
               <div style={eventDetailItemStyle}>
-                {/* <div style={eventIconStyle}>Date:</div> */}
                 <div>{eventDate} - {eventTime} WIB</div>
               </div>
               <div style={eventDetailItemStyle}>
-                {/* <div style={eventIconStyle}>Location:</div> */}
                 <div>{eventLocation}</div>
               </div>
             </div>
@@ -88,7 +85,7 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
 
           {/* Footer */}
           <div style={footerStyle}>
-            <div style={footerTextStyle}>#untalentedrunners • #pelarikonten</div>
+            <div style={footerTextStyle}>#pelarikonten</div>
             <div style={footerTextStyle}>
               Sobat Sabtu - Turning "Mager" into Adventure Since 2019
             </div>
@@ -98,7 +95,7 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
               <a href="#" style={socialLinkStyle}>TikTok</a>
               <a href="#" style={socialLinkStyle}>Spotify</a>
             </div> */}
-            <div style={{ ...footerTextStyle, marginTop: 16 }}>
+            <div style={{ ...footerTextStyle, marginTop: 8 }}>
               © {new Date().getFullYear()} Sobat Sabtu. All rights reserved.
             </div>
           </div>
@@ -113,7 +110,7 @@ const bodyStyle: React.CSSProperties = {
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   background: 'linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%)',
   margin: 0,
-  padding: 20,
+  padding: 8,
 };
 
 const containerStyle: React.CSSProperties = {
@@ -193,7 +190,7 @@ const infoRowStyle1: React.CSSProperties = {
 const infoRowStyle2: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   paddingTop: 10,
 };
 
@@ -253,7 +250,7 @@ const eventDetailsStyle: React.CSSProperties = {
 const eventDetailsTitleStyle: React.CSSProperties = {
   fontSize: 16,
   fontWeight: 600,
-  marginBottom: 16,
+  marginBottom: 12,
   color: '#0928d5',
 };
 
@@ -261,7 +258,7 @@ const eventDetailItemStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   gap: 12,
-  padding: '8px 0',
+  padding: '4px 0',
   color: '#333333',  
 };
 
@@ -290,7 +287,6 @@ const footerStyle: React.CSSProperties = {
 const footerTextStyle: React.CSSProperties = {
   color: '#666666',
   fontSize: 12,
-  marginBottom: 8,
 };
 
 const socialLinksStyle: React.CSSProperties = {
