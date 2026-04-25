@@ -36,6 +36,7 @@ export default function MembersPage() {
     start_date: '',
     end_date: '',
   });
+  const [updatingMemberId, setUpdatingMemberId] = useState<string | null>(null);
 
   const fetchMembers = async () => {
     setLoading(true);
@@ -77,6 +78,37 @@ export default function MembersPage() {
 
   useEffect(() => handleSearch(), [debouncedSearch]);
 
+  const toggleMemberStatus = async (memberId: string, currentStatus: boolean) => {
+    setUpdatingMemberId(memberId);
+    try {
+      const response = await fetch(`/api/members/${memberId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_active: !currentStatus }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Update local state untuk member yang diubah
+        setMembers(prevMembers =>
+          prevMembers.map(member =>
+            member.id === memberId
+              ? { ...member, is_active: !currentStatus }
+              : member
+          )
+        );
+      } else {
+        alert(result.message || 'Failed to update member status');
+      }
+    } catch (error) {
+      console.error('Error updating member status:', error);
+      alert('Failed to update member status');
+    } finally {
+      setUpdatingMemberId(null);
+    }
+  };
+
   const columns = [
     {
       key: 'member',
@@ -99,13 +131,35 @@ export default function MembersPage() {
       ),
     },
     { key: 'total_events', header: 'Events Joined' },
+    // {
+    //   key: 'is_active',
+    //   header: 'Status',
+    //   render: (item: Member) => (
+    //     <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+    //       {item.is_active ? 'Active' : 'Inactive'}
+    //     </span>
+    //   ),
+    // },
     {
       key: 'is_active',
-      header: 'Status',
+      header: 'Untalented',
       render: (item: Member) => (
-        <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.is_active ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
-          {item.is_active ? 'Active' : 'Inactive'}
-        </span>
+        <button
+          onClick={() => toggleMemberStatus(item.id, item.is_active)}
+          disabled={updatingMemberId === item.id}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${item.is_active ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
+            } ${updatingMemberId === item.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${item.is_active ? 'translate-x-6' : 'translate-x-1'
+              }`}
+          />
+          {updatingMemberId === item.id && (
+            <span className="absolute inset-0 flex items-center justify-center">
+              <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            </span>
+          )}
+        </button>
       ),
     },
     {
