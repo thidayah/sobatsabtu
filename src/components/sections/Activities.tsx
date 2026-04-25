@@ -294,7 +294,7 @@ export const Activities = () => {
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="flex overflow-x-auto gap-3 md:gap-6 pb-12 px-4 -mx-4 no-scrollbar snap-x"
+                className="flex overflow-x-auto gap-2 md:gap-4 pb-12 px-4 -mx-4 no-scrollbar snap-x"
                 style={{
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none',
@@ -315,7 +315,7 @@ export const Activities = () => {
                 ))}
 
                 {/* View All Card */}
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0, x: 50 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.1 * filteredActivities.length }}
@@ -336,7 +336,7 @@ export const Activities = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </motion.div>
                   </Link>
-                </motion.div>
+                </motion.div> */}
               </motion.div>
             </div>
           )}
