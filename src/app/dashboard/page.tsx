@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  LabelList,
 } from 'recharts';
 
 interface DashboardStats {
@@ -34,11 +35,21 @@ interface UpcomingEvent {
   is_active: boolean;
 }
 
-interface RegistrationChartData {
+interface MemberChartData {
   year: number;
-  chart_data: { month: string; registrations: number }[];
-  total: number;
+  chart_data: { month: string; new_members: number }[];
+  total_new_members: number;
+  average_per_month: number;
+  highest_month: {
+    month: string;
+    count: number;
+  };
 }
+// interface RegistrationChartData {
+//   year: number;
+//   chart_data: { month: string; registrations: number }[];
+//   total: number;
+// }
 
 interface EventsChartData {
   year: number;
@@ -65,6 +76,7 @@ interface ActiveMember {
   email: string;
   ig_username: string;
   total_events: number;
+  is_active: number;
 }
 
 export default function DashboardPage() {
@@ -73,7 +85,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
-  const [registrationChart, setRegistrationChart] = useState<RegistrationChartData | null>(null);
+  const [membersChart, setMembersChart] = useState<MemberChartData | null>(null);
+  // const [registrationChart, setRegistrationChart] = useState<RegistrationChartData | null>(null);
   const [eventsChart, setEventsChart] = useState<EventsChartData | null>(null);
   const [popularEvents, setPopularEvents] = useState<PopularEvent[]>([]);
   const [activeMembers, setActiveMembers] = useState<ActiveMember[]>([]);
@@ -128,7 +141,7 @@ export default function DashboardPage() {
       try {
         const today = new Date().toISOString().split('T')[0];
         const response = await fetch(
-          `/api/events?is_active=true&sort_by=date&sort_order=asc&limit=3&date_gte=${today}`
+          `/api/events?is_active=true&sort_by=date&sort_order=desc&limit=3&date_gte=${today}`
         );
         const result = await response.json();
         if (result.success) {
@@ -148,12 +161,19 @@ export default function DashboardPage() {
     const fetchCharts = async () => {
       setChartLoading(true);
       try {
-        // Fetch registration chart
-        const regResponse = await fetch(`/api/dashboard/registrations-chart?year=${filterYear}`);
-        const regResult = await regResponse.json();
-        if (regResult.success) {
-          setRegistrationChart(regResult.data);
+        // Fetch member chart
+        const membersResponse = await fetch(`/api/dashboard/members-chart?year=${filterYear}`);
+        const membersResult = await membersResponse.json();
+        if (membersResult.success) {
+          setMembersChart(membersResult.data);
         }
+
+        // Fetch registration chart
+        // const regResponse = await fetch(`/api/dashboard/registrations-chart?year=${filterYear}`);
+        // const regResult = await regResponse.json();
+        // if (regResult.success) {
+        //   setRegistrationChart(regResult.data);
+        // }
 
         // Fetch events chart
         const eventsResponse = await fetch(`/api/dashboard/events-chart?year=${filterYear}`);
@@ -184,10 +204,10 @@ export default function DashboardPage() {
         if (filterMonth) {
           membersParams.set('month', `${filterYear}-${filterMonth}`);
         }
-        const membersResponse = await fetch(`/api/dashboard/active-members?${membersParams}`);
-        const membersResult = await membersResponse.json();
-        if (membersResult.success) {
-          setActiveMembers(membersResult.data);
+        const membersActiveResponse = await fetch(`/api/dashboard/active-members?${membersParams}`);
+        const membersActiveResult = await membersActiveResponse.json();
+        if (membersActiveResult.success) {
+          setActiveMembers(membersActiveResult.data);
         }
       } catch (error) {
         console.error('Error fetching charts:', error);
@@ -261,7 +281,8 @@ export default function DashboardPage() {
           <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">{label}</p>
           {payload.map((p: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: p.color }}>
-              {p.name}: {p.value.toLocaleString()}
+              {/* {p.name}: {p.value.toLocaleString()} */}
+              Total: {p.value.toLocaleString()}
             </p>
           ))}
         </div>
@@ -444,8 +465,70 @@ export default function DashboardPage() {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Bar Chart - Registrations per Month */}
+        {/* Bar Chart - New Members per Month */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Members Overview
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Monthly new member trends for {filterYear}
+              </p>
+            </div>
+            <Icon icon="lucide:bar-chart-3" width="20" height="20" className="text-gray-400" />
+          </div>
+          <div className="h-80">
+            {chartLoading ? (
+              <div className="h-full flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : membersChart && membersChart.chart_data.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={membersChart.chart_data}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
+                  <YAxis stroke="#6b7280" fontSize={12} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="new_members" fill="#2a7fff" radius={[4, 4, 0, 0]}>
+                    <LabelList
+                      dataKey="new_members"
+                      position="inside"
+                      fill="#ffffff"
+                      fontSize={12}
+                      fontWeight={500}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center border border-dashed border-gray-200 dark:border-gray-700">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  No new member data available
+                </p>
+              </div>
+            )}
+          </div>
+          {membersChart && (
+            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-3 gap-4">
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Total Member</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {membersChart.total_new_members.toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Average Per Month</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {membersChart.average_per_month.toLocaleString()}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bar Chart - Registrations per Month */}
+        {/* <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -490,7 +573,7 @@ export default function DashboardPage() {
               </p>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Line Chart - Events Performance */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6">
@@ -518,21 +601,21 @@ export default function DashboardPage() {
                   <YAxis stroke="#6b7280" fontSize={12} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
-                  <Line
+                  {/* <Line
                     type="monotone"
                     dataKey="quota"
-                    name="Event Quota"
-                    stroke="#fac202"
+                    name="Quota"
+                    stroke="#bedbff"
                     strokeWidth={2}
-                    dot={{ fill: '#fac202', strokeWidth: 2 }}
-                  />
+                    dot={{ fill: '#bedbff', strokeWidth: 2 }}
+                  /> */}
                   <Line
                     type="monotone"
                     dataKey="participants"
-                    name="Registered Participants"
-                    stroke="#0928d5"
+                    name="Participants"
+                    stroke="#2a7fff"
                     strokeWidth={2}
-                    dot={{ fill: '#0928d5', strokeWidth: 2 }}
+                    dot={{ fill: '#2a7fff', strokeWidth: 2 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -610,7 +693,7 @@ export default function DashboardPage() {
                       <div>
                         <p className="font-medium text-gray-900 dark:text-white">{event.name}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {new Date(event.date).toLocaleDateString()} • {event.fill_rate.toFixed(0)}% filled
+                          {new Date(event.date).toLocaleDateString()} • {event.fill_rate?.toFixed(0) || 0}% filled
                         </p>
                       </div>
                     </div>
@@ -653,7 +736,7 @@ export default function DashboardPage() {
               </div>
             ) : activeMembers.length > 0 ? (
               <div className="space-y-4">
-                {activeMembers.map((member, index) => (
+                {activeMembers.map((member) => (
                   <div
                     key={member.member_id}
                     className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -663,7 +746,14 @@ export default function DashboardPage() {
                         {member.full_name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">{member.full_name}</p>
+                        <div className=" flex items-center gap-2">
+                          <p className="font-medium text-gray-900 dark:text-white">{member.full_name}</p>
+                          {member.is_active && (
+                            <span className="bg-green-600 text-white text-[8.5px] px-2 py-1 rounded-full">
+                              Untalented
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                           {member.ig_username ? `@${member.ig_username}` : member.email}
                         </p>
