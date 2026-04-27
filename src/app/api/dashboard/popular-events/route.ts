@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
       max_participants: event.max_participants,
       current_participants: event.current_participants,
       total_registrations: registrationCountMap.get(event.id) || 0,
-      fill_rate: ((registrationCountMap.get(event.id) || 0) / event.max_participants) * 100,
+      fill_rate: event.max_participants > 0 ? ((registrationCountMap.get(event.id) || 0) / event.max_participants) * 100 : 0,
     }));
 
     // Sort by total registrations (descending)

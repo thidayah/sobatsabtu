@@ -341,7 +341,7 @@ export async function POST(request: NextRequest) {
         emergency_contact_name: body.emergency_contact_name,
         emergency_contact_phone: body.emergency_contact_phone,
         medical_notes: body.medical_notes || null,
-        is_active: true,
+        is_active: false, // Untalented are inactive by default until verified
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
