@@ -6,6 +6,7 @@ interface Member {
   full_name: string;
   email: string;
   ig_username: string;
+  is_active: string;
 }
 
 interface Registrations {
@@ -53,7 +54,8 @@ export async function GET(request: NextRequest) {
           id,
           full_name,
           email,
-          ig_username
+          ig_username,
+          is_active
         )
       `)
       .eq('status', 'confirmed')
@@ -97,6 +99,7 @@ export async function GET(request: NextRequest) {
         full_name: member.full_name,
         email: member.email,
         ig_username: member.ig_username,
+        is_active: member.is_active, // aka: is_untalented
         total_events: 0,
       };
       currentCount.total_events++;
