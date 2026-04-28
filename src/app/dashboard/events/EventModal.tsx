@@ -87,6 +87,7 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
       if (result.success) {
         onSuccess();
         onClose();
+        setFormData(initialEvent)
       } else {
         setError(result.message || 'Failed to save event');
       }
@@ -94,7 +95,6 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);
-      setFormData(initialEvent)
     }
   };
 
@@ -132,7 +132,7 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
           label="Event Name"
           name="name"
           value={formData.name}
-          onChange={handleChange}          
+          onChange={handleChange}
           onBlur={() => !event && generateSlug()}
           // onMouseOver={!event && generateSlug}          
           required
@@ -148,14 +148,18 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
             required
           />
           <Select
-            options={optionsEvent.map((row) => ({
+            options={[{
+              value: '',
+              label: 'Select',
+            }, ...optionsEvent.map((row) => ({
               value: row,
               label: row,
-            }))}
+            }))]}
             label="Event Type"
             name="type"
             value={formData.type}
             onChange={handleChange}
+            required
           />
         </div>
 
