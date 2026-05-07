@@ -247,7 +247,7 @@ export const RegistrationForm = ({
       {/* )} */}
 
       {/* Search Section */}
-      <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+      <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 hidden">
         <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mb-4">
           Enter your email or instagram username to auto-fill your details if you've registered before.
         </p>
