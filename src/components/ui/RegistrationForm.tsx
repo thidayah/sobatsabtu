@@ -1,4 +1,4 @@
-import { normalizePhoneNumber } from "@/lib/utils";
+import { normalizePhoneNumber, normalizeUsernameIg } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 
@@ -53,10 +53,12 @@ export const RegistrationForm = ({
   // Search member by email or IG username
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
+    const searchEmail = searchQuery.toLowerCase()
+    const searchUsername = normalizeUsernameIg(searchQuery)
 
     setSearchLoading(true);
     try {
-      const response = await fetch(`/api/members/search?email=${encodeURIComponent(searchQuery)}&ig_username=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`/api/members/search?email=${encodeURIComponent(searchEmail)}&ig_username=${encodeURIComponent(searchUsername)}`);
       const result = await response.json();
 
       if (result.success && result.data) {
@@ -121,8 +123,8 @@ export const RegistrationForm = ({
         body: JSON.stringify({
           event_id: id,
           full_name: formData.full_name,
-          email: formData.email,
-          ig_username: formData.ig_username,
+          email: formData.email.toLowerCase(),
+          ig_username: normalizeUsernameIg(formData.ig_username),
           gender: formData.gender,
           emergency_contact_name: formData.emergency_contact_name,
           emergency_contact_phone: normalizePhoneNumber(formData.emergency_contact_phone),

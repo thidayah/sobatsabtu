@@ -113,6 +113,7 @@ export async function GET(request: NextRequest) {
 
     // Apply pagination
     query = query.range(offset, offset + validLimit - 1);
+    query = query.order('created_at', { ascending: false });
 
     // Execute query
     const { data: registrations, error, count } = await query;
@@ -184,9 +185,9 @@ export async function POST(request: NextRequest) {
       'emergency_contact_name',
       'emergency_contact_phone'
     ];
-    
+
     const missingFields = requiredFields.filter(field => !body[field]);
-    
+
     if (missingFields.length > 0) {
       return NextResponse.json(
         {
@@ -244,7 +245,7 @@ export async function POST(request: NextRequest) {
     // Validate event date is not passed
     const eventDate = new Date(`${event.date}T${event.time}`);
     const currentDate = new Date();
-    
+
     if (eventDate < currentDate) {
       return NextResponse.json(
         {
@@ -297,7 +298,7 @@ export async function POST(request: NextRequest) {
     if (existingMember) {
       // Update existing member
       isExistingMember = true;
-      
+
       const updateData: any = {
         full_name: body.full_name,
         email: body.email,
@@ -396,7 +397,7 @@ export async function POST(request: NextRequest) {
 
     // 4. Create registration
     const registrationCode = generateUniqueCode();
-    
+
     const registrationData = {
       event_id: body.event_id,
       member_id: memberId,

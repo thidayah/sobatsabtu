@@ -114,3 +114,10 @@ export function normalizePhoneNumber(phone: string) {
 
   return cleaned;
 }
+
+export function normalizeUsernameIg(username: string) {
+  if (!username) return '';
+
+  return username.trim().replace(/^@/, '').toLowerCase();
+}
+
