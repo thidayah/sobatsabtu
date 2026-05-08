@@ -19,7 +19,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
     return activity.current_participants >= activity.max_participants;
   };
 
-  const closed = isEventClosed();  
+  const closed = isEventClosed();
   const soldOut = !closed && isSoldOut();
 
   return (
@@ -87,6 +87,19 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
                 Closed
               </span>
             </button>
+          ) : activity.external_url ? (
+            <Link href={activity.external_url} target="_blank" className="w-full col-span-2">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full py-2.5 rounded-full font-medium text-sm transition-all duration-300 bg-white text-gray-900 hover:bg-white/90 cursor-pointer`}
+              >
+                <span className="flex text-xs md:text-base items-center justify-center gap-2">
+                  <Icon icon="mdi:external-link" width="16" height="16" />
+                  Visit
+                </span>
+              </motion.button>
+            </Link>
           ) : (
             <div className="grid grid-cols-3 gap-2">
               {/* Register Button - Soldout or Normal */}
@@ -96,8 +109,8 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
                   whileTap={!soldOut ? { scale: 0.98 } : {}}
                   disabled={soldOut}
                   className={`w-full py-2.5 rounded-full font-medium text-sm transition-all duration-300  ${soldOut
-                      ? 'bg-red-500/50 text-white/70 cursor-not-allowed'
-                      : 'bg-white text-gray-900 hover:bg-white/90 cursor-pointer'
+                    ? 'bg-red-500/50 text-white/70 cursor-not-allowed'
+                    : 'bg-white text-gray-900 hover:bg-white/90 cursor-pointer'
                     }`}
                 >
                   <span className="flex text-xs md:text-base items-center justify-center gap-2">
@@ -123,6 +136,6 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
