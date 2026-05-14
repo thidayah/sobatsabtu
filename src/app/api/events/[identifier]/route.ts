@@ -159,6 +159,7 @@ export async function PUT(
     if (body.time !== undefined) updateData.time = body.time;
     if (body.location !== undefined) updateData.location = body.location;
     if (body.location_url !== undefined) updateData.location_url = body.location_url;
+    if (body.external_url !== undefined) updateData.external_url = body.external_url;
     if (body.current_participants !== undefined) updateData.current_participants = body.current_participants;
     if (body.max_participants !== undefined) updateData.max_participants = body.max_participants;
     if (body.type !== undefined) updateData.type = body.type;

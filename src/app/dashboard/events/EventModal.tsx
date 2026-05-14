@@ -18,6 +18,7 @@ interface Event {
   time: string;
   location: string;
   location_url: string;
+  external_url: string;
   current_participants: number;
   max_participants: number;
   type: string;
@@ -40,6 +41,7 @@ const initialEvent: Event = {
   time: '',
   location: '',
   location_url: '',
+  external_url: '',
   current_participants: 0,
   max_participants: 0,
   type: '',
@@ -211,7 +213,13 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
           name="location_url"
           value={formData.location_url}
           onChange={handleChange}
-          required
+        />
+
+        <Input
+          label="External URL"
+          name="external_url"
+          value={formData.external_url}
+          onChange={handleChange}
         />
 
         <div className="grid grid-cols-2 gap-4">

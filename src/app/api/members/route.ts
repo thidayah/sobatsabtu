@@ -11,11 +11,17 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const startDate = searchParams.get('start_date');
     const endDate = searchParams.get('end_date');
+    const sortBy = searchParams.get('sort_by') || 'created_at';
+    const sortOrder = (searchParams.get('sort_order') || 'desc') as 'asc' | 'desc';
 
     // Validate page and limit
     const validPage = Math.max(1, page);
     const validLimit = Math.min(100, Math.max(1, limit));
     const offset = (validPage - 1) * validLimit;
+
+    // Validate sort_by
+    const validSortFields = ['created_at', 'total_events'];
+    const validSortBy = validSortFields.includes(sortBy) ? sortBy : 'created_at';
 
     // Start building query for members
     let query = supabaseServer
@@ -34,7 +40,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Apply pagination to get total count first
+    // Execute query to get members first
     const { data: members, error: membersError, count } = await query;
 
     if (membersError) {
@@ -68,6 +74,8 @@ export async function GET(request: NextRequest) {
             search: search || null,
             start_date: startDate || null,
             end_date: endDate || null,
+            sort_by: validSortBy,
+            sort_order: sortOrder,
           },
         },
       });
@@ -112,10 +120,25 @@ export async function GET(request: NextRequest) {
     }
 
     // Add total_events to each member
-    const membersWithEventCount = members.map(member => ({
+    let membersWithEventCount = members.map(member => ({
       ...member,
       total_events: eventCountMap.get(member.id) || 0,
     }));
+
+    // Apply sorting based on sort_by
+    if (validSortBy === 'created_at') {
+      membersWithEventCount.sort((a, b) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
+        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+      });
+    } else if (validSortBy === 'total_events') {
+      membersWithEventCount.sort((a, b) => {
+        return sortOrder === 'asc' 
+          ? a.total_events - b.total_events 
+          : b.total_events - a.total_events;
+      });
+    }
 
     // Apply pagination to the final data
     const paginatedMembers = membersWithEventCount.slice(offset, offset + validLimit);
@@ -145,6 +168,8 @@ export async function GET(request: NextRequest) {
           search: search || null,
           start_date: startDate || null,
           end_date: endDate || null,
+          sort_by: validSortBy,
+          sort_order: sortOrder,
         },
       },
     });

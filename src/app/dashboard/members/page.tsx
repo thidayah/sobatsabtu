@@ -35,6 +35,8 @@ export default function MembersPage() {
     is_active: '',
     start_date: '',
     end_date: '',
+    sort_by: '',
+    sort_order: '',
   });
   const [updatingMemberId, setUpdatingMemberId] = useState<string | null>(null);
 
@@ -48,6 +50,8 @@ export default function MembersPage() {
         ...(filters.is_active && { is_active: filters.is_active }),
         ...(filters.start_date && { start_date: filters.start_date }),
         ...(filters.end_date && { end_date: filters.end_date }),
+        ...(filters.sort_by && { sort_by: filters.sort_by }),
+        ...(filters.sort_order && { sort_order: filters.sort_order }),
       });
 
       const response = await fetch(`/api/members?${params}`);
@@ -66,7 +70,7 @@ export default function MembersPage() {
 
   useEffect(() => {
     fetchMembers();
-  }, [pagination.page, filters.is_active, filters.start_date, filters.end_date]);
+  }, [pagination.page, filters.is_active, filters.start_date, filters.end_date, filters.sort_by, filters.sort_order]);
 
   const handleSearch = () => {
     if (loading) return
@@ -175,6 +179,16 @@ export default function MembersPage() {
     { value: 'false', label: 'Inactive' },
   ]
 
+  const sortByOptions = [
+    { value: 'created', label: 'Sort By Created' },
+    { value: 'total_events', label: 'Sort by Total Event' },
+  ]
+
+  const sortOrderOptions = [
+    { value: 'desc', label: 'Descending' },
+    { value: 'asc', label: 'Ascending' },
+  ]
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -206,6 +220,17 @@ export default function MembersPage() {
             placeholder="End Date"
             value={filters.end_date}
             onChange={(e) => setFilters({ ...filters, end_date: e.target.value })}
+          />
+
+          <Select
+            options={sortByOptions}
+            value={filters.sort_by}
+            onChange={(e) => setFilters({ ...filters, sort_by: e.target.value })}
+          />
+          <Select
+            options={sortOrderOptions}
+            value={filters.sort_order}
+            onChange={(e) => setFilters({ ...filters, sort_order: e.target.value })}
           />
         </div>
         <div className="mt-4 flex justify-end">

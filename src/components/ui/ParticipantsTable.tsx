@@ -173,7 +173,7 @@ export const ParticipantsTable = ({ id, slug, current_participants }: Participan
                   <tr>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-left text-sm font-semibold text-gray-900 dark:text-white w-16">No</th>
                     <th className="px-4 md:px-6 py-3 md:py-4 min-w-48 text-left text-sm font-semibold text-gray-900 dark:text-white">Participant</th>
-                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Username</th>
+                    {/* <th className="px-4 md:px-6 py-3 md:py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Username</th> */}
                     <th className="px-4 md:px-6 py-3 md:py-4 min-w-40 text-left text-sm font-semibold text-gray-900 dark:text-white">Registered</th>
                   </tr>
                 </thead>
@@ -195,9 +195,9 @@ export const ParticipantsTable = ({ id, slug, current_participants }: Participan
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 md:px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                      {/* <td className="px-4 md:px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
                         {participant.member.ig_username ? `@${participant.member.ig_username}` : '-'}
-                      </td>
+                      </td> */}
                       <td className="px-4 md:px-6 py-3">
                         <div>
                           <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">

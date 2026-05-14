@@ -64,7 +64,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={type}
             onClick={handleClick}
             // onFocus={handleFocus}
-            className={`w-full px-4 py-2.5 bg-white dark:bg-gray-900 border ${error ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all ${icon ? 'pl-11' : ''} ${type === 'date' ? 'cursor-pointer' : ''
+            className={`w-full px-4 py-2.5 bg-white dark:bg-gray-900 border ${error ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all ${icon ? 'pl-11' : ''} ${type === 'date' || type === 'time' ? 'cursor-pointer appearance-none' : ''
               } ${className}`}
             {...props}
           />

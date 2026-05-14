@@ -138,8 +138,10 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hide calendar icon for WebKit browsers (Chrome, Edge, Safari) */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
+/* Hide calendar/clock icon for WebKit browsers (Chrome, Edge, Safari) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
 }
