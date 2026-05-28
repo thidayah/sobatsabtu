@@ -43,22 +43,29 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
 
             {/* Member Info Card */}
             <div style={infoCardStyle}>
-              <div style={infoRowStyle1}>
-                <span style={infoLabelStyle}>Member Name</span>
-                <span style={infoValueStyle}>{memberName}</span>
-              </div>
-              <div style={infoRowStyle2}>
-                <span style={infoLabelStyle}>Status</span>
-                <span style={infoValueStyle}>
-                  <span style={statusBadgeStyle}>{status.toUpperCase()}</span>
-                </span>
-              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <tbody>
+                  <tr>
+                    <td style={{ ...infoLabelStyle, paddingBottom: 10, borderBottom: '1px solid #e9ecef' }}>Member Name</td>
+                    <td style={{ ...infoValueStyle, paddingBottom: 10, borderBottom: '1px solid #e9ecef' }}>{memberName}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ ...infoLabelStyle, paddingTop: 10 }}>Status</td>
+                    <td style={{ ...infoValueStyle, paddingTop: 10 }}>
+                      <span style={statusBadgeStyle}>{status.toUpperCase()}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
             {/* Registration Code Box */}
             <div style={codeBoxStyle}>
               <div style={codeLabelStyle}>YOUR REGISTRATION CODE</div>
               <div style={codeStyle}>{registrationCode}</div>
+              <div style={qrStyle}>
+                <img src="cid:qrcode" alt="QR Code" width={150} height={150} style={{ display: 'block', margin: '0 auto' }} />
+              </div>
             </div>
 
             {/* Event Details */}
@@ -179,32 +186,17 @@ const infoCardStyle: React.CSSProperties = {
   border: '1px solid #e9ecef',
 };
 
-const infoRowStyle1: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  paddingBottom: 10,
-  borderBottom: '1px solid #e9ecef',
-};
-
-const infoRowStyle2: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingTop: 10,
-};
-
 const infoLabelStyle: React.CSSProperties = {
   fontSize: 12,
   fontWeight: 600,
   color: '#0928d5',
-  minWidth: 120,
+  width: '50%',
 };
 
 const infoValueStyle: React.CSSProperties = {
   color: '#333333',
   textAlign: 'right' as const,
-  flex: 1,
+  width: '50%',
 };
 
 const statusBadgeStyle: React.CSSProperties = {
@@ -240,6 +232,11 @@ const codeStyle: React.CSSProperties = {
   letterSpacing: 2,
 };
 
+const qrStyle: React.CSSProperties = {
+  textAlign: 'center',
+  marginTop: 16,
+};
+
 const eventDetailsStyle: React.CSSProperties = {
   background: '#f0f7ff',
   borderRadius: 12,
@@ -255,11 +252,9 @@ const eventDetailsTitleStyle: React.CSSProperties = {
 };
 
 const eventDetailItemStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 12,
+  display: 'block',
   padding: '4px 0',
-  color: '#333333',  
+  color: '#333333',
 };
 
 // const buttonContainerStyle: React.CSSProperties = {
