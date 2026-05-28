@@ -1,5 +1,7 @@
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
+import QRCode from 'qrcode';
+import React from 'react';
 import { RegistrationEmail } from '@/components/emails/RegistrationEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -22,8 +24,15 @@ export async function sendRegistrationEmail(
 
   try {
     // Render the email component to HTML
-    const emailHtml = render(
-      await RegistrationEmail({
+
+    const qrBuffer = await QRCode.toBuffer(registrationCode, {
+      errorCorrectionLevel: 'H',
+      margin: 1,
+      width: 150,
+    });
+
+    const emailHtml = await render(
+      RegistrationEmail({
         memberName,
         eventName,
         eventDate,
@@ -31,14 +40,22 @@ export async function sendRegistrationEmail(
         eventLocation,
         registrationCode,
         status,
-      })
+      }) as React.ReactElement
     );
 
     const { data: emailData, error } = await resend.emails.send({
       from: `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`,
       to: [to],
       subject: `Registration Confirmed: ${eventName}`,
-      html: await emailHtml,
+      html: emailHtml,
+      attachments: [
+        {
+          filename: 'qrcode.png',
+          content: qrBuffer.toString('base64'),
+          contentType: 'image/png',
+          contentId: 'qrcode',
+        },
+      ],
     });
 
     if (error) {

@@ -443,10 +443,10 @@ export const RegistrationForm = ({
               name="is_agree"
               checked={formData.is_agree}
               onChange={handleCheckboxChange}
-              className="w-4 h-4 text-sobat-blue mt-1"
+              className="w-4 h-4 text-sobat-blue mt-1 cursor-pointer"
               required
             />
-            <label htmlFor="is_agree" className="text-sm text-gray-700 dark:text-gray-300">
+            <label htmlFor="is_agree" className="text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
               By checking this box, I acknowledge that I have read, understood, and agree to the event terms, waiver of liability, and understand the risks associated with this activity.
             </label>
           </div>
