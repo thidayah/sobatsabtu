@@ -9,11 +9,13 @@ import { Pagination } from '@/components/ui/Pagination';
 import { formatDate, formatDiff } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { useDebounce } from "@/lib/helpers";
+import { Toggle } from "@/components/ui/Toggle";
 
 interface Registration {
   id: string;
   code: string;
   status: string;
+  is_attendance: boolean;
   created_at: string;
   event: {
     id: string;
@@ -49,6 +51,7 @@ export default function RegistrationsPage() {
   const [events, setEvents] = useState<{ id: string; name: string }[]>([]);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedRegistration, setSelectedRegistration] = useState<Registration | null>(null);
+  const [updatingRegistrationId, setUpdatingRegistrationId] = useState<string | null>(null);
 
   // Fetch events for filter dropdown
   useEffect(() => {
@@ -130,6 +133,36 @@ export default function RegistrationsPage() {
     );
   };
 
+  const toggleAttendance = async (id: string, currentStatus: boolean) => {
+    setUpdatingRegistrationId(id);
+    try {
+      const response = await fetch(`/api/registrations/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_attendance: !currentStatus }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setRegistrations(prevRegistrations =>
+          prevRegistrations.map(registration =>
+            registration.id === id
+              ? { ...registration, is_attendance: !currentStatus }
+              : registration
+          )
+        );
+      } else {
+        alert(result.message || 'Failed to update member status');
+      }
+    } catch (error) {
+      console.error('Error updating member status:', error);
+      alert('Failed to update member status');
+    } finally {
+      setUpdatingRegistrationId(null);
+    }
+  };
+
   const columns = [
     {
       key: 'code',
@@ -154,19 +187,20 @@ export default function RegistrationsPage() {
       render: (item: Registration) => (
         <div>
           <p className="font-medium text-gray-900 dark:text-white">{item.event.name}</p>
+          <p className="text-xs">{formatDate(item.event.date)}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">{item.event.location}</p>
         </div>
       ),
     },
-    {
-      key: 'event_date',
-      header: 'Event Date',
-      render: (item: Registration) => (
-        <div>
-          <p className="text-sm">{formatDate(item.event.date)}</p>
-        </div>
-      ),
-    },
+    // {
+    //   key: 'event_date',
+    //   header: 'Event Date',
+    //   render: (item: Registration) => (
+    //     <div>
+    //       <p className="text-sm">{formatDate(item.event.date)}</p>
+    //     </div>
+    //   ),
+    // },
     {
       key: 'registered_at',
       header: 'Registered',
@@ -175,6 +209,17 @@ export default function RegistrationsPage() {
           <span>{getStatusBadge(item.status)}</span>
           <p className="text-sm mt-1">{formatDiff(item.created_at)}</p>
         </div>
+      ),
+    },
+    {
+      key: 'is_attendance',
+      header: 'Attendance',
+      render: (item: Registration) => (
+        <Toggle
+          onClick={() => toggleAttendance(item.id, item.is_attendance)}
+          status={item.is_attendance}
+          disabled={updatingRegistrationId === item.id}
+        />
       ),
     },
     {

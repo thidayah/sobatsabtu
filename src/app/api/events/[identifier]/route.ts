@@ -89,7 +89,7 @@ export async function PUT(
       findQuery = findQuery.eq('slug', identifier);
     }
 
-    const { data: existingEvent, error: findError } = await findQuery.single();;
+    const { data: existingEvent, error: findError } = await findQuery.single();
 
     if (findError) {
       if (findError.code === 'PGRST116') {
