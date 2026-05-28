@@ -7,6 +7,7 @@ import { Table } from '@/components/ui/Table';
 import { Pagination } from '@/components/ui/Pagination';
 import { useDebounce } from "@/lib/helpers";
 import { Select } from "@/components/ui/Select";
+import { Toggle } from "@/components/ui/Toggle";
 
 interface Member {
   id: string;
@@ -148,22 +149,11 @@ export default function MembersPage() {
       key: 'is_active',
       header: 'Untalented',
       render: (item: Member) => (
-        <button
+        <Toggle
           onClick={() => toggleMemberStatus(item.id, item.is_active)}
+          status={item.is_active}
           disabled={updatingMemberId === item.id}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${item.is_active ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
-            } ${updatingMemberId === item.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-        >
-          <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${item.is_active ? 'translate-x-6' : 'translate-x-1'
-              }`}
-          />
-          {updatingMemberId === item.id && (
-            <span className="absolute inset-0 flex items-center justify-center">
-              <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            </span>
-          )}
-        </button>
+        />
       ),
     },
     {
