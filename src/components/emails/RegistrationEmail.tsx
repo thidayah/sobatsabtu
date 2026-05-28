@@ -234,7 +234,7 @@ const codeStyle: React.CSSProperties = {
 
 const qrStyle: React.CSSProperties = {
   textAlign: 'center',
-  marginTop: 16,
+  marginTop: 12,
 };
 
 const eventDetailsStyle: React.CSSProperties = {
