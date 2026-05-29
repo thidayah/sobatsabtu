@@ -29,9 +29,9 @@ export default function DashboardLayout({
   useEffect(() => {
     // Check authentication on client-side only
     const authenticated = isAuthenticated();
-    
+
     setIsAuthenticatedState(authenticated);
-    
+
     if (!authenticated) {
       router.push('/admin');
     } else {
@@ -61,13 +61,12 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Navbar />
-      
+
       <div className="flex pt-28 min-h-screen">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0 top-36 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 ${
-            isSidebarOpen ? 'w-64' : 'w-20'
-          }`}
+          className={`fixed left-0 top-36 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'
+            }`}
         >
           <div className="flex flex-col h-[90%]">
             <div className="p-4 border-b border-t border-gray-200 dark:border-gray-800">
@@ -89,11 +88,10 @@ export default function DashboardLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-2.5 transition-colors ${
-                    pathname === item.href
-                      ? 'bg-sobat-blue/10 text-sobat-blue dark:bg-sobat-yellow/10 dark:text-sobat-yellow'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-2.5 transition-colors ${pathname === item.href
+                    ? 'bg-sobat-blue/10 text-sobat-blue dark:bg-sobat-yellow/10 dark:text-sobat-yellow'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
                 >
                   <Icon icon={item.icon} width="20" height="20" />
                   {isSidebarOpen && <span className="text-sm font-medium">{item.label}</span>}
@@ -117,7 +115,7 @@ export default function DashboardLayout({
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className="fixed mt-22 z-20 size-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-          style={{ 
+          style={{
             left: isSidebarOpen ? 'calc(16rem - 12px)' : 'calc(5rem - 12px)',
             top: 'calc(4rem + 12px)'
           }}
@@ -131,16 +129,15 @@ export default function DashboardLayout({
 
         {/* Main Content */}
         <main
-          className={`flex-1 transition-all duration-300 ${
-            isSidebarOpen ? 'ml-64' : 'ml-20'
-          }`}
+          className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-20'
+            }`}
         >
           <div className="p-6 pb-40">
             {children}
           </div>
         </main>
       </div>
-      
+
       {/* <Footer /> */}
     </div>
   );

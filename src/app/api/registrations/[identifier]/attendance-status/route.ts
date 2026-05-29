@@ -1,23 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase';
-import { checkUUID } from "@/lib/utils";
 
-// PUT method untuk update registrations (is_attendance)
-export async function PUT(
+export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ identifier: string }> }
 ) {
   try {
     const { identifier } = await params;
-    const body = await request.json();
 
-    // Validate registration Id/Code
+    // Validate registration Code
     if (!identifier) {
       return NextResponse.json(
         {
           success: false,
-          message: 'Registration Id or Code is required',
-          error: 'Missing registration id/code',
+          message: 'Registration Code is required',
+          error: 'Missing registration code',
         },
         { status: 400 }
       );
@@ -26,16 +23,17 @@ export async function PUT(
     // Check if registration exists
     let findQuery = supabaseServer
       .from('ss_registrations')
-      .select('id, code, is_attendance');
+      .select(`
+        id, code, is_attendance,
+        event:ss_events (name, date, is_active),
+        member:ss_members (full_name, email, ig_username, gender)
+      `,
+        { count: 'exact', head: false }
+      );
 
-    // Check if identifier is UUID or slug
-    if (checkUUID(identifier)) {
-      findQuery = findQuery.eq('id', identifier);
-    } else {
-      findQuery = findQuery.eq('code', identifier);
-    }
+    findQuery = findQuery.eq('code', identifier);
 
-    const { data: existingRegistration, error: findError } = await findQuery.single();;
+    const { data: existingRegistration, error: findError } = await findQuery.single<any>();
 
     if (findError) {
       if (findError.code === 'PGRST116') {
@@ -60,34 +58,38 @@ export async function PUT(
       );
     }
 
-    const updateData: any = { updated_at: new Date().toISOString() };
-    if (body.is_attendance !== undefined) updateData.is_attendance = body.is_attendance;
-
-    // Update member
-    const { data: updatedRegistration, error: updateError } = await supabaseServer
-      .from('ss_registrations')
-      .update(updateData)
-      .eq('id', existingRegistration.id)
-      .select()
-      .single();
-
-    if (updateError) {
-      console.error('Error updating registration:', updateError);
+    // Validate event is active
+    if (!existingRegistration.event.is_active) {
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to update registration',
-          error: updateError.message,
+          message: 'Event is not active',
+          error: 'This event is currently inactive and cannot accept attended',
         },
-        { status: 500 }
+        { status: 400 }
+      );
+    }
+
+    // Validate event date is not passed
+    const eventDate = new Date(`${existingRegistration.event.date}T23:59:59.000Z`); // Set time to end of day for comparison
+    const currentDate = new Date();    
+
+    if (eventDate < currentDate) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Event has already passed',
+          error: 'Cannot mark attendance for past events',
+        },
+        { status: 400 }
       );
     }
 
     // Return success response
     return NextResponse.json({
       success: true,
-      message: `Member ${updatedRegistration.is_attendance ? 'marked as attended' : 'marked as not attended'} successfully`,
-      data: updatedRegistration,
+      message: `Member ${existingRegistration.is_attendance ? 'marked as attended' : 'marked as not attended'}`,
+      data: existingRegistration,
     });
   } catch (error) {
     console.error('Unexpected error:', error);
