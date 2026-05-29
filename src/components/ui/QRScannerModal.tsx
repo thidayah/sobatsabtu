@@ -253,7 +253,7 @@ export const QRScannerModal = ({ isOpen, onClose }: QRScannerModalProps) => {
           {/* Scanning - show camera preview */}
           {scanning && (
             <div>
-              <div id={scannerContainerId} className="w-full min-h-[300px] bg-gray-100 dark:bg-gray-800" />
+              <div id={scannerContainerId} className="w-full min-h-[150px] sm:min-h-[200px] md:min-h-[300px] bg-gray-100 dark:bg-gray-800" />
               <button
                 onClick={stopScanner}
                 className="mt-4 text-sm text-red-600 hover:text-red-700 dark:text-red-400 cursor-pointer"

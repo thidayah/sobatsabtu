@@ -320,8 +320,6 @@ export default function DashboardPage() {
             </div>
             {/* <Icon icon="lucide:qr-code" width="24" height="24" className="text-gray-400" /> */}
             <div>
-
-
               <button
                 onClick={() => setIsScannerOpen(true)}
                 className="flex items-center gap-3 px-6 py-3 bg-sobat-blue text-white hover:bg-blue-600 transition-colors cursor-pointer rounded-full"

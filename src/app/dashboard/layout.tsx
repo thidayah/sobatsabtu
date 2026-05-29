@@ -129,14 +129,41 @@ export default function DashboardLayout({
 
         {/* Main Content */}
         <main
-          className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-20'
+          className={`flex-1 min-w-0 transition-all duration-300 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-20'
             }`}
         >
           <div className="p-6 pb-40">
             {children}
           </div>
         </main>
+
       </div>
+
+      {/* Bottom Menu - Mobile only */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-around">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center gap-1 px-3 py-3 flex-1 transition-colors ${pathname === item.href
+                ? 'text-sobat-blue dark:text-sobat-yellow bg-sobat-blue/10 dark:bg-sobat-yellow/10'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+            >
+              <Icon icon={item.icon} width="20" height="20" />
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </Link>
+          ))}
+          <button
+            onClick={handleLogout}
+            className="flex flex-col items-center gap-1 px-3 py-3 flex-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
+          >
+            <Icon icon="lucide:log-out" width="20" height="20" />
+            <span className="text-[10px] font-medium">Logout</span>
+          </button>
+        </div>
+      </nav>
 
       {/* <Footer /> */}
     </div>
