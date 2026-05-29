@@ -16,6 +16,7 @@ import {
   ResponsiveContainer,
   LabelList,
 } from 'recharts';
+import { QRScannerModal } from "@/components/ui/QRScannerModal";
 
 interface DashboardStats {
   total_members: number;
@@ -93,6 +94,8 @@ export default function DashboardPage() {
   const [chartLoading, setChartLoading] = useState(true);
   const [filterYear, setFilterYear] = useState(new Date().getFullYear());
   const [filterMonth, setFilterMonth] = useState('');
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [scanning, setScanning] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -427,6 +430,30 @@ export default function DashboardPage() {
                 </p>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Scan QR Code Section - BARU */}
+      <div className="mb-8">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+          <div className="flex items-center justify-between p-6 ">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Scan QR Code for Attendance
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Scan participant's QR code to mark attendance
+              </p>
+            </div>
+            {/* <Icon icon="lucide:qr-code" width="24" height="24" className="text-gray-400" /> */}
+            <button
+              onClick={() => setIsScannerOpen(true)}
+              className="flex items-center gap-3 px-6 py-3 bg-sobat-blue text-white hover:bg-blue-600 transition-colors cursor-pointer rounded-full"
+            >
+              <Icon icon="lucide:qr-code" width="20" height="20" />
+              Open Scanner
+            </button>
           </div>
         </div>
       </div>
@@ -778,6 +805,15 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* QR Scanner Modal */}
+      <QRScannerModal
+        isOpen={isScannerOpen}
+        onClose={() => {
+          setIsScannerOpen(false);
+          setScanning(false);
+        }}
+      />
     </div>
   );
 }
