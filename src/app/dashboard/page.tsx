@@ -306,6 +306,34 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {/* Scan QR Code Section - New */}
+      <div className="mb-8">
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+          <div className="flex sm:items-center flex-col sm:flex-row sm:justify-between gap-4 p-6 ">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Scan QR Code for Attendance
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Scan participant's QR code to mark attendance
+              </p>
+            </div>
+            {/* <Icon icon="lucide:qr-code" width="24" height="24" className="text-gray-400" /> */}
+            <div>
+
+
+              <button
+                onClick={() => setIsScannerOpen(true)}
+                className="flex items-center gap-3 px-6 py-3 bg-sobat-blue text-white hover:bg-blue-600 transition-colors cursor-pointer rounded-full"
+              >
+                <Icon icon="lucide:qr-code" width="20" height="20" />
+                Open Scanner
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {statCards.map((card, index) => (
@@ -430,30 +458,6 @@ export default function DashboardPage() {
                 </p>
               </div>
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Scan QR Code Section - BARU */}
-      <div className="mb-8">
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-          <div className="flex items-center justify-between p-6 ">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Scan QR Code for Attendance
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Scan participant's QR code to mark attendance
-              </p>
-            </div>
-            {/* <Icon icon="lucide:qr-code" width="24" height="24" className="text-gray-400" /> */}
-            <button
-              onClick={() => setIsScannerOpen(true)}
-              className="flex items-center gap-3 px-6 py-3 bg-sobat-blue text-white hover:bg-blue-600 transition-colors cursor-pointer rounded-full"
-            >
-              <Icon icon="lucide:qr-code" width="20" height="20" />
-              Open Scanner
-            </button>
           </div>
         </div>
       </div>
