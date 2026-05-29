@@ -65,13 +65,13 @@ export default function DashboardLayout({
       <div className="flex pt-28 min-h-screen">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0 top-36 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'
+          className={`hidden sm:block fixed left-0 top-36 h-[calc(100vh-4rem)] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'
             }`}
         >
           <div className="flex flex-col h-[90%]">
             <div className="p-4 border-b border-t border-gray-200 dark:border-gray-800">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-sobat-blue to-blue-600 flex items-center justify-center text-white font-bold">
+                <div className="w-10 h-10 rounded-full bg-linear-to-r from-sobat-blue to-blue-600 flex items-center justify-center text-white font-bold">
                   {user?.name?.charAt(0) || 'A'}
                 </div>
                 {isSidebarOpen && (
@@ -114,7 +114,7 @@ export default function DashboardLayout({
         {/* Toggle Sidebar Button */}
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="fixed mt-22 z-20 size-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+          className="hidden sm:flex fixed mt-22 z-20 size-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
           style={{
             left: isSidebarOpen ? 'calc(16rem - 12px)' : 'calc(5rem - 12px)',
             top: 'calc(4rem + 12px)'
@@ -129,14 +129,41 @@ export default function DashboardLayout({
 
         {/* Main Content */}
         <main
-          className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-20'
+          className={`flex-1 min-w-0 transition-all duration-300 ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-20'
             }`}
         >
           <div className="p-6 pb-40">
             {children}
           </div>
         </main>
+
       </div>
+
+      {/* Bottom Menu - Mobile only */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-around">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center gap-1 px-3 py-3 flex-1 transition-colors ${pathname === item.href
+                ? 'text-sobat-blue dark:text-sobat-yellow bg-sobat-blue/10 dark:bg-sobat-yellow/10'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+            >
+              <Icon icon={item.icon} width="20" height="20" />
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </Link>
+          ))}
+          <button
+            onClick={handleLogout}
+            className="flex flex-col items-center gap-1 px-3 py-3 flex-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
+          >
+            <Icon icon="lucide:log-out" width="20" height="20" />
+            <span className="text-[10px] font-medium">Logout</span>
+          </button>
+        </div>
+      </nav>
 
       {/* <Footer /> */}
     </div>
