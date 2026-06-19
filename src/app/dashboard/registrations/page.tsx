@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { Pagination } from '@/components/ui/Pagination';
-import { formatDate, formatDiff } from "@/lib/utils";
+import { formatDate, formatDiff, exportToCSV } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { useDebounce } from "@/lib/helpers";
 import { Toggle } from "@/components/ui/Toggle";
@@ -107,6 +107,24 @@ export default function RegistrationsPage() {
   const debouncedSearch = useDebounce(filters.search, 500); // 500ms delay
 
   // useEffect(() => handleSearch(), [debouncedSearch]);
+
+  const handleExport = () => {
+    const headers = ['Member Name', 'Email', 'Instagram', 'Gender', 'Event', 'Event Date', 'Registered At'];
+    const rows = registrations.map((r) => [
+      // r.code,
+      r.member.full_name,
+      r.member.email,
+      r.member.ig_username ? `@${r.member.ig_username}` : '',
+      r.member.gender,
+      r.event.name,
+      new Date(r.event.date).toLocaleDateString(),
+      // r.event.location,
+      // r.status,
+      // r.is_attendance ? 'Yes' : 'No',
+      new Date(r.created_at).toLocaleString(),
+    ]);
+    exportToCSV('Registrations List', headers, rows);
+  };
 
   const handleReset = () => {
     setFilters({
@@ -245,6 +263,9 @@ export default function RegistrationsPage() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Registrations</h1>
+        <Button onClick={handleExport} variant="outline" icon="lucide:download">
+          Export CSV
+        </Button>
       </div>
 
       {/* Filters */}
