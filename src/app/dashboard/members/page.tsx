@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/Button';
 import { Table } from '@/components/ui/Table';
 import { Pagination } from '@/components/ui/Pagination';
 import { useDebounce } from "@/lib/helpers";
+import { exportToCSV } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { Toggle } from "@/components/ui/Toggle";
+import { getAuth } from "@/lib/auth";
 
 interface Member {
   id: string;
@@ -21,6 +23,7 @@ interface Member {
 }
 
 export default function MembersPage() {
+  const [user, setUser] = useState<{ email: string } | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({
@@ -83,7 +86,16 @@ export default function MembersPage() {
 
   useEffect(() => handleSearch(), [debouncedSearch]);
 
+  useEffect(() => {
+    const auth = getAuth();
+    setUser(auth ? { email: auth.email } : null);
+  }, []);
+
   const toggleMemberStatus = async (memberId: string, currentStatus: boolean) => {
+    if (user?.email !== 'admin@sobatsabtu.com') {
+      alert('You are not authorized, just Superadmin can do this action.');
+      return;
+    }
     setUpdatingMemberId(memberId);
     try {
       const response = await fetch(`/api/members/${memberId}`, {
@@ -179,10 +191,27 @@ export default function MembersPage() {
     { value: 'asc', label: 'Ascending' },
   ]
 
+  const handleExport = () => {
+    const headers = ['Full Name', 'Email', 'Instagram', 'Gender', 'Events Joined', 'Untalented', 'Registered At'];
+    const rows = members.map((m) => [
+      m.full_name,
+      m.email,
+      m.ig_username ? `@${m.ig_username}` : '',
+      m.gender,
+      m.total_events,
+      m.is_active ? 'Yes' : 'No',
+      new Date(m.created_at).toLocaleString(),
+    ]);
+    exportToCSV('Members List', headers, rows);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Members</h1>
+        <Button onClick={handleExport} variant="outline" icon="lucide:download">
+          Export CSV
+        </Button>
       </div>
 
       {/* Filters */}
