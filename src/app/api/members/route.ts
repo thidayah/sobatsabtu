@@ -89,6 +89,7 @@ export async function GET(request: NextRequest) {
       .from('ss_registrations')
       .select(`
         member_id,
+        is_attendance,
         event:ss_events!inner (*)
       `)
       .in('member_id', memberIds)
@@ -109,20 +110,24 @@ export async function GET(request: NextRequest) {
       // Continue without event counts if error occurs
     }
 
-    // Calculate total events per member
+    // Calculate total events and attendance per member
     const eventCountMap = new Map<string, number>();
+    const attendanceCountMap = new Map<string, number>();
     if (registrations) {
       registrations.forEach(reg => {
         const memberId = reg.member_id;
-        const currentCount = eventCountMap.get(memberId) || 0;
-        eventCountMap.set(memberId, currentCount + 1);
+        eventCountMap.set(memberId, (eventCountMap.get(memberId) || 0) + 1);
+        if (reg.is_attendance) {
+          attendanceCountMap.set(memberId, (attendanceCountMap.get(memberId) || 0) + 1);
+        }
       });
     }
 
-    // Add total_events to each member
+    // Add total_events and total_events_attendance to each member
     let membersWithEventCount = members.map(member => ({
       ...member,
       total_events: eventCountMap.get(member.id) || 0,
+      total_events_attendance: attendanceCountMap.get(member.id) || 0,
     }));
 
     // Apply sorting based on sort_by

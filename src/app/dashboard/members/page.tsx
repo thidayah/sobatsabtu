@@ -19,6 +19,7 @@ interface Member {
   gender: string;
   is_active: boolean;
   total_events: number;
+  total_events_attendance: number;
   created_at: string;
 }
 
@@ -147,7 +148,17 @@ export default function MembersPage() {
         </div>
       ),
     },
-    { key: 'total_events', header: 'Events Joined' },
+    {
+      key: 'total_events',
+      header: 'Events',
+      render: (item: Member) => (
+        <div>
+
+          <p className="text-xs text-gray-500 dark:text-gray-400">Registered: {item.total_events}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Attended: {item.total_events_attendance}</p>
+        </div>
+      ),
+    },
     // {
     //   key: 'is_active',
     //   header: 'Status',
@@ -205,6 +216,19 @@ export default function MembersPage() {
     exportToCSV('Members List', headers, rows);
   };
 
+  const handleReset = () => {
+    setFilters({
+      search: '',
+      is_active: '',
+      start_date: '',
+      end_date: '',
+      sort_by: '',
+      sort_order: '',
+    });
+    setPagination(prev => ({ ...prev, page: 1 }));
+    // setTimeout(() => fetchMembers(), 100);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -240,7 +264,6 @@ export default function MembersPage() {
             value={filters.end_date}
             onChange={(e) => setFilters({ ...filters, end_date: e.target.value })}
           />
-
           <Select
             options={sortByOptions}
             value={filters.sort_by}
@@ -253,6 +276,9 @@ export default function MembersPage() {
           />
         </div>
         <div className="mt-4 flex justify-end">
+          <Button onClick={handleReset} variant="outline" icon="lucide:refresh-ccw">
+            Reset
+          </Button>
           <Button onClick={handleSearch} icon="lucide:search">
             Apply Filters
           </Button>

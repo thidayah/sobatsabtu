@@ -144,7 +144,7 @@ export default function DashboardPage() {
       try {
         const today = new Date().toISOString().split('T')[0];
         const response = await fetch(
-          `/api/events?is_active=true&sort_by=date&sort_order=desc&limit=3&date_gte=${today}`
+          `/api/events?sort_by=date&sort_order=desc&limit=3&date_gte=${today}`
         );
         const result = await response.json();
         if (result.success) {

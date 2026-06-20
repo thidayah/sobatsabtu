@@ -69,15 +69,17 @@ export default function RegistrationsPage() {
     fetchEvents();
   }, []);
 
-  const fetchRegistrations = async () => {
+  const fetchRegistrations = async (overrides?: { filters?: typeof filters; page?: number }) => {
+    const activeFilters = overrides?.filters ?? filters;
+    const activePage = overrides?.page ?? pagination.page;
     setLoading(true);
     try {
       const params = new URLSearchParams({
-        page: pagination.page.toString(),
+        page: activePage.toString(),
         limit: pagination.limit.toString(),
-        ...(filters.search && { search: filters.search }),
-        ...(filters.event_id && { event_id: filters.event_id }),
-        ...(filters.status && { status: filters.status }),
+        ...(activeFilters.search && { search: activeFilters.search }),
+        ...(activeFilters.event_id && { event_id: activeFilters.event_id }),
+        ...(activeFilters.status && { status: activeFilters.status }),
       });
 
       const response = await fetch(`/api/registrations?${params}`);
@@ -127,13 +129,10 @@ export default function RegistrationsPage() {
   };
 
   const handleReset = () => {
-    setFilters({
-      search: '',
-      event_id: '',
-      status: '',
-    });
+    const resetFilters = { search: '', event_id: '', status: '' };
+    setFilters(resetFilters);
     setPagination(prev => ({ ...prev, page: 1 }));
-    setTimeout(() => fetchRegistrations(), 100);
+    fetchRegistrations({ filters: resetFilters, page: 1 });
   };
 
   const getStatusBadge = (status: string) => {
