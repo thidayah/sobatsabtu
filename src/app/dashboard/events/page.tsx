@@ -24,6 +24,7 @@ interface Event {
   external_url: string;
   current_participants: number;
   max_participants: number;
+  attended_participants: number;
   type: string;
   is_active: boolean;
 }
@@ -129,6 +130,11 @@ export default function EventsPage() {
       key: 'participants',
       header: 'Participants',
       render: (item: Event) => `${item.current_participants}/${item.max_participants}`,
+    },
+    {
+      key: 'attended_participants',
+      header: 'Attended',
+      render: (item: Event) => item.attended_participants ?? 0,
     },
     {
       key: 'is_active',

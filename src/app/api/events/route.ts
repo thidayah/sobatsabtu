@@ -58,6 +58,27 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Fetch attended_participants count per event
+    let attendedMap = new Map<string, number>();
+    if (events && events.length > 0) {
+      const eventIds = events.map(e => e.id);
+      const { data: attendances } = await supabaseServer
+        .from('ss_registrations')
+        .select('event_id')
+        .in('event_id', eventIds)
+        .eq('is_attendance', true);
+      if (attendances) {
+        attendances.forEach(r => {
+          attendedMap.set(r.event_id, (attendedMap.get(r.event_id) || 0) + 1);
+        });
+      }
+    }
+
+    const eventsWithAttendance = (events || []).map(e => ({
+      ...e,
+      attended_participants: attendedMap.get(e.id) || 0,
+    }));
+
     // Calculate pagination metadata
     const total = count || 0;
     const total_pages = Math.ceil(total / validLimit);
@@ -69,7 +90,7 @@ export async function GET(request: NextRequest) {
       success: true,
       message: 'All events list successful',
       data: {
-        items: events,
+        items: eventsWithAttendance,
         pagination: {
           page: validPage,
           limit: validLimit,
