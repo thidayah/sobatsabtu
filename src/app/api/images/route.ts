@@ -3,7 +3,7 @@ import { supabaseServer } from '@/lib/supabase';
 
 const BUCKET = 'ss_images';
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
-const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
 
 export async function POST(request: NextRequest) {
   try {
