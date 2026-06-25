@@ -262,6 +262,8 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
             </Button>
           </div>
 
+          <p className="text-xs text-gray-400">Max file size: 2 MB</p>
+
           {uploadError && (
             <p className="text-xs text-red-500">{uploadError}</p>
           )}
