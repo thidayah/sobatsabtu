@@ -38,28 +38,35 @@ const slides = [
   {
     id: 1,
     type: 'image',
-    url: "/images/estafet.jpg",
-    title: 'Estafet Arcamanik',
-    description: 'This year`s special jersey from Dyno for the Arcamanik relay'
+    url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/keptbdg.jpg",
+    title: 'Hello Kept',
+    description: 'Saturday Morning Run sponsored by Kept — gear up, show up, and run together'
   },
   {
     id: 2,
     type: 'image',
-    url: "/images/syd.jpg",
+    url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/estafet.jpg",
+    title: 'Estafet Arcamanik',
+    description: 'This year`s special jersey from Dyno for the Arcamanik relay'
+  },
+  // {
+  //   id: 3,
+  //   type: 'image',
+  //   url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/ritw.jpg",
+  //   title: 'Run in the Wood',
+  //   description: 'This isn`t just a run, this is patience in motion, this is Sahur on the Trail'
+  // },
+  {
+    id: 4,
+    type: 'image',
+    url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/syd.jpg",
     title: 'Share Your Distance',
     description: 'It`s not about who is the fastest, but about running together, encouraging each other and sharing the distance.'
   },
   {
-    id: 3,
+    id: 5,
     type: 'image',
-    url: "/images/ritw.jpg",
-    title: 'Run in the Wood',
-    description: 'This isn`t just a run, this is patience in motion, this is Sahur on the Trail'
-  },
-  {
-    id: 4,
-    type: 'image',
-    url: "/images/huricane.jpg",
+    url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/huricane.jpg",
     title: 'Huricane Collaborate',
     description: 'Weekend miles hit diffrent when your running with the right crew and the right gear'
   }
