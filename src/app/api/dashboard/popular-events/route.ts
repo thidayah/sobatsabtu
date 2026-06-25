@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     const eventIds = events.map(e => e.id);
     const { data: registrations, error: regError } = await supabaseServer
       .from('ss_registrations')
-      .select('event_id')
+      .select('event_id, is_attendance')
       .in('event_id', eventIds)
       .eq('status', 'confirmed');
 
@@ -69,11 +69,14 @@ export async function GET(request: NextRequest) {
       console.error('Error fetching registrations:', regError);
     }
 
-    // Count registrations per event
+    // Count registrations and attendance per event
     const registrationCountMap = new Map();
+    const attendanceCountMap = new Map();
     registrations?.forEach(reg => {
-      const count = registrationCountMap.get(reg.event_id) || 0;
-      registrationCountMap.set(reg.event_id, count + 1);
+      registrationCountMap.set(reg.event_id, (registrationCountMap.get(reg.event_id) || 0) + 1);
+      if (reg.is_attendance) {
+        attendanceCountMap.set(reg.event_id, (attendanceCountMap.get(reg.event_id) || 0) + 1);
+      }
     });
 
     // Calculate popularity and sort
@@ -85,6 +88,7 @@ export async function GET(request: NextRequest) {
       max_participants: event.max_participants,
       current_participants: event.current_participants,
       total_registrations: registrationCountMap.get(event.id) || 0,
+      attended_participants: attendanceCountMap.get(event.id) || 0,
       fill_rate: event.max_participants > 0 ? ((registrationCountMap.get(event.id) || 0) / event.max_participants) * 100 : 0,
     }));
 

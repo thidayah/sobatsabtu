@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     if (eventIds.length > 0) {
       const { data: registrations, error: regError } = await supabaseServer
         .from('ss_registrations')
-        .select('event_id')
+        .select('event_id, is_attendance')
         .in('event_id', eventIds)
         .eq('status', 'confirmed');
 
@@ -44,16 +44,20 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Count registrations per event
+    // Count registrations and attendance per event
     const registrationCountMap = new Map();
+    const attendanceCountMap = new Map();
     registrationsData.forEach(reg => {
-      const count = registrationCountMap.get(reg.event_id) || 0;
-      registrationCountMap.set(reg.event_id, count + 1);
+      registrationCountMap.set(reg.event_id, (registrationCountMap.get(reg.event_id) || 0) + 1);
+      if (reg.is_attendance) {
+        attendanceCountMap.set(reg.event_id, (attendanceCountMap.get(reg.event_id) || 0) + 1);
+      }
     });
 
     // Initialize monthly arrays
     const monthlyTotalQuota = Array(12).fill(0);
     const monthlyTotalParticipants = Array(12).fill(0);
+    const monthlyTotalAttended = Array(12).fill(0);
     const monthNames = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -64,6 +68,7 @@ export async function GET(request: NextRequest) {
       const month = new Date(event.date).getMonth();
       monthlyTotalQuota[month] += event.max_participants;
       monthlyTotalParticipants[month] += registrationCountMap.get(event.id) || 0;
+      monthlyTotalAttended[month] += attendanceCountMap.get(event.id) || 0;
     });
 
     // Format data for line chart
@@ -71,6 +76,7 @@ export async function GET(request: NextRequest) {
       month: name,
       quota: monthlyTotalQuota[index],
       participants: monthlyTotalParticipants[index],
+      attended: monthlyTotalAttended[index],
     }));
 
     return NextResponse.json({
@@ -82,6 +88,7 @@ export async function GET(request: NextRequest) {
         total_events: events?.length || 0,
         total_quota: monthlyTotalQuota.reduce((a, b) => a + b, 0),
         total_participants: monthlyTotalParticipants.reduce((a, b) => a + b, 0),
+        total_attended: monthlyTotalAttended.reduce((a, b) => a + b, 0),
       },
     });
   } catch (error) {

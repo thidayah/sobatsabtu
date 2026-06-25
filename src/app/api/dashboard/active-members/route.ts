@@ -12,6 +12,7 @@ interface Member {
 interface Registrations {
   member_id: string;
   status: string;
+  is_attendance: boolean;
   member: Member | null;
 }
 
@@ -50,6 +51,7 @@ export async function GET(request: NextRequest) {
       .select(`
         member_id,
         status,
+        is_attendance,
         member:ss_members (
           id,
           full_name,
@@ -100,15 +102,17 @@ export async function GET(request: NextRequest) {
         email: member.email,
         ig_username: member.ig_username,
         is_active: member.is_active, // aka: is_untalented
-        total_events: 0,
+        total_registered: 0,
+        total_attended: 0,
       };
-      currentCount.total_events++;
+      currentCount.total_registered++;
+      if (reg.is_attendance) currentCount.total_attended++;
       memberParticipationMap.set(reg.member_id, currentCount);
     });
 
-    // Convert to array and sort by total_events (descending)
+    // Convert to array and sort by total_registered (descending)
     const activeMembers = Array.from(memberParticipationMap.values());
-    activeMembers.sort((a, b) => b.total_events - a.total_events);
+    activeMembers.sort((a, b) => b.total_registered - a.total_registered);
 
     // Return top N members
     const topMembers = activeMembers.slice(0, limit);

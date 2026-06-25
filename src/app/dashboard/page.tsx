@@ -54,10 +54,11 @@ interface MemberChartData {
 
 interface EventsChartData {
   year: number;
-  chart_data: { month: string; quota: number; participants: number }[];
+  chart_data: { month: string; quota: number; participants: number; attended: number }[];
   total_events: number;
   total_quota: number;
   total_participants: number;
+  total_attended: number;
 }
 
 interface PopularEvent {
@@ -68,6 +69,7 @@ interface PopularEvent {
   max_participants: number;
   current_participants: number;
   total_registrations: number;
+  attended_participants: number;
   fill_rate: number;
 }
 
@@ -76,7 +78,8 @@ interface ActiveMember {
   full_name: string;
   email: string;
   ig_username: string;
-  total_events: number;
+  total_registered: number;
+  total_attended: number;
   is_active: number;
 }
 
@@ -612,7 +615,7 @@ export default function DashboardPage() {
                 Events Performance
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Quota vs Participants comparison for {filterYear}
+                Monthly breakdown of quota, registered participants, and actual attendance for {filterYear}
               </p>
             </div>
             <Icon icon="lucide:trending-up" width="20" height="20" className="text-gray-400" />
@@ -630,14 +633,14 @@ export default function DashboardPage() {
                   <YAxis stroke="#6b7280" fontSize={12} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend />
-                  {/* <Line
+                  <Line
                     type="monotone"
                     dataKey="quota"
                     name="Quota"
                     stroke="#bedbff"
                     strokeWidth={2}
                     dot={{ fill: '#bedbff', strokeWidth: 2 }}
-                  /> */}
+                  />
                   <Line
                     type="monotone"
                     dataKey="participants"
@@ -645,6 +648,14 @@ export default function DashboardPage() {
                     stroke="#2a7fff"
                     strokeWidth={2}
                     dot={{ fill: '#2a7fff', strokeWidth: 2 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="attended"
+                    name="Attended"
+                    stroke="#16a34a"
+                    strokeWidth={2}
+                    dot={{ fill: '#16a34a', strokeWidth: 2 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -657,7 +668,7 @@ export default function DashboardPage() {
             )}
           </div>
           {eventsChart && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-3 gap-4">
+            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-4 gap-4">
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Total Events</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -674,6 +685,12 @@ export default function DashboardPage() {
                 <p className="text-xs text-gray-500 dark:text-gray-400">Total Participants</p>
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {eventsChart.total_participants.toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Total Attended</p>
+                <p className="text-lg font-semibold text-green-600 dark:text-green-400">
+                  {eventsChart.total_attended?.toLocaleString() ?? 0}
                 </p>
               </div>
             </div>
@@ -726,11 +743,16 @@ export default function DashboardPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900 dark:text-white">
-                        {event.total_registrations}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">registrations</p>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">{event.total_registrations}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wide">registered</p>
+                      </div>
+                      <div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-green-600 dark:text-green-400">{event.attended_participants ?? 0}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wide">attended</p>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -788,11 +810,16 @@ export default function DashboardPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900 dark:text-white">
-                        {member.total_events}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">events joined</p>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">{member.total_registered}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wide">registered</p>
+                      </div>
+                      <div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-green-600 dark:text-green-400">{member.total_attended}</p>
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wide">attended</p>
+                      </div>
                     </div>
                   </div>
                 ))}
