@@ -23,9 +23,9 @@ export async function GET(request: NextRequest) {
     let query = supabaseServer
       .from('ss_registrations')
       .select(`
-        *,
-        event:ss_events (*),
-        member:ss_members (*)
+        id, code, status, is_attendance, created_at,
+        event:ss_events (id, name, date, location),
+        member:ss_members (id, full_name, email, ig_username, gender)
       `, { count: 'exact', head: false });
 
     // Filter by event_id if provided
