@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { unstable_cache } from 'next/cache';
 import { supabaseServer } from '@/lib/supabase';
 
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
-    const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString());
-
+const getEventsChartData = unstable_cache(
+  async (year: number) => {
     // Get all events for the specified year
     const startDate = `${year}-01-01`;
     const endDate = `${year}-12-31`;
@@ -17,20 +15,12 @@ export async function GET(request: NextRequest) {
       .lte('date', endDate);
 
     if (eventsError) {
-      console.error('Error fetching events:', eventsError);
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Failed to fetch events',
-          error: eventsError.message,
-        },
-        { status: 500 }
-      );
+      throw new Error(eventsError.message);
     }
 
     // Get all registrations for events in the specified year
     const eventIds = events?.map(e => e.id) || [];
-    
+
     let registrationsData: any[] = [];
     if (eventIds.length > 0) {
       const { data: registrations, error: regError } = await supabaseServer
@@ -79,17 +69,30 @@ export async function GET(request: NextRequest) {
       attended: monthlyTotalAttended[index],
     }));
 
+    return {
+      year,
+      chart_data: chartData,
+      total_events: events?.length || 0,
+      total_quota: monthlyTotalQuota.reduce((a, b) => a + b, 0),
+      total_participants: monthlyTotalParticipants.reduce((a, b) => a + b, 0),
+      total_attended: monthlyTotalAttended.reduce((a, b) => a + b, 0),
+    };
+  },
+  ['dashboard-events-chart'],
+  { revalidate: 300 }
+);
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString());
+
+    const data = await getEventsChartData(year);
+
     return NextResponse.json({
       success: true,
       message: 'Events per month retrieved successfully',
-      data: {
-        year,
-        chart_data: chartData,
-        total_events: events?.length || 0,
-        total_quota: monthlyTotalQuota.reduce((a, b) => a + b, 0),
-        total_participants: monthlyTotalParticipants.reduce((a, b) => a + b, 0),
-        total_attended: monthlyTotalAttended.reduce((a, b) => a + b, 0),
-      },
+      data,
     });
   } catch (error) {
     console.error('Unexpected error:', error);

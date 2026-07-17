@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { unstable_cache } from 'next/cache';
 import { supabaseServer } from '@/lib/supabase';
 
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
-    const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString());
-
+const getMembersChartData = unstable_cache(
+  async (year: number) => {
     // Get date range for the specified year
     const startDate = `${year}-01-01`;
     const endDate = `${year}-12-31`;
@@ -18,15 +16,7 @@ export async function GET(request: NextRequest) {
       .lte('created_at', endDate);
 
     if (error) {
-      console.error('Error fetching members:', error);
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Failed to fetch members data',
-          error: error.message,
-        },
-        { status: 500 }
-      );
+      throw new Error(error.message);
     }
 
     // Initialize months array (Jan = 0, Dec = 11)
@@ -64,19 +54,32 @@ export async function GET(request: NextRequest) {
       }
     });
 
+    return {
+      year,
+      chart_data: chartData,
+      total_new_members: totalNewMembers,
+      average_per_month: Math.round(averageNewMembers * 10) / 10,
+      highest_month: {
+        month: monthNames[maxMonthIndex],
+        count: maxMonthValue,
+      },
+    };
+  },
+  ['dashboard-members-chart'],
+  { revalidate: 300 }
+);
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString());
+
+    const data = await getMembersChartData(year);
+
     return NextResponse.json({
       success: true,
       message: 'Members chart data retrieved successfully',
-      data: {
-        year,
-        chart_data: chartData,
-        total_new_members: totalNewMembers,
-        average_per_month: Math.round(averageNewMembers * 10) / 10,
-        highest_month: {
-          month: monthNames[maxMonthIndex],
-          count: maxMonthValue,
-        },
-      },
+      data,
     });
   } catch (error) {
     console.error('Unexpected error:', error);
