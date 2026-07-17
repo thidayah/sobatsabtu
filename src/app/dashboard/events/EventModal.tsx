@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
@@ -226,10 +227,13 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
 
           {formData.image_url && (
             <div className="relative w-24 aspect-9/16 border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <img
+              <Image
                 src={formData.image_url}
                 alt="Event preview"
-                className="w-full h-full object-cover"
+                fill
+                sizes="96px"
+                unoptimized
+                className="object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
               <button

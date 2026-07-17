@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
@@ -56,10 +57,12 @@ export const Collaboration = () => {
               transition={{ duration: 1, delay: index * 0.1 }}
               className="relative w-full h-full min-h-[25vh] overflow-hidden"
             >
-              <img
+              <Image
                 src={img}
                 alt="Activity background"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 768px) 33vw, 16vw"
+                className="object-cover"
               />
             </motion.div>
           ))}
