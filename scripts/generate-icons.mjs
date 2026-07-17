@@ -6,7 +6,7 @@
 // Regenerate after adding/removing icon usages:
 //   1. Update the ICONS list below (grep for icon="..." usages), or run:
 //      grep -rhoE 'icon="[a-zA-Z0-9-]+:[a-zA-Z0-9-]+"' src --include="*.tsx" | sort -u
-//   2. node scripts/generate-icons.mjs
+//   2. npm run generate-icons
 
 import { getIconData } from '@iconify/utils';
 import { writeFileSync } from 'fs';
