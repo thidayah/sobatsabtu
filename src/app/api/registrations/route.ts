@@ -426,16 +426,20 @@ export async function POST(request: NextRequest) {
     }
 
     // 5. Update event current_participants
-    const { error: updateEventError } = await supabaseServer
+    const { data: updatedEvent, error: updateEventError } = await supabaseServer
       .from('ss_events')
       .update({
         current_participants: event.current_participants + 1,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', body.event_id);
+      .eq('id', body.event_id)
+      .select()
+      .single();
 
     if (updateEventError) {
       console.error('Error updating event participants:', updateEventError);
+    } else if (updatedEvent) {
+      Object.assign(event, updatedEvent);
     }
 
     // 6. Format event date for email
@@ -462,29 +466,25 @@ export async function POST(request: NextRequest) {
       // Don't fail the registration if email fails, just log it
     }
 
-    // 8. Get complete registration data with member info
-    const { data: completeRegistration, error: fetchError } = await supabaseServer
-      .from('ss_registrations')
-      .select(`
-        *,
-        event:ss_events (*),
-        member:ss_members (*)
-      `)
-      .eq('id', registration.id)
-      .single();
+    // 8. Assemble complete registration data with member info (already in memory, no refetch needed)
+    const completeRegistration = {
+      ...registration,
+      event,
+      member: memberData,
+    };
 
     // Return success response
     return NextResponse.json(
       {
         success: true,
         message: 'You have registered for this event. Check your email for confirmation.',
-        // message: isExistingMember 
+        // message: isExistingMember
         //   ? 'Registration successful (existing member updated)'
         //   : 'Registration successful (new member created)',
         data: {
-          registration: completeRegistration || registration,
+          registration: completeRegistration,
           member_status: isExistingMember ? 'updated' : 'created',
-          event_remaining_slots: event.max_participants - (event.current_participants + 1),
+          event_remaining_slots: event.max_participants - event.current_participants,
           email_sent: emailResult.success,
         },
       },

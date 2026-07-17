@@ -7,41 +7,33 @@ export async function GET(request: NextRequest) {
     // const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString());
     // const month = searchParams.get('month');
 
-    // Get total members
-    const { count: totalMembers, error: membersError } = await supabaseServer
-      .from('ss_members')
-      .select('*', { count: 'exact', head: true });
+    const today = new Date().toISOString().split('T')[0];
+
+    const [
+      { count: totalMembers, error: membersError },
+      { count: totalEvents, error: eventsError },
+      { count: totalRegistrations, error: registrationsError },
+      { count: activeEvents, error: activeError },
+    ] = await Promise.all([
+      supabaseServer.from('ss_members').select('*', { count: 'exact', head: true }),
+      supabaseServer.from('ss_events').select('*', { count: 'exact', head: true }),
+      supabaseServer.from('ss_registrations').select('*', { count: 'exact', head: true }),
+      supabaseServer
+        .from('ss_events')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_active', true)
+        .gte('date', today),
+    ]);
 
     if (membersError) {
       console.error('Error fetching total members:', membersError);
     }
-
-    // Get total events
-    const { count: totalEvents, error: eventsError } = await supabaseServer
-      .from('ss_events')
-      .select('*', { count: 'exact', head: true });
-
     if (eventsError) {
       console.error('Error fetching total events:', eventsError);
     }
-
-    // Get total registrations
-    const { count: totalRegistrations, error: registrationsError } = await supabaseServer
-      .from('ss_registrations')
-      .select('*', { count: 'exact', head: true });
-
     if (registrationsError) {
       console.error('Error fetching total registrations:', registrationsError);
     }
-
-    // Get active events (is_active = true and date >= current_date)
-    const today = new Date().toISOString().split('T')[0];
-    const { count: activeEvents, error: activeError } = await supabaseServer
-      .from('ss_events')
-      .select('*', { count: 'exact', head: true })
-      .eq('is_active', true)
-      .gte('date', today);
-
     if (activeError) {
       console.error('Error fetching active events:', activeError);
     }
