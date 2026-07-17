@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { unstable_cache } from 'next/cache';
 import { supabaseServer } from '@/lib/supabase';
 
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
-    const year = searchParams.get('year');
-    const month = searchParams.get('month');
-    const limit = parseInt(searchParams.get('limit') || '5');
-
+const getPopularEventsData = unstable_cache(
+  async (year: string | null, month: string | null, limit: number) => {
     // Build date filter
     let startDate: string;
     let endDate: string;
@@ -38,23 +34,11 @@ export async function GET(request: NextRequest) {
       .lte('date', endDate);
 
     if (eventsError) {
-      console.error('Error fetching events:', eventsError);
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Failed to fetch events',
-          error: eventsError.message,
-        },
-        { status: 500 }
-      );
+      throw new Error(eventsError.message);
     }
 
     if (events.length === 0) {
-      return NextResponse.json({
-        success: true,
-        message: 'No events found',
-        data: [],
-      });
+      return [];
     }
 
     // Get registration counts per event
@@ -96,11 +80,24 @@ export async function GET(request: NextRequest) {
     eventsWithPopularity.sort((a, b) => b.total_registrations - a.total_registrations);
 
     // Return top N events
-    const topEvents = eventsWithPopularity.slice(0, limit);
+    return eventsWithPopularity.slice(0, limit);
+  },
+  ['dashboard-popular-events'],
+  { revalidate: 300 }
+);
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const year = searchParams.get('year');
+    const month = searchParams.get('month');
+    const limit = parseInt(searchParams.get('limit') || '5');
+
+    const topEvents = await getPopularEventsData(year, month, limit);
 
     return NextResponse.json({
       success: true,
-      message: 'Popular events retrieved successfully',
+      message: topEvents.length > 0 ? 'Popular events retrieved successfully' : 'No events found',
       data: topEvents,
       filters: {
         year: year || new Date().getFullYear().toString(),
