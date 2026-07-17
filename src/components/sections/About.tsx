@@ -180,7 +180,7 @@ export const About = () => {
                     whileHover={{ scale: 1.05 }}
                     className={`relative aspect-[3/4] overflow-hidden duration-300 ${index === 1 ? 'mt-8' : index === 2 ? '-mt-8' : ''}`}
                   >
-                    {gallery.type === 'video' ? (
+                    {gallery.type === 'video' && isInView ? (
                       <video
                         src={gallery.video}
                         poster={gallery.image}
