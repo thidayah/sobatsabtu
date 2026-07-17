@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 
@@ -79,8 +80,6 @@ export const Footer = () => {
     return () => observer.disconnect();
   }, []);
 
-  const logoSrc = isDark ? WhiteLogo : BlueLogo
-
   return (
     // <footer ref={sectionRef} className="relative bg-gray-900 dark:bg-black text-white overflow-hidden">
     <footer ref={sectionRef} className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-black  overflow-hidden">
@@ -124,7 +123,11 @@ export const Footer = () => {
               className=" max-w-xl"
             >
               <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                <img src={logoSrc} className=" w-24 lg:w-40" alt="Blue Logo" />
+                {isDark ? (
+                  <Image src={WhiteLogo} width={1321} height={541} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto" />
+                ) : (
+                  <Image src={BlueLogo} width={1598} height={679} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto" />
+                )}
               </button>
               <p className="text-xs md:text-base text-gray-600 dark:text-white/60 leading-relaxed mt-2">
                 Since 2019, we've been transforming the "Mager" culture into positive energy through fun and inclusive sports activities in Bandung.

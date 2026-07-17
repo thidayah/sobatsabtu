@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 
@@ -105,9 +106,13 @@ export const Hero = () => {
           transition={{ duration: 1 }}
           className="absolute inset-0"
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${slides[currentSlide].url})` }}
+          <Image
+            src={slides[currentSlide].url}
+            alt={slides[currentSlide].title}
+            fill
+            priority={currentSlide === 0}
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-black via-black/40 to-transparent" />
           {/* <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/80" /> */}

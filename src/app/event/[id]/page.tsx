@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -129,7 +130,14 @@ export default function EventDetailPage() {
                 animate={{ opacity: 1, x: 0 }}
                 className="hidden md:block relative aspect-[9/16] max-w-[400px] mx-auto lg:mx-0 overflow-hidden shadow-2xl "
               >
-                <img src={eventData.image_url} alt={eventData.name} className="w-full h-full object-cover" />
+                <Image
+                  src={eventData.image_url}
+                  alt={eventData.name}
+                  fill
+                  sizes="400px"
+                  priority
+                  className="object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               </motion.div>
             </div>

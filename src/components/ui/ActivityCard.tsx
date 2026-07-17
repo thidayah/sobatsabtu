@@ -1,6 +1,7 @@
 import { formatDate, formatTime } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 
 export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boolean }) => {
@@ -28,10 +29,12 @@ export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered
       <div className="relative aspect-[9/16] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500">
         {/* Background Image dengan overlay gradient */}
         <div className="absolute inset-0">
-          <img
+          <Image
             src={activity.image_url}
             alt={activity.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            fill
+            sizes="(max-width: 768px) 90vw, 400px"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
           {/* <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" /> */}
