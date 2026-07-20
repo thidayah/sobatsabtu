@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getEventByIdentifier } from '@/lib/events';
+import { isEventPast } from '@/lib/utils';
 import { EventDetailClient } from './EventDetailClient';
 
 interface EventPageParams {
@@ -46,7 +47,9 @@ export default async function EventDetailPage({ params, searchParams }: EventPag
     notFound();
   }
 
-  const initialTab = tab === 'participants' ? 'participants' : 'registration';
+  const initialTab = tab === 'registration' || tab === 'participants'
+    ? tab
+    : isEventPast(eventData.date, eventData.time) ? 'participants' : 'registration';
 
   return <EventDetailClient eventData={eventData} initialTab={initialTab} />;
 }

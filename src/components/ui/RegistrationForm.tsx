@@ -1,9 +1,11 @@
-import { normalizePhoneNumber, normalizeUsernameIg } from "@/lib/utils";
+import { isEventPast, normalizePhoneNumber, normalizeUsernameIg } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 
 interface RegistrationFormProps {
   id: string;
+  date: string;
+  time: string;
   current_participants: number;
   max_participants: number;
   is_active: boolean;
@@ -11,6 +13,8 @@ interface RegistrationFormProps {
 
 export const RegistrationForm = ({
   id,
+  date,
+  time,
   current_participants,
   max_participants,
   is_active
@@ -177,8 +181,9 @@ export const RegistrationForm = ({
     }
   };
 
-  // Check if event is closed or sold out
+  // Check if event is closed, already happened, or sold out
   const isEventClosed = !is_active;
+  const isPast = isEventPast(date, time);
   const isSoldOut = current_participants >= max_participants;
 
   if (isEventClosed) {
@@ -188,6 +193,18 @@ export const RegistrationForm = ({
         <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Event Closed</h3>
         <p className="text-gray-500 dark:text-gray-400">
           This event is no longer accepting registrations.
+        </p>
+      </div>
+    );
+  }
+
+  if (isPast) {
+    return (
+      <div className="text-center py-12 px-4 bg-gray-50 dark:bg-gray-900 ">
+        <Icon icon="lucide:calendar-x" width="48" height="48" className="mx-auto text-gray-400 mb-4" />
+        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Event Has Ended</h3>
+        <p className="text-gray-500 dark:text-gray-400">
+          This event has already taken place and is no longer accepting registrations.
         </p>
       </div>
     );
