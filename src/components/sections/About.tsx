@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
@@ -180,7 +181,7 @@ export const About = () => {
                     whileHover={{ scale: 1.05 }}
                     className={`relative aspect-[3/4] overflow-hidden duration-300 ${index === 1 ? 'mt-8' : index === 2 ? '-mt-8' : ''}`}
                   >
-                    {gallery.type === 'video' ? (
+                    {gallery.type === 'video' && isInView ? (
                       <video
                         src={gallery.video}
                         poster={gallery.image}
@@ -193,10 +194,12 @@ export const About = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <img
+                      <Image
                         src={gallery.image}
                         alt={gallery.title}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover"
                       />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

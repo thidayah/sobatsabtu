@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
@@ -28,6 +29,11 @@
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@iconify-json/ic": "^1.2.4",
+    "@iconify-json/lucide": "^1.2.117",
+    "@iconify-json/mdi": "^1.2.3",
+    "@iconify/utils": "^3.1.4",
+    "@next/bundle-analyzer": "^16.2.10",
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^3.0.0",
     "@types/crypto-js": "^4.2.2",

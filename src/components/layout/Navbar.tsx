@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Icon } from '@iconify/react';
 // import { ThemeToggle } from "../ui/ThemeToggle";
 
@@ -59,7 +60,11 @@ export const Navbar = () => {
               transition={{ duration: 0.2 }}
               className="flex items-center gap-3"
             >
-              <img src={isDark ? WhiteLogo : BlueLogo} className=" w-24 lg:w-40 transition-all duration-500" alt="Blue Logo" />
+              {isDark ? (
+                <Image src={WhiteLogo} width={1321} height={541} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto transition-all duration-500" priority />
+              ) : (
+                <Image src={BlueLogo} width={1598} height={679} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto transition-all duration-500" priority />
+              )}
             </motion.div>
           </Link>
 

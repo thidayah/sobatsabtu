@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     // Find user by email
     const { data: user, error: userError } = await supabaseServer
       .from('ss_users')
-      .select('*')
+      .select('id, email, name, password, is_active')
       .eq('email', email)
       .single();
 

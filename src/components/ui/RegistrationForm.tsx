@@ -135,6 +135,7 @@ export const RegistrationForm = ({
       const result = await response.json();
 
       if (result.success) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         setPopupMessage({
           title: 'Registration Successful!',
           message: result.message || 'You have successfully registered for this event. Check your email for confirmation.',

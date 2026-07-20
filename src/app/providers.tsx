@@ -3,6 +3,7 @@
 
 import { ThemeProvider } from 'next-themes';
 import { ReactNode } from 'react';
+import '@/lib/iconify-offline';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (

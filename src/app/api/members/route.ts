@@ -23,25 +23,43 @@ export async function GET(request: NextRequest) {
     const validSortFields = ['created_at', 'total_events'];
     const validSortBy = validSortFields.includes(sortBy) ? sortBy : 'created_at';
 
-    // Start building query for members
-    let query = supabaseServer
-      .from('ss_members')
-      .select('*', { count: 'exact', head: false });
+    // Base filters shared by both sort strategies below
+    const applyFilters = (q: ReturnType<typeof supabaseServer.from>) => {
+      let filtered = q.select('*', { count: 'exact', head: false });
+      if (isActive !== null && isActive !== undefined && isActive !== '') {
+        filtered = filtered.eq('is_active', isActive === 'true');
+      }
+      if (search) {
+        filtered = filtered.or(
+          `full_name.ilike.%${search}%,email.ilike.%${search}%,ig_username.ilike.%${search}%`
+        );
+      }
+      return filtered;
+    };
 
-    // Apply is_active filter
-    if (isActive !== null && isActive !== undefined && isActive !== '') {
-      query = query.eq('is_active', isActive === 'true');
+    let members: any[] | null;
+    let membersError: any;
+    let total: number;
+
+    if (validSortBy === 'created_at') {
+      // created_at is a native column, so sorting + pagination can happen at the
+      // DB level — only fetch the members that actually belong on this page.
+      const { data, error, count } = await applyFilters(supabaseServer.from('ss_members'))
+        .order('created_at', { ascending: sortOrder === 'asc' })
+        .range(offset, offset + validLimit - 1);
+      members = data;
+      membersError = error;
+      total = count || 0;
+    } else {
+      // total_events is computed from registrations, not a column on ss_members,
+      // so it can't be sorted/paginated at the DB level without server-side
+      // aggregation (disabled for this Supabase project — see PGRST123 on
+      // aggregate functions). Fall back to fetching every matching member.
+      const { data, error, count } = await applyFilters(supabaseServer.from('ss_members'));
+      members = data;
+      membersError = error;
+      total = count || 0;
     }
-
-    // Apply search filter (full_name, email, ig_username)
-    if (search) {
-      query = query.or(
-        `full_name.ilike.%${search}%,email.ilike.%${search}%,ig_username.ilike.%${search}%`
-      );
-    }
-
-    // Execute query to get members first
-    const { data: members, error: membersError, count } = await query;
 
     if (membersError) {
       console.error('Supabase error:', membersError);
@@ -81,7 +99,8 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Get member IDs
+    // Get member IDs — only for the page (created_at sort) or the whole
+    // filtered set (total_events sort, see comment above)
     const memberIds = members.map(member => member.id);
 
     // Build query for registrations to get event counts
@@ -130,26 +149,23 @@ export async function GET(request: NextRequest) {
       total_events_attendance: attendanceCountMap.get(member.id) || 0,
     }));
 
-    // Apply sorting based on sort_by
-    if (validSortBy === 'created_at') {
+    let paginatedMembers: typeof membersWithEventCount;
+
+    if (validSortBy === 'total_events') {
+      // Sorting by the computed field still has to happen in JS, over the
+      // full filtered set fetched above.
       membersWithEventCount.sort((a, b) => {
-        const dateA = new Date(a.created_at).getTime();
-        const dateB = new Date(b.created_at).getTime();
-        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-      });
-    } else if (validSortBy === 'total_events') {
-      membersWithEventCount.sort((a, b) => {
-        return sortOrder === 'asc' 
-          ? a.total_events - b.total_events 
+        return sortOrder === 'asc'
+          ? a.total_events - b.total_events
           : b.total_events - a.total_events;
       });
+      paginatedMembers = membersWithEventCount.slice(offset, offset + validLimit);
+    } else {
+      // Already sorted + paginated at the DB level.
+      paginatedMembers = membersWithEventCount;
     }
 
-    // Apply pagination to the final data
-    const paginatedMembers = membersWithEventCount.slice(offset, offset + validLimit);
-
     // Calculate pagination metadata
-    const total = membersWithEventCount.length;
     const totalPages = Math.ceil(total / validLimit);
     const hasNextPage = validPage < totalPages;
     const hasPrevPage = validPage > 1;
