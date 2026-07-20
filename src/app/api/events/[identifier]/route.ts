@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase';
 import { checkUUID, generateSlug } from "@/lib/utils";
+import { getEventByIdentifier } from '@/lib/events';
 
 export async function GET(
   request: NextRequest,
@@ -9,51 +10,23 @@ export async function GET(
   try {
     const { identifier } = await params;
 
-    // Check if identifier is UUID or slug
-    const isUUID = checkUUID(identifier)
+    const event = await getEventByIdentifier(identifier);
 
-    // Build query based on identifier type
-    let query = supabaseServer
-      .from('ss_events')
-      .select('*');
-
-    if (isUUID) {
-      query = query.eq('id', identifier);
-    } else {
-      query = query.eq('slug', identifier);
-    }
-
-    // Execute query
-    const { data: event, error } = await query.single();
-
-    if (error) {
-      console.error('Supabase error:', error);
-
-      if (error.code === 'PGRST116') {
-        return NextResponse.json(
-          {
-            success: false,
-            message: 'Event not found',
-            error: 'The requested event does not exist',
-          },
-          { status: 404 }
-        );
-      }
-
+    if (!event) {
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to fetch event',
-          error: error.message,
+          message: 'Event not found',
+          error: 'The requested event does not exist',
         },
-        { status: 500 }
+        { status: 404 }
       );
     }
 
     // Return success response
     return NextResponse.json({
       success: true,
-      message: isUUID ? 'Event retrieved by ID successful' : 'Event retrieved by slug successful',
+      message: checkUUID(identifier) ? 'Event retrieved by ID successful' : 'Event retrieved by slug successful',
       data: event,
     });
   } catch (error) {
