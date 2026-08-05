@@ -1,130 +1,130 @@
 # Database
 
-Sobat Sabtu uses Supabase (Postgres). The Supabase project ("Share Your Distance", ref `biyurtytnwlmxuninybb`) is **shared with other, unrelated apps** — as of 2026-07-20 the live database has 16 tables in `public`, but only the 4 documented below (prefixed `ss_`) belong to this project. Migrations in this repo only ever touch `ss_*` tables; the other tables are out of scope and should never be referenced from this codebase.
+Sobat Sabtu menggunakan Supabase (Postgres). Proyek Supabase ("Share Your Distance", ref `biyurtytnwlmxuninybb`) **dipakai bersama dengan aplikasi lain yang tidak terkait** — per 2026-07-20 database live memiliki 16 tabel di `public`, tetapi hanya 4 tabel yang didokumentasikan di bawah ini (berawalan `ss_`) yang merupakan milik proyek ini. Migrasi di repo ini hanya menyentuh tabel `ss_*`; tabel lainnya berada di luar lingkup dan tidak boleh dirujuk dari codebase ini.
 
-All access goes through `src/lib/supabase.ts`'s `supabaseServer` client, authenticated with the `service_role` key, from server-side code only (API routes, Server Components). The browser never talks to Supabase directly.
+Semua akses dilakukan melalui klien `supabaseServer` di `src/lib/supabase.ts`, yang diautentikasi dengan kunci `service_role`, hanya dari kode sisi server (rute API, Server Components). Browser tidak pernah berkomunikasi langsung dengan Supabase.
 
 ## Schema
 
 ### `ss_events`
 
-One row per event (a Saturday run, a basketball session, etc.).
+Satu baris per event (lari hari Sabtu, sesi basket, dll.).
 
-| Column | Type | Notes |
+| Kolom | Tipe | Catatan |
 |---|---|---|
 | `id` | uuid, PK | `gen_random_uuid()` |
 | `name` | varchar(255) | |
 | `descriptions` | text | default `''` |
-| `slug` | varchar(255) | unique — events are addressable by slug or id (see `checkUUID` in `src/lib/utils.ts` / `src/lib/events.ts`) |
-| `image_url` | text | Supabase Storage URL (`ss_images` bucket) |
+| `slug` | varchar(255) | unik — event dapat diakses melalui slug atau id (lihat `checkUUID` di `src/lib/utils.ts` / `src/lib/events.ts`) |
+| `image_url` | text | URL Supabase Storage (bucket `ss_images`) |
 | `date` | date | |
 | `time` | time | |
 | `location`, `location_url` | text | |
-| `current_participants`, `max_participants` | integer | `current_participants` is denormalized — incremented on registration, see `POST /api/registrations` |
-| `type` | varchar(100) | e.g. `ASMR`, freeform |
+| `current_participants`, `max_participants` | integer | `current_participants` didenormalisasi — dinaikkan saat registrasi, lihat `POST /api/registrations` |
+| `type` | varchar(100) | mis. `ASMR`, bentuk bebas |
 | `is_active` | boolean | default true |
-| `external_url` | text | optional external registration link |
+| `external_url` | text | tautan registrasi eksternal opsional |
 | `created_at`, `updated_at` | timestamptz | |
 
-Indexes: `date`, `(date, is_active)`, `is_active`, `slug` (also unique), `type`.
+Index: `date`, `(date, is_active)`, `is_active`, `slug` (juga unik), `type`.
 
 ### `ss_members`
 
-One row per person who has ever registered for an event (not a user account — no login).
+Satu baris per orang yang pernah mendaftar event (bukan akun pengguna — tidak ada login).
 
-| Column | Type | Notes |
+| Kolom | Tipe | Catatan |
 |---|---|---|
 | `id` | uuid, PK | |
 | `full_name` | varchar(255) | |
-| `email` | varchar(255) | unique |
+| `email` | varchar(255) | unik |
 | `ig_username` | varchar(100) | nullable |
 | `gender` | varchar(20) | nullable |
-| `emergency_contact_name`, `emergency_contact_phone` | varchar | required |
+| `emergency_contact_name`, `emergency_contact_phone` | varchar | wajib diisi |
 | `medical_notes` | text | nullable |
-| `is_active` | boolean | default true — internally referred to as "untalented" status in some API comments; toggled by staff, unrelated to event registration status |
+| `is_active` | boolean | default true — di beberapa komentar API disebut secara internal sebagai status "untalented"; diubah oleh staf, tidak terkait dengan status registrasi event |
 | `created_at`, `updated_at` | timestamptz | |
 
-Indexes: `email` (also unique), `full_name`, `ig_username`, `is_active`.
+Index: `email` (juga unik), `full_name`, `ig_username`, `is_active`.
 
 ### `ss_registrations`
 
-Join table between a member and an event, one row per registration.
+Tabel join antara member dan event, satu baris per registrasi.
 
-| Column | Type | Notes |
+| Kolom | Tipe | Catatan |
 |---|---|---|
 | `id` | uuid, PK | |
 | `event_id` | uuid, FK → `ss_events(id)` | `ON DELETE CASCADE` |
 | `member_id` | uuid, FK → `ss_members(id)` | `ON DELETE CASCADE` |
-| `code` | varchar(50) | unique registration code, emailed to the member |
-| `status` | varchar(50) | `pending` \| `confirmed` \| `cancelled` \| `waiting` (enforced by a CHECK constraint) |
-| `is_attendance` | boolean | default false — set via the dashboard's QR scanner or manual toggle |
+| `code` | varchar(50) | kode registrasi unik, dikirim melalui email ke member |
+| `status` | varchar(50) | `pending` \| `confirmed` \| `cancelled` \| `waiting` (dijamin oleh constraint CHECK) |
+| `is_attendance` | boolean | default false — diatur melalui pemindai QR di dashboard atau toggle manual |
 | `created_at`, `updated_at` | timestamptz | |
 
-Indexes: `code`, `event_id`, `member_id`, `status`, `(event_id, status)`, and a **partial unique index** on `(event_id, member_id)` filtered to `status IN ('pending', 'confirmed')` — this enforces "one active registration per member per event" at the database level, independent of the application-level duplicate check in `POST /api/registrations`.
+Index: `code`, `event_id`, `member_id`, `status`, `(event_id, status)`, dan **index unik parsial** pada `(event_id, member_id)` yang difilter ke `status IN ('pending', 'confirmed')` — ini memberlakukan "satu registrasi aktif per member per event" di tingkat database, terlepas dari pengecekan duplikat di tingkat aplikasi di `POST /api/registrations`.
 
 ### `ss_users`
 
-Admin/staff accounts for the dashboard (see [Auth model](./project-overview.md#auth-model) in the overview doc).
+Akun admin/staf untuk dashboard (lihat [Model Auth](./project-overview.md#model-auth) di dokumen overview).
 
-| Column | Type | Notes |
+| Kolom | Tipe | Catatan |
 |---|---|---|
 | `id` | uuid, PK | |
-| `name`, `email` | varchar(255) | email unique |
-| `password` | varchar(255) | bcrypt hash |
+| `name`, `email` | varchar(255) | email unik |
+| `password` | varchar(255) | hash bcrypt |
 | `is_active` | boolean | default true |
-| `last_login` | timestamptz | nullable, updated on login |
+| `last_login` | timestamptz | nullable, diperbarui saat login |
 | `created_at`, `updated_at` | timestamptz | |
 
-Indexes: `email` (also unique), `is_active`.
+Index: `email` (juga unik), `is_active`.
 
-### Entity relationship
+### Relasi antar entitas
 
 ```
 ss_members ──< ss_registrations >── ss_events
 
-ss_users (standalone — dashboard auth only, no FK to the above)
+ss_users (berdiri sendiri — hanya untuk auth dashboard, tidak ada FK ke tabel di atas)
 ```
 
 ## Row Level Security
 
-All four tables have **RLS enabled with zero policies attached**. With RLS on and no policies, Postgres denies all access to every role except one that bypasses RLS — which is exactly the `service_role` key this app uses everywhere. In other words: even if the Supabase anon/public key were ever exposed in client code, these tables would be completely unreadable and unwritable through it. This was verified against the live project, not assumed.
+Keempat tabel memiliki **RLS aktif tanpa policy apa pun yang terpasang**. Dengan RLS aktif dan tanpa policy, Postgres menolak semua akses untuk setiap role kecuali role yang melewati RLS — yang persis seperti kunci `service_role` yang digunakan aplikasi ini di mana-mana. Dengan kata lain: bahkan jika kunci anon/public Supabase bocor ke kode klien, tabel-tabel ini akan sepenuhnya tidak bisa dibaca dan ditulis melalui kunci tersebut. Hal ini telah diverifikasi terhadap proyek live, bukan sekadar asumsi.
 
-No triggers exist on any of the four tables (some of the *other* apps sharing this database have an `update_updated_at_column()` trigger; `ss_*` tables don't — `updated_at` is set explicitly by application code in each API route).
+Tidak ada trigger pada keempat tabel (beberapa aplikasi *lain* yang berbagi database ini memiliki trigger `update_updated_at_column()`; tabel `ss_*` tidak — `updated_at` diatur secara eksplisit oleh kode aplikasi di setiap rute API).
 
-## Migrations
+## Migrasi
 
-Schema lives in `supabase/migrations/*.sql`, managed by the [Supabase CLI](https://supabase.com/docs/guides/cli).
+Schema berada di `supabase/migrations/*.sql`, dikelola oleh [Supabase CLI](https://supabase.com/docs/guides/cli).
 
-- `20260720063537_baseline_schema.sql` — the initial baseline, reverse-engineered from the live database via `pg_dump` (see [How this baseline was created](#how-this-baseline-was-created) below) and scoped to only the 4 `ss_*` tables.
+- `20260720063537_baseline_schema.sql` — baseline awal, direkayasa ulang dari database live melalui `pg_dump` (lihat [Cara baseline ini dibuat](#cara-baseline-ini-dibuat) di bawah) dan dibatasi hanya untuk 4 tabel `ss_*`.
 
-### Local setup
+### Setup lokal
 
 ```bash
-supabase login                                    # one-time, opens a browser
-supabase link --project-ref biyurtytnwlmxuninybb  # one-time per machine
+supabase login                                    # satu kali, membuka browser
+supabase link --project-ref biyurtytnwlmxuninybb  # satu kali per mesin
 ```
 
-### Making a schema change going forward
+### Melakukan perubahan schema ke depannya
 
-1. `supabase migration new <description>` to create a new empty migration file, or make the change directly in the Supabase SQL editor and pull it down (see caveat below).
-2. Write the SQL change, scoped to `ss_*` tables only.
-3. Test it — see the pattern used below (run against a throwaway schema on the *same* database, never against `public` directly, since this is a shared database and there's no separate staging project).
-4. `supabase db push` to apply it to the live project, or apply it manually and then `supabase migration repair --status applied <version>` if you applied it out-of-band.
+1. `supabase migration new <description>` untuk membuat file migrasi kosong baru, atau buat perubahannya langsung di SQL editor Supabase lalu tarik ke bawah (lihat catatan penting di bawah).
+2. Tulis perubahan SQL, hanya dibatasi untuk tabel `ss_*`.
+3. Uji — lihat pola yang digunakan di bawah (jalankan pada schema sementara di database yang *sama*, jangan pernah langsung terhadap `public`, karena ini adalah database bersama dan tidak ada proyek staging terpisah).
+4. `supabase db push` untuk menerapkannya ke proyek live, atau terapkan secara manual lalu `supabase migration repair --status applied <version>` jika Anda menerapkannya di luar jalur (out-of-band).
 
-### Caveat: `supabase db pull` / `db dump` require Docker
+### Catatan penting: `supabase db pull` / `db dump` membutuhkan Docker
 
-Both commands use a local Docker container (a "shadow database") to safely diff schemas. **Docker Desktop is not set up in this environment as of 2026-07-20**, so the baseline migration was created manually instead:
+Kedua perintah menggunakan kontainer Docker lokal (sebuah "shadow database") untuk membandingkan schema dengan aman. **Docker Desktop belum diatur di lingkungan ini per 2026-07-20**, sehingga migrasi baseline dibuat secara manual sebagai gantinya:
 
 ```bash
-PGPASSWORD='<db password>' pg_dump \
+PGPASSWORD='<password db>' pg_dump \
   --schema-only --schema=public --no-owner --no-privileges \
   -h aws-1-ap-southeast-1.pooler.supabase.com -p 6543 \
   -U postgres.biyurtytnwlmxuninybb -d postgres \
   -f schema-dump.sql
 ```
 
-The direct connection host (`db.<ref>.supabase.co`) is IPv6-only and failed to resolve in this environment; the **session pooler** host (found via the dashboard's "Connect" button → Session pooler tab) worked instead. If Docker gets installed later, prefer `supabase db pull` going forward — it handles multi-app database noise and Supabase-internal schemas more cleanly than a manual `pg_dump`.
+Host koneksi langsung (`db.<ref>.supabase.co`) hanya IPv6 dan gagal di-resolve di lingkungan ini; host **session pooler** (ditemukan melalui tombol "Connect" di dashboard → tab Session pooler) yang berhasil digunakan. Jika Docker diinstal nanti, lebih baik gunakan `supabase db pull` ke depannya — perintah ini menangani kebisingan database multi-aplikasi dan schema internal Supabase dengan lebih bersih daripada `pg_dump` manual.
 
-### How this baseline was created
+### Cara baseline ini dibuat
 
-The manual dump above included all 16 tables in `public` (this app's 4 plus 12 belonging to other apps on the same database). The migration file was hand-trimmed to only the `ss_*` tables, then validated by running it against a temporary Postgres schema on the *same live database* (`CREATE SCHEMA _migration_test; ...; DROP SCHEMA _migration_test CASCADE;`) to confirm every statement succeeds with no dependency-order issues, without touching real data. It was then registered as already-applied via `supabase migration repair --status applied 20260720063537`, since the tables already existed in `public` — this migration documents the existing schema, it doesn't create it from scratch.
+Dump manual di atas mencakup semua 16 tabel di `public` (4 tabel aplikasi ini ditambah 12 milik aplikasi lain di database yang sama). File migrasi dipangkas secara manual hanya untuk tabel `ss_*`, lalu divalidasi dengan menjalankannya terhadap schema Postgres sementara di *database live yang sama* (`CREATE SCHEMA _migration_test; ...; DROP SCHEMA _migration_test CASCADE;`) untuk memastikan setiap statement berhasil tanpa masalah urutan dependensi, tanpa menyentuh data asli. Migrasi tersebut kemudian didaftarkan sebagai sudah diterapkan melalui `supabase migration repair --status applied 20260720063537`, karena tabel-tabelnya sudah ada di `public` — migrasi ini mendokumentasikan schema yang sudah ada, bukan membuatnya dari nol.
