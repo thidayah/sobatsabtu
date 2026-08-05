@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import { Providers } from './providers';
+import { JsonLd } from '@/components/ui/JsonLd';
 //@ts-ignore
 import './globals.css';
 
@@ -13,11 +14,40 @@ const poppins = Poppins({
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL!
 
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsClub',
+  name: 'Sobat Sabtu',
+  url: BASE_URL,
+  logo: `${BASE_URL}/images/sobatsabtu.jpg`,
+  image: `${BASE_URL}/images/sobatsabtu.jpg`,
+  description:
+    'Komunitas olahraga untuk anak muda Bandung dengan konsep Mager yang seru! Lari, badminton, sepak bola, basket, dan billiard.',
+  areaServed: 'Bandung, Indonesia',
+  sameAs: [
+    process.env.NEXT_PUBLIC_INSTAGRAM,
+    process.env.NEXT_PUBLIC_WHATSAPP,
+    process.env.NEXT_PUBLIC_TWITTER,
+    process.env.NEXT_PUBLIC_TIKTOK,
+    process.env.NEXT_PUBLIC_STRAVA,
+    process.env.NEXT_PUBLIC_SPOTIFY,
+  ].filter(Boolean),
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: 'Sobat Sabtu - Komunitas Olahraga Anak Muda Bandung',
   description: 'Komunitas olahraga untuk anak muda Bandung dengan konsep Mager yang seru! Lari, badminton, sepak bola, basket, dan billiard.',
   keywords: ['lari', 'olahraga', 'komunitas', 'Bandung', 'badminton', 'sepak bola', 'basket', 'billiard'],
+  icons: {
+    icon: '/icon0.svg',
+    apple: '/apple-icon.png',
+  },
+  manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+  },
   alternates: {
     canonical: new URL(BASE_URL),
   },
@@ -57,6 +87,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <JsonLd data={organizationSchema} />
       </body>
     </html>
   );

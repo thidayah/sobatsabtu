@@ -2,16 +2,15 @@
 
 import { useTheme } from 'next-themes';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { Icon } from "@iconify/react";
+
+const emptySubscribe = () => () => {};
 
 export const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Hydration-safe: true on client, false on server (avoids SSR mismatch without setState-in-effect)
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   if (!mounted) return null;
 

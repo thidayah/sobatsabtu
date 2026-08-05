@@ -134,9 +134,14 @@ export const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Title */}
+          {/* Visually hidden h1 with primary keyword (SEO + a11y, no visual change) */}
+          <h1 className="sr-only">
+            Komunitas Lari &amp; Olahraga Anak Muda Bandung
+          </h1>
+
+          {/* Slide Title */}
           <AnimatePresence mode="wait">
-            <motion.h1
+            <motion.h2
               key={`title-${currentSlide}`}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -145,7 +150,7 @@ export const Hero = () => {
               className="text-2xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-white max-w-7xl mx-auto"
             >
               {slides[currentSlide].title}
-            </motion.h1>
+            </motion.h2>
           </AnimatePresence>
 
           {/* Description */}

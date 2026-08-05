@@ -11,11 +11,11 @@ export default function NotFound() {
       <Container fullWidth>
         <div className="pt-28 md:pt-40 px-4 sm:px-6 lg:px-8 pb-16 flex flex-col items-center justify-center min-h-[60vh] text-center">
           <Icon icon="lucide:alert-circle" width="64" height="64" className="text-red-500 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Event Not Found
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
-            The event you are looking for does not exist.
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            Page Not Found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-lg">
+            The page you are looking for does not exist or has been moved.
           </p>
           <Link
             href="/"
