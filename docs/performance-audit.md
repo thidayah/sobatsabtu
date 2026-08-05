@@ -1,116 +1,117 @@
-# Performance Audit (2026-07)
+# Audit Performa (2026-07)
 
-A full performance audit of sobatsabtu, covering bundle size, asset/rendering strategy, API/database query patterns, and Core Web Vitals. 14 findings, 13 fixed across 8 PRs, 1 explicitly skipped pending an infrastructure decision.
+Audit performa menyeluruh untuk sobatsabtu, mencakup ukuran bundle, strategi aset/rendering, pola kueri API/database, dan Core Web Vitals. 14 temuan, 13 diperbaiki dalam 8 PR, 1 sengaja dilewati sambil menunggu keputusan infrastruktur.
 
-## Results
+## Hasil
 
-Measured with Lighthouse (desktop preset) against a production build of the homepage (`/`):
+Diukur dengan Lighthouse (preset desktop) terhadap build produksi dari halaman beranda (`/`):
 
-| Metric | Before | After |
+| Metrik | Sebelum | Sesudah |
 |---|---|---|
-| Performance score | 66 | **98** |
+| Skor performa | 66 | **98** |
 | LCP (Largest Contentful Paint) | 7.5s | **1.1s** |
 | TTI (Time to Interactive) | 7.7s | 1.3s |
 | Speed Index | 4.1s | 0.8s |
 | Total Blocking Time | 40ms | 0ms |
-| Total page weight | 34.7MB | **1.4MB** |
+| Total berat halaman | 34.7MB | **1.4MB** |
 
-## Methodology
+## Metodologi
 
-- **Bundle size**: `@next/bundle-analyzer` (devDependency, `ANALYZE=true npx next build --webpack` — Turbopack builds don't support the analyzer).
-- **Core Web Vitals**: `npx lighthouse` against `npm start` (a real production build; `next dev` isn't representative).
-- **API/DB**: manual read-through of every route handler, plus direct read-only queries against the live Supabase project to verify assumptions (e.g. whether aggregate functions were available — see finding #6) rather than guessing.
-- Every fix was verified before merging: build + typecheck, a direct before/after comparison of actual API responses where a response shape changed, and manual testing in a browser.
+- **Ukuran bundle**: `@next/bundle-analyzer` (devDependency, `ANALYZE=true npx next build --webpack` — build Turbopack tidak mendukung analyzer).
+- **Core Web Vitals**: `npx lighthouse` terhadap `npm start` (build produksi sungguhan; `next dev` tidak representatif).
+- **API/DB**: pembacaan manual pada setiap route handler, ditambah kueri langsung read-only terhadap proyek Supabase live untuk memverifikasi asumsi (mis. apakah fungsi agregat tersedia — lihat temuan #6) alih-alih menebak.
+- Setiap perbaikan diverifikasi sebelum di-merge: build + typecheck, perbandingan langsung sebelum/sesudah terhadap respons API yang sebenarnya jika bentuk respons berubah, serta pengujian manual di browser.
 
-## Findings & fixes
+## Temuan & perbaikan
 
-### 1. `recharts` + `html5-qrcode` loaded on every route, including the homepage
+### 1. `recharts` + `html5-qrcode` dimuat di setiap rute, termasuk halaman beranda
 
-`src/app/dashboard/page.tsx` statically imported both libraries. Next's shared-chunk optimization put them in a chunk loaded by **every page**, not just the dashboard pages that use them — confirmed via bundle analysis and Lighthouse showing 37-52% unused JS in the homepage's chunks.
+`src/app/dashboard/page.tsx` mengimpor kedua pustaka secara statis. Optimasi shared-chunk Next.js menempatkannya dalam chunk yang dimuat oleh **setiap halaman**, bukan hanya halaman dashboard yang menggunakannya — dikonfirmasi melalui analisis bundle dan Lighthouse yang menunjukkan 37-52% JS tidak terpakai di chunk halaman beranda.
 
-**Fix**: extracted the chart JSX into `src/components/dashboard/DashboardCharts.tsx` and loaded both it and `QRScannerModal` via `next/dynamic({ ssr: false })`. Verified afterward that neither library's code appears anywhere in the homepage's JS payload.
+**Perbaikan**: JSX grafik diekstrak ke `src/components/dashboard/DashboardCharts.tsx` dan keduanya beserta `QRScannerModal` dimuat melalui `next/dynamic({ ssr: false })`. Setelah itu diverifikasi bahwa kode kedua pustaka tersebut tidak muncul di mana pun dalam payload JS halaman beranda.
 PR: [#47](https://github.com/thidayah/sobatsabtu/pull/47)
 
-### 2. Homepage autoplayed ~35MB of video on page load
+### 2. Beranda mengautoplay ~35MB video saat halaman dimuat
 
-`src/components/sections/About.tsx`'s gallery had 4 raw `.MP4` files (~35MB combined) with `autoPlay`, downloading immediately regardless of whether the user ever scrolled to that section. This was the dominant contributor to the original 7.5s LCP.
+Galeri `src/components/sections/About.tsx` memiliki 4 file `.MP4` mentah (~35MB total) dengan `autoPlay`, yang langsung terunduh terlepas dari apakah pengguna pernah menggulir ke bagian tersebut. Ini adalah kontributor dominan terhadap LCP 7.5s semula.
 
-**Fix**: the section already tracked visibility via framer-motion's `useInView` for its entrance animation — reused that same signal to gate mounting the `<video>` element, so it only starts downloading/playing once scrolled into view.
+**Perbaikan**: bagian tersebut sudah melacak visibilitas melalui `useInView` dari framer-motion untuk animasi masuknya — sinyal yang sama digunakan kembali untuk menggerbang pemasangan elemen `<video>`, sehingga video baru mulai mengunduh/berputar setelah digulir ke tampilan.
 PR: [#49](https://github.com/thidayah/sobatsabtu/pull/49)
 
-### 3. `next/image` unused everywhere + unoptimized remote images
+### 3. `next/image` tidak digunakan sama sekali + gambar remote yang tidak dioptimalkan
 
-0 of 7 `<img>` usages used `next/image`; several images were hotlinked from `images.unsplash.com`/`i.ibb.co.com` at full resolution. Investigation during the fix also surfaced `Hero.tsx`'s full-viewport background slideshow (a CSS `background-image`, not an `<img>` tag, so outside the original 7) as the single largest contributor to page weight (~2MB) — it sits directly behind the LCP element, so it was included in the same fix with explicit sign-off.
+0 dari 7 penggunaan `<img>` menggunakan `next/image`; beberapa gambar di-hotlink dari `images.unsplash.com`/`i.ibb.co.com` pada resolusi penuh. Investigasi selama perbaikan juga menemukan slideshow latar belakang layar penuh di `Hero.tsx` (sebuah `background-image` CSS, bukan tag `<img>`, jadi di luar 7 yang semula) sebagai kontributor terbesar berat halaman (~2MB) — ia berada tepat di belakang elemen LCP, sehingga disertakan dalam perbaikan yang sama dengan persetujuan eksplisit.
 
-**Fix**: migrated every image (Hero background, About gallery, Navbar/Footer logos, Collaboration background, ActivityCard, event detail page, dashboard EventModal preview) to `next/image`, and added `images.remotePatterns` in `next.config.ts` for Supabase Storage / Unsplash / ibb.co. The admin `EventModal` preview uses `unoptimized` since staff can paste an arbitrary image URL there, which a remote-pattern allowlist can't accommodate.
+**Perbaikan**: semua gambar (latar Hero, galeri About, logo Navbar/Footer, latar Collaboration, ActivityCard, halaman detail event, pratinjau EventModal dashboard) dimigrasikan ke `next/image`, dan `images.remotePatterns` ditambahkan di `next.config.ts` untuk Supabase Storage / Unsplash / ibb.co. Pratinjau `EventModal` admin menggunakan `unoptimized` karena staf dapat menempelkan URL gambar arbitrer di sana, yang tidak dapat ditampung oleh allowlist remote-pattern.
+
 PR: [#50](https://github.com/thidayah/sobatsabtu/pull/50)
 
-**This was the single biggest win of the audit** — combined with #2, it took LCP from 3.6s to 1.3s and page weight from 12MB to 4.7MB in isolation; combined with every other fix, the homepage's final total page weight is 1.4MB.
+**Ini adalah kemenangan tunggal terbesar dari audit ini** — jika digabungkan dengan #2, LCP turun dari 3.6s menjadi 1.3s dan berat halaman dari 12MB menjadi 4.7MB secara terpisah; jika digabungkan dengan semua perbaikan lainnya, berat total halaman beranda akhir adalah 1.4MB.
 
-### 4. All dashboard pages are Client Components with a client-side fetch waterfall
+### 4. Semua halaman dashboard adalah Client Component dengan waterfall fetch sisi klien
 
-`/dashboard*`, `/admin`, and `/event/[id]` were all `'use client'`, fetching data via `useEffect` after mount (blank shell → JS parse → fetch → render) instead of having data present in the initial HTML.
+`/dashboard*`, `/admin`, dan `/event/[id]` semuanya `'use client'`, mengambil data melalui `useEffect` setelah mount (shell kosong → parse JS → fetch → render) alih-alih memiliki data yang tersedia di HTML awal.
 
-**This finding was rescoped after investigation.** The admin dashboard's auth session lives in `localStorage` (see [project-overview.md](./project-overview.md#auth-model)), which a Server Component cannot read — converting `/dashboard*` to SSR would require migrating to a cookie-based session first, which is a real architecture decision (affects the login flow, needs middleware for route protection) and out of scope for a performance-only pass. `/event/[id]` has no auth requirement, so it was converted to a genuine Server Component instead: the Supabase lookup was extracted to `src/lib/events.ts` (shared with the API route), `generateMetadata()` was added for per-event Open Graph/Twitter tags, and the interactive/animated JSX was moved into a client child component (`EventDetailClient.tsx`) that receives server-fetched data as props. `loading.tsx`/`not-found.tsx` replaced the old client-side loading/error state.
+**Temuan ini diubah cakupannya setelah investigasi.** Sesi auth dashboard admin berada di `localStorage` (lihat [project-overview.md](./project-overview.md#model-auth)), yang tidak dapat dibaca oleh Server Component — mengonversi `/dashboard*` ke SSR akan memerlukan migrasi ke sesi berbasis cookie terlebih dahulu, yang merupakan keputusan arsitektur nyata (memengaruhi alur login, memerlukan middleware untuk proteksi rute) dan di luar cakupan untuk proses khusus performa. `/event/[id]` tidak memiliki persyaratan auth, sehingga dikonversi menjadi Server Component sungguhan sebagai gantinya: pencarian Supabase diekstrak ke `src/lib/events.ts` (dipakai bersama dengan rute API), `generateMetadata()` ditambahkan untuk tag Open Graph/Twitter per event, dan JSX interaktif/animasi dipindahkan ke komponen anak sisi klien (`EventDetailClient.tsx`) yang menerima data hasil fetch server sebagai props. `loading.tsx`/`not-found.tsx` menggantikan state loading/error sisi klien yang lama.
 
-A latent, pre-existing CSS bug was found and fixed while testing this (confirmed identical in `develop` before the change, so not a regression from the SSR conversion): the event image column relied on `aspect-ratio` + `max-width` with no definite width, and its only content was `position:absolute` elements that don't contribute to parent sizing, so the box could collapse to 0×0. Fixed with an explicit `md:w-[400px] md:shrink-0`.
+Bug CSS laten yang sudah ada sebelumnya ditemukan dan diperbaiki saat menguji ini (dikonfirmasi identik di `develop` sebelum perubahan, jadi bukan regresi dari konversi SSR): kolom gambar event mengandalkan `aspect-ratio` + `max-width` tanpa lebar pasti, dan kontennya hanya elemen `position:absolute` yang tidak berkontribusi pada ukuran induk, sehingga kotak bisa menciut menjadi 0×0. Diperbaiki dengan `md:w-[400px] md:shrink-0` yang eksplisit.
 
 PR: [#54](https://github.com/thidayah/sobatsabtu/pull/54)
 
-### 5. `/api/members` fetched the entire filtered table, paginated in JS
+### 5. `/api/members` mengambil seluruh tabel yang difilter, dipaginasi di JS
 
-No `.range()` call — pagination happened in-memory after fetching every row matching the filter, growing unbounded with table size.
+Tidak ada pemanggilan `.range()` — paginasi terjadi di memori setelah mengambil setiap baris yang cocok dengan filter, tumbuh tanpa batas seiring ukuran tabel.
 
-**Fix**: when sorting by `created_at` (the default, a native column), filtering/sorting/pagination all happen at the database level via `.order()`/`.range()`, and registrations are only fetched for the members on that page. Sorting by `total_events` (a value computed from a join, not a column) still requires fetching the full filtered set — see finding #6 for why this can't be pushed to the database either, and this is documented in a code comment.
+**Perbaikan**: saat mengurutkan berdasarkan `created_at` (default, kolom native), filter/urutkan/paginasi semuanya terjadi di tingkat database melalui `.order()`/`.range()`, dan registrasi hanya diambil untuk member di halaman tersebut. Pengurutan berdasarkan `total_events` (nilai yang dihitung dari join, bukan kolom) masih memerlukan pengambilan seluruh set yang difilter — lihat temuan #6 untuk alasan mengapa ini juga tidak bisa didorong ke database, dan ini didokumentasikan dalam komentar kode.
 PR: [#51](https://github.com/thidayah/sobatsabtu/pull/51)
 
-### 6. `/api/dashboard/active-members` — explicitly skipped
+### 6. `/api/dashboard/active-members` — sengaja dilewati
 
-Pulls every `confirmed` registration in the selected date range (joined with member columns) to compute a top-5 leaderboard in JS. Properly fixing this means pushing a `GROUP BY`/count aggregation into Postgres.
+Mengambil setiap registrasi `confirmed` dalam rentang tanggal yang dipilih (di-join dengan kolom member) untuk menghitung papan peringkat top-5 di JS. Perbaikan yang tepat berarti mendorong agregasi `GROUP BY`/count ke Postgres.
 
-**Investigated, not fixed.** Tested directly against the live Supabase project (a read-only `SELECT`) and confirmed PostgREST aggregate functions are disabled for this project (`PGRST123: Use of aggregate functions is not allowed`) — this requires either a Supabase project setting change (`db-aggregates-enabled`) or a hand-written Postgres RPC function, neither of which is a pure application-code change. Deferred: the endpoint is already bounded by its date-range filter, which keeps it reasonably efficient at current data volumes.
+**Diinvestigasi, tidak diperbaiki.** Diuji langsung terhadap proyek Supabase live (sebuah `SELECT` read-only) dan dikonfirmasi bahwa fungsi agregat PostgREST dinonaktifkan untuk proyek ini (`PGRST123: Use of aggregate functions is not allowed`) — ini memerlukan perubahan pengaturan proyek Supabase (`db-aggregates-enabled`) atau fungsi RPC Postgres yang ditulis tangan, keduanya bukan murni perubahan kode aplikasi. Ditunda: endpoint sudah dibatasi oleh filter rentang tanggalnya, yang membuatnya tetap cukup efisien pada volume data saat ini.
 
-### 7. `/api/dashboard/stats` ran 4 independent count queries sequentially
+### 7. `/api/dashboard/stats` menjalankan 4 kueri count terpisah secara berurutan
 
-Quadrupling round-trip latency for no reason — the 4 queries don't depend on each other.
+Melipatgandakan latensi round-trip tanpa alasan — 4 kueri tersebut tidak saling bergantung.
 
-**Fix**: `Promise.all([...])`.
+**Perbaikan**: `Promise.all([...])`.
 PR: [#47](https://github.com/thidayah/sobatsabtu/pull/47)
 
-### 8. `/api/registrations` POST re-fetched data already in memory
+### 8. POST `/api/registrations` mengambil ulang data yang sudah ada di memori
 
-After creating a registration, the handler re-queried the database (with full `event`/`member` joins) for data it already had from earlier in the same request.
+Setelah membuat registrasi, handler menanyakan ulang ke database (dengan join `event`/`member` penuh) untuk data yang sudah dimilikinya dari awal permintaan yang sama.
 
-**Fix**: assemble the response from the already-fetched `registration`, `event`, and `memberData` objects instead of an extra round trip.
+**Perbaikan**: susun respons dari objek `registration`, `event`, dan `memberData` yang sudah diambil alih-alih melakukan round trip tambahan.
 
-Two real bugs were found only by comparing actual before/after JSON responses against real test data (not by build/typecheck), which is worth remembering as a pattern for this kind of refactor: `event.updated_at` and `event_remaining_slots` both silently drifted from what a fresh DB read would have returned, because they depend on a DB-side update (`current_participants`/`updated_at`) that the in-memory objects hadn't been refreshed with. Fixed by re-deriving both from the `update().select().single()` return value rather than hand-computing them. It's also worth checking whether the frontend consumer even reads the fields in question before deciding how much correctness effort a response shape deserves — `RegistrationForm.tsx` turned out to only ever read `success`/`message`/`error` from this endpoint's response, ignoring `data` entirely.
+Dua bug nyata hanya ditemukan dengan membandingkan respons JSON sebelum/sesudah yang sebenarnya terhadap data uji nyata (bukan oleh build/typecheck), yang layak diingat sebagai pola untuk jenis refactor ini: `event.updated_at` dan `event_remaining_slots` keduanya menyimpang secara diam-diam dari yang akan dikembalikan oleh pembacaan DB baru, karena keduanya bergantung pada pembaruan sisi DB (`current_participants`/`updated_at`) yang belum disegarkan ke objek di memori. Diperbaiki dengan menurunkan ulang keduanya dari nilai balik `update().select().single()` alih-alih menghitungnya secara manual. Juga perlu diperiksa apakah konsumen frontend benar-benar membaca field yang dimaksud sebelum memutuskan seberapa besar usaha korektif yang layak diberikan pada bentuk respons — ternyata `RegistrationForm.tsx` hanya membaca `success`/`message`/`error` dari respons endpoint ini, dan mengabaikan `data` sepenuhnya.
 PR: [#47](https://github.com/thidayah/sobatsabtu/pull/47)
 
-### 9. Dashboard chart endpoints re-queried and re-aggregated on every request
+### 9. Endpoint grafik dashboard menanyakan ulang dan mengagregasi ulang setiap permintaan
 
-`events-chart`, `popular-events`, and `members-chart` serve historical/aggregate data that rarely changes intra-day, but hit Supabase and re-aggregated in JS on every single request.
+`events-chart`, `popular-events`, dan `members-chart` menyajikan data historis/agregat yang jarang berubah dalam satu hari, tetapi tetap memukul Supabase dan mengagregasi ulang di JS pada setiap permintaan.
 
-**Fix**: wrapped each route's data-fetching logic with `unstable_cache` (`revalidate: 300`), keyed automatically by the request's `year`/`month`/`limit` params. `registrations-chart` was left untouched — it's dead code, not called from anywhere in the frontend (only a commented-out `fetch` in `dashboard/page.tsx`). Verified: repeat requests for the same params dropped from ~90-900ms to ~12-15ms; different params correctly miss the cache instead of returning stale data.
+**Perbaikan**: logika pengambilan data setiap rute dibungkus dengan `unstable_cache` (`revalidate: 300`), dengan kunci yang dihasilkan otomatis dari param `year`/`month`/`limit` permintaan. `registrations-chart` dibiarkan tidak tersentuh — itu kode mati, tidak dipanggil dari mana pun di frontend (hanya `fetch` yang dikomentari di `dashboard/page.tsx`). Terverifikasi: permintaan berulang untuk param yang sama turun dari ~90-900ms menjadi ~12-15ms; param berbeda dengan benar meleset dari cache alih-alih mengembalikan data basi.
 PR: [#53](https://github.com/thidayah/sobatsabtu/pull/53)
 
-### 10. Over-fetching columns (`select('*')`)
+### 10. Over-fetching kolom (`select('*')`)
 
-`/api/auth/login` selected every column on `ss_users` just to check credentials; `/api/registrations` GET selected every column (plus full nested joins) for a paginated list view.
+`/api/auth/login` memilih semua kolom `ss_users` hanya untuk memeriksa kredensial; GET `/api/registrations` memilih semua kolom (plus join bertingkat penuh) untuk tampilan daftar yang dipaginasi.
 
-**Fix**: scoped both to the columns actually consumed — `id, email, name, password, is_active` for login (the frontend's `getAuth()` only ever reads `.name`/`.email`), and the specific fields rendered by `dashboard/registrations/page.tsx` and `ParticipantsTable.tsx` for the registrations list.
+**Perbaikan**: keduanya dibatasi ke kolom yang benar-benar dikonsumsi — `id, email, name, password, is_active` untuk login (frontend `getAuth()` hanya membaca `.name`/`.email`), dan field spesifik yang dirender oleh `dashboard/registrations/page.tsx` dan `ParticipantsTable.tsx` untuk daftar registrasi.
 PR: [#48](https://github.com/thidayah/sobatsabtu/pull/48)
 
-### 11-14. Confirmed via measurement, not independently fixed
+### 11-14. Dikonfirmasi melalui pengukuran, tidak diperbaiki secara terpisah
 
-These were secondary findings that Lighthouse surfaced as evidence for the fixes above, rather than separate work items:
+Ini adalah temuan sekunder yang dimunculkan Lighthouse sebagai bukti untuk perbaikan di atas, bukan item kerja terpisah:
 
-- **LCP render delay (7.4s, 98% of LCP time)** on the original homepage was caused by network contention from findings #1 and #2 combined, not JS execution time (main-thread work measured only 1.6s) — resolved as a side effect of fixing those two.
-- **Unoptimized/hotlinked remote images** — same root cause as #3, resolved by the same fix.
-- **Iconify runtime API calls**: `@iconify/react` fetched icon SVG data from `api.iconify.design`/`api.simplesvg.com` on every page load (3+ requests on the homepage alone). Fixed by extracting the 59 icons actually used app-wide into a ~17KB static JSON (`scripts/generate-icons.mjs` → `src/lib/iconify-offline-data.json`) and registering them once via `addCollection()` — zero runtime icon API calls afterward. (This one *was* independently fixed, PR [#52](https://github.com/thidayah/sobatsabtu/pull/52), included here as it was a lower-priority item alongside the others.)
-- **Unused JS in shared chunks** on the homepage (37-52%) — same root cause as #1, resolved by the same fix.
+- **Keterlambatan render LCP (7.4s, 98% dari waktu LCP)** pada beranda semula disebabkan oleh kontensi jaringan dari temuan #1 dan #2 secara gabungan, bukan waktu eksekusi JS (kerja main-thread hanya terukur 1.6s) — terselesaikan sebagai efek samping dari perbaikan keduanya.
+- **Gambar remote yang tidak dioptimalkan/hotlinked** — akar masalah yang sama dengan #3, terselesaikan oleh perbaikan yang sama.
+- **Panggilan runtime API Iconify**: `@iconify/react` mengambil data SVG ikon dari `api.iconify.design`/`api.simplesvg.com` di setiap muat halaman (3+ permintaan di beranda saja). Diperbaiki dengan mengekstrak 59 ikon yang benar-benar digunakan di seluruh aplikasi ke dalam JSON statis ~17KB (`scripts/generate-icons.mjs` → `src/lib/iconify-offline-data.json`) dan mendaftarkannya sekali melalui `addCollection()` — nol panggilan API ikon saat runtime setelahnya. (Yang ini *memang* diperbaiki secara terpisah, PR [#52](https://github.com/thidayah/sobatsabtu/pull/52), disertakan di sini karena ini item prioritas lebih rendah di samping yang lain.)
+- **JS tidak terpakai di shared chunk** pada beranda (37-52%) — akar masalah yang sama dengan #1, terselesaikan oleh perbaikan yang sama.
 
-## What's left
+## Yang tersisa
 
-Nothing performance-critical. If revisited:
-- Finding #6 needs a decision on enabling Supabase's `db-aggregates-enabled` setting or writing a Postgres RPC.
-- Full dashboard SSR (beyond `/event/[id]`) needs a cookie-based session migration first.
+Tidak ada yang kritis terhadap performa. Jika ditinjau ulang:
+- Temuan #6 memerlukan keputusan untuk mengaktifkan pengaturan `db-aggregates-enabled` Supabase atau menulis RPC Postgres.
+- SSR dashboard penuh (di luar `/event/[id]`) memerlukan migrasi sesi berbasis cookie terlebih dahulu.
