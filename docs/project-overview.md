@@ -96,3 +96,4 @@ Diatur di `.env.local` (tidak pernah di-commit):
 
 - [database.md](./database.md) — schema, migrasi, RLS
 - [performance-audit.md](./performance-audit.md) — audit performa 2026-07: temuan, perbaikan, hasil
+- [seo-strategy.md](./seo-strategy.md) — strategi SEO: kata kunci, rencana implementasi, structured data, off-page
