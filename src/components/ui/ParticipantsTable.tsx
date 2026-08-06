@@ -21,7 +21,7 @@ interface ParticipantsTableProps {
   current_participants: number;
 }
 
-export const ParticipantsTable = ({ id, slug, current_participants }: ParticipantsTableProps) => {
+export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTableProps) => {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -68,7 +68,7 @@ export const ParticipantsTable = ({ id, slug, current_participants }: Participan
   // Initial load
   useEffect(() => {
     fetchParticipants(1, "");
-  }, [slug]);
+  }, [slug]); // eslint-disable-line react-hooks/exhaustive-deps -- deps intentional (initial load on slug change)
 
   // Handle search
   const handleSearch = async () => {

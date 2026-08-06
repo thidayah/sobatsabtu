@@ -77,7 +77,7 @@ export default function EventsPage() {
 
   useEffect(() => {
     fetchEvents();
-  }, [pagination.page, filters.is_active, filters.sort_by, filters.sort_order]);
+  }, [pagination.page, filters.is_active, filters.sort_by, filters.sort_order]); // eslint-disable-line react-hooks/exhaustive-deps -- deps intentional (refetch on page/filter change)
 
   const handleSearch = () => {
     if (loading) return
@@ -89,7 +89,7 @@ export default function EventsPage() {
 
   useEffect(() => {
     handleSearch()
-  }, [debouncedSearch]);
+  }, [debouncedSearch]); // eslint-disable-line react-hooks/exhaustive-deps -- handleSearch fires only on debounced search value
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this event?')) return;

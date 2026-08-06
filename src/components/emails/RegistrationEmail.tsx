@@ -21,6 +21,7 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
 }) => {
   return (
     <html>
+      {/* eslint-disable-next-line @next/next/no-head-element -- email template requires raw <head>, not next/head */}
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +39,7 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
 
           {/* Content */}
           <div style={contentStyle}>
-            <h1 style={titleStyle}>You're In! 🎉</h1>
+            <h1 style={titleStyle}>You&apos;re In! 🎉</h1>
             <p style={subtitleStyle}>Thank you for registering with Sobat Sabtu</p>
 
             {/* Member Info Card */}
@@ -64,6 +65,7 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
               <div style={codeLabelStyle}>YOUR REGISTRATION CODE</div>
               <div style={codeStyle}>{registrationCode}</div>
               <div style={qrStyle}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- email template requires raw <img> with cid: src; next/image is not supported in email */}
                 <img src="cid:qrcode" alt="QR Code" width={150} height={150} style={{ display: 'block', margin: '0 auto' }} />
               </div>
             </div>
@@ -94,7 +96,7 @@ export const RegistrationEmail: React.FC<RegistrationEmailProps> = ({
           <div style={footerStyle}>
             <div style={footerTextStyle}>#pelarikonten</div>
             <div style={footerTextStyle}>
-              Sobat Sabtu - Turning "Mager" into Adventure Since 2019
+              Sobat Sabtu - Turning &quot;Mager&quot; into Adventure Since 2019
             </div>
             {/* <div style={socialLinksStyle}>
               <a href="#" style={socialLinkStyle}>Instagram</a>
@@ -283,36 +285,3 @@ const footerTextStyle: React.CSSProperties = {
   color: '#666666',
   fontSize: 12,
 };
-
-const socialLinksStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  marginTop: 16,
-  gap: 16,
-};
-
-const socialLinkStyle: React.CSSProperties = {
-  color: '#0928d5',
-  textDecoration: 'none',
-  fontSize: 12,
-};
-
-// Media query styles (for email clients that support)
-const mediaQueryStyles = `
-  @media (max-width: 600px) {
-    .container {
-      border-radius: 16px;
-    }
-    .content {
-      padding: 24px 20px;
-    }
-    .info-row {
-      flex-direction: column;
-      gap: 8px;
-    }
-    .info-value {
-      text-align: left;
-    }
-  }
-`;

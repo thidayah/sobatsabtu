@@ -5,7 +5,6 @@ import { motion, useInView } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
-import Link from 'next/link';
 import { ActivityCard } from "../ui/ActivityCard";
 
 // Categories for filtering
@@ -20,11 +19,11 @@ interface Activity {
   time: string;
   location: string;
   location_url?: string | null;
-  image_url?: string | null;
+  image_url: string;
   descriptions?: string | null;
   is_active?: boolean;
-  current_participants?: number;
-  max_participants?: number;
+  current_participants: number;
+  max_participants: number;
   external_url?: string | null;
 }
 
@@ -108,7 +107,7 @@ export const Activities = ({ activities }: ActivitiesProps) => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-xs sm:text-xl text-gray-600 dark:text-gray-400"
             >
-              Don't miss out on the exciting and challenging activities we'll be hosting
+              Don&apos;t miss out on the exciting and challenging activities we&apos;ll be hosting
             </motion.p>
           </motion.div>
 

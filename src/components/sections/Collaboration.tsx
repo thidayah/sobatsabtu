@@ -121,7 +121,7 @@ export const Collaboration = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-xs sm:text-xl text-white/70"
               >
-                We're proud to collaborate with leading brands that share our passion
+                We&apos;re proud to collaborate with leading brands that share our passion
                 for sports and community building.
               </motion.p>
             </motion.div>
@@ -157,8 +157,6 @@ export const Collaboration = () => {
               {partners.map((partner, index) => {
                 // Hitung posisi untuk efek floating yang berbeda-beda
                 const delay = index * 0.1;
-                const yOffset = (index % 3) * 10 - 10;
-                const xOffset = (index % 4) * 8 - 12;
                 const rotateOffset = (index % 5) * 5 - 10;
 
                 return (

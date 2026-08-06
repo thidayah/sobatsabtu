@@ -10,14 +10,13 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, icon, className = '', type = 'text', onClick, onFocus, ...props }, ref) => {
+  ({ label, error, icon, className = '', type = 'text', onClick, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
       if (type === 'date' || type === 'time') {
         // Trigger native date picker
         if (inputRef.current) {
-          //@ts-ignore
           inputRef?.current?.showPicker?.();
         }
       }

@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch attended_participants count per event
-    let attendedMap = new Map<string, number>();
+    const attendedMap = new Map<string, number>();
     if (events && events.length > 0) {
       const eventIds = events.map(e => e.id);
       const { data: attendances } = await supabaseServer

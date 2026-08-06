@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase';
 
+interface Member {
+  id: string;
+  full_name: string;
+  email: string;
+  ig_username: string | null;
+  gender: string | null;
+  emergency_contact_name: string | null;
+  emergency_contact_phone: string | null;
+  medical_notes: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Get query parameters
@@ -37,8 +51,8 @@ export async function GET(request: NextRequest) {
       return filtered;
     };
 
-    let members: any[] | null;
-    let membersError: any;
+    let members: Member[] | null;
+    let membersError: { message: string } | null;
     let total: number;
 
     if (validSortBy === 'created_at') {
@@ -143,7 +157,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Add total_events and total_events_attendance to each member
-    let membersWithEventCount = members.map(member => ({
+    const membersWithEventCount = members.map(member => ({
       ...member,
       total_events: eventCountMap.get(member.id) || 0,
       total_events_attendance: attendanceCountMap.get(member.id) || 0,

@@ -11,8 +11,27 @@ import { RegistrationForm } from '@/components/ui/RegistrationForm';
 import { ParticipantsTable } from '@/components/ui/ParticipantsTable';
 import { formatDate, formatTime } from '@/lib/utils';
 
+interface EventDetailData {
+  id: string;
+  name: string;
+  descriptions: string | null;
+  slug: string;
+  image_url: string;
+  date: string;
+  time: string;
+  location: string;
+  location_url: string | null;
+  current_participants: number;
+  max_participants: number;
+  type: string;
+  is_active: boolean;
+  external_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 interface EventDetailClientProps {
-  eventData: any;
+  eventData: EventDetailData;
   initialTab: 'registration' | 'participants';
 }
 

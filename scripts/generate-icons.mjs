@@ -37,7 +37,7 @@ const ICONS = [
 
 const collectionsByPrefix = {};
 for (const entry of ICONS) {
-  const [prefix, name] = entry.split(':');
+  const [prefix] = entry.split(':');
   if (!collectionsByPrefix[prefix]) {
     const mod = await import(`@iconify-json/${prefix}/icons.json`, { with: { type: 'json' } });
     collectionsByPrefix[prefix] = mod.default;

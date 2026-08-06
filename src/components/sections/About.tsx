@@ -133,15 +133,15 @@ export const About = () => {
               </motion.div>
 
               <p className="text-sm md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Founded in Bandung, we transform the "Mager" (lazy mood) culture into positive energy through fun and inclusive sports activities.
+                Founded in Bandung, we transform the &quot;Mager&quot; (lazy mood) culture into positive energy through fun and inclusive sports activities.
                 We started with a simple idea: what if we could make sports fun for young people who think
-                they're "too lazy" to exercise? We package physical activities in engaging content and create
+                they&apos;re &quot;too lazy&quot; to exercise? We package physical activities in engaging content and create
                 a welcoming space for everyone, regardless of their athletic ability.
               </p>
 
               <p className="text-sm md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                 Our hashtag <span className="font-semibold text-sobat-blue dark:text-sobat-yellow italic">#pelarikonten</span> reflects our philosophy —
-                we're content creators who happen to run, not runners who create content. Every run, every
+                we&apos;re content creators who happen to run, not runners who create content. Every run, every
                 game, every session is an opportunity to create memorable moments.
               </p>
 
@@ -225,8 +225,8 @@ export const About = () => {
                 className="absolute -top-6 -right-6 bg-white/70 dark:bg-black/70  p-6 rounded-xl max-w-xs hidden lg:block"
               >
                 <p className="text-sm">
-                  "Best decision ever! I never thought I'd enjoy running,
-                  but Sobat Sabtu made it fun and social."
+                  &quot;Best decision ever! I never thought I&apos;d enjoy running,
+                  but Sobat Sabtu made it fun and social.&quot;
                 </p>
                 <div className="mt-4 flex items-center gap-3">
                   <div className="w-10 h-10 bg-sobat-blue/20 rounded-full" />

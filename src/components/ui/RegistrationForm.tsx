@@ -37,7 +37,7 @@ export const RegistrationForm = ({
   });
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResult, setSearchResult] = useState<any>(null);
+  const [searchResult, setSearchResult] = useState<{ error?: string } | null>(null);
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -267,7 +267,7 @@ export const RegistrationForm = ({
       {/* Search Section */}
       <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 hidden">
         <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mb-4">
-          Enter your email or instagram username to auto-fill your details if you've registered before.
+          Enter your email or instagram username to auto-fill your details if you&apos;ve registered before.
         </p>
 
         <div className="flex flex-col md:flex-row gap-3">
@@ -401,7 +401,7 @@ export const RegistrationForm = ({
             />
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            We'll tag you in our event photos!
+            We&apos;ll tag you in our event photos!
           </p>
         </div>
 
