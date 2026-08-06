@@ -2,6 +2,31 @@
 
 Dokumen ini merinci strategi optimasi mesin pencari (SEO) untuk Sobat Sabtu (`sobatsabtu.runminders.com`). Fokus pada kata kunci long-tail lokal dengan target utama Bandung — perluasan ke Jakarta direncanakan sebagai fase lanjutan. Semua optimasi diterapkan pada halaman yang sudah ada (homepage + halaman detail event), tanpa membuat halaman konten atau artikel baru.
 
+## Status implementasi (2026-08-06)
+
+| Fase | Status |
+|---|---|
+| **Fase 1 — Fondasi indexability** | ✅ Selesai — `sitemap.ts`, `robots.ts`, `not-found.tsx`, metadata root |
+| **Fase 2 — On-page homepage** | ✅ Selesai (dengan deviasi, lihat catatan) |
+| **Fase 3 — Halaman event** | ✅ Selesai — SSR daftar event + canonical per event |
+| **Fase 4 — Structured data (JSON-LD)** | ✅ Selesai — `SportsClub` + `SportsEvent` |
+| **Fase 5 — Off-page & Search Console** | ⏳ Menunggu deploy + akses manual (GSC, Bing, GMB, backlink) |
+| **Fase 6 — Pengukuran & iterasi** | ⏳ Menunggu deploy (submit sitemap, Lighthouse, rank tracking) |
+
+**Catatan deviasi dari rencana:**
+- **2a (`h1`)**: diimplementasikan sebagai `h1` tersembunyi (**`sr-only`**) — bukan heading terlihat — agar desain asli tidak berubah; slide title jadi `h2` (visual identik). Tujuan SEO (1 `h1` ber-kata kunci di HTML) tetap tercapai.
+- **2b (copy `About.tsx`)**: sengaja **tidak dilakukan** — konten dikembalikan ke versi asli atas keputusan menjaga tampilan. Dampak ditutup oleh metadata + `h1` sr-only.
+- **3a (SSR)**: memakai `getHomepageEvents(8)` (bukan `getAllEvents()`) agar homepage tetap menampilkan 8 event (bukan semua 32).
+
+**Pekerjaan ekstra (di luar rencana):**
+- **noindex `/admin` & `/dashboard`**: `Disallow` di `robots.txt` + header `X-Robots-Tag: noindex, nofollow` di `next.config.ts` — mencegah halaman pribadi ter-index.
+- Fix lint `ThemeToggle`, tipe `Activities`, tombol Back to Home di 404 event, `.env.local` → domain produksi.
+
+**Item tertunda (bukan blocker):**
+- Gambar event rusak — `ANOTHER SATURDAY MORNING RUN - JKT - VOL 6` (`image_url` mati, HTTP 404); fix = perbarui data di `ss_events`.
+- Utang lint lama (44 error / 27 warning di file pre-existing) — dibersihkan di fase terpisah.
+- Soft-404 halaman event (konten "Event Not Found" benar tapi HTTP 200).
+
 ## Target kata kunci
 
 Mengingat volume dan persaingan yang realistis, target dibagi menjadi tiga tingkatan:
@@ -103,6 +128,8 @@ Ubah struktur `Hero.tsx`:
 
 **Alasan**: mesin pencari memberi bobot tinggi pada teks `h1`. `h1` dinamis yang berisi nama brand event tidak membawa nilai SEO.
 
+> **Status**: diimplementasikan dengan `h1` tersembunyi (`sr-only`) agar desain tidak berubah; slide title menjadi `h2` (visual identik).
+
 **File**: `src/components/sections/Hero.tsx`
 
 #### 2b. Perkaya copy section
@@ -111,6 +138,8 @@ Tambahkan frasa kunci secara alami di heading dan teks:
 
 - `About.tsx` h2 "More Than Just / A Sports Community" → tambah "Bandung" di subjudul
 - Pastikan kata "komunitas", "lari", dan "olahraga" muncul di teks paragraf
+
+> **Status**: sengaja **tidak diimplementasikan** — konten `About.tsx` dikembalikan ke versi asli untuk menjaga tampilan. Dampak SEO ditutup oleh metadata + `h1` sr-only.
 
 **File**: `src/components/sections/About.tsx`
 
@@ -124,7 +153,7 @@ Pertimbangkan `metadata` eksplisit di `src/app/page.tsx` jika perlu judul/deskri
 
 `Activities.tsx` saat ini memuat daftar event melalui `fetch('/api/events?...')` di `useEffect`. Ubah pola menjadi server fetch → props, mengikuti pola yang sudah ada di `event/[id]`:
 
-1. `src/app/page.tsx` memanggil `getAllEvents()` (fungsi yang sama dari Fase 1a) sebagai Server Component
+1. `src/app/page.tsx` memanggil `getHomepageEvents(8)` (8 event terbaru; bukan `getAllEvents()`) sebagai Server Component
 2. Data event diteruskan sebagai props ke komponen client `Activities`
 3. `Activities.tsx` menghapus `useEffect` fetch dan menggunakan data dari props
 
