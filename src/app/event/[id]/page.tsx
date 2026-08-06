@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: EventPageParams): Promise<Met
   const event = await getEventByIdentifier(id);
 
   if (!event) {
-    return { title: 'Event Not Found - Sobat Sabtu' };
+    notFound();
   }
 
   const title = `${event.name} - Sobat Sabtu`;
