@@ -23,7 +23,7 @@ export async function PATCH(
     }
 
     // Check if member exists
-    const { data: existingMember, error: findError } = await supabaseServer
+    const { error: findError } = await supabaseServer
       .from('ss_members')
       .select('id, full_name, is_active')
       .eq('id', id)
@@ -54,7 +54,7 @@ export async function PATCH(
 
     // Prepare update data (only allow specific fields to be updated)
     const allowedFields = ['full_name', 'email', 'ig_username', 'gender', 'emergency_contact_name', 'emergency_contact_phone', 'medical_notes', 'is_active'];
-    const updateData: any = { updated_at: new Date().toISOString() };
+    const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
 
     for (const field of allowedFields) {
       if (body[field] !== undefined) {

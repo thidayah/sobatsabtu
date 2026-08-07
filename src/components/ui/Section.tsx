@@ -8,7 +8,7 @@ interface SectionProps {
   fullWidth?: boolean;
 }
 
-export const Section = ({ children, className, id, fullWidth = false }: SectionProps) => {
+export const Section = ({ children, className, id }: SectionProps) => {
   return (
     <section 
       id={id}

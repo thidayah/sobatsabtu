@@ -52,6 +52,10 @@ export function checkUUID(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 }
 
+export function isEventPast(date: string, time: string) {
+  return new Date(`${date}T${time}`) < new Date();
+}
+
 export function formatDate(dateString: string) {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {

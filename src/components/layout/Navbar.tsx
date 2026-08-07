@@ -18,7 +18,7 @@ export const Navbar = () => {
   useEffect(() => {
     const theme = localStorage.getItem('theme');
     const isDarkMode = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setIsDark(isDarkMode);
+    setIsDark(isDarkMode); // eslint-disable-line react-hooks/set-state-in-effect -- theme detection is client-only; runs in effect (localStorage/window unavailable during SSR)
     document.documentElement.classList.toggle('dark', isDarkMode);
   }, []);
 

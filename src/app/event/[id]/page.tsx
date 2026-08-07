@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getEventByIdentifier } from '@/lib/events';
+import { isEventPast } from '@/lib/utils';
+import { JsonLd } from '@/components/ui/JsonLd';
 import { EventDetailClient } from './EventDetailClient';
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL!;
 
 interface EventPageParams {
   params: Promise<{ id: string }>;
@@ -13,7 +17,7 @@ export async function generateMetadata({ params }: EventPageParams): Promise<Met
   const event = await getEventByIdentifier(id);
 
   if (!event) {
-    return { title: 'Event Not Found - Sobat Sabtu' };
+    notFound();
   }
 
   const title = `${event.name} - Sobat Sabtu`;
@@ -22,9 +26,13 @@ export async function generateMetadata({ params }: EventPageParams): Promise<Met
   return {
     title,
     description,
+    alternates: {
+      canonical: `/event/${event.slug}`,
+    },
     openGraph: {
       title,
       description,
+      url: `/event/${event.slug}`,
       images: event.image_url ? [{ url: event.image_url }] : undefined,
     },
     twitter: {
@@ -46,7 +54,43 @@ export default async function EventDetailPage({ params, searchParams }: EventPag
     notFound();
   }
 
-  const initialTab = tab === 'participants' ? 'participants' : 'registration';
+  const initialTab = tab === 'registration' || tab === 'participants'
+    ? tab
+    : isEventPast(eventData.date, eventData.time) ? 'participants' : 'registration';
 
-  return <EventDetailClient eventData={eventData} initialTab={initialTab} />;
+  const eventImage = eventData.image_url?.startsWith('/')
+    ? `${BASE_URL}${eventData.image_url}`
+    : eventData.image_url || undefined;
+
+  const eventSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SportsEvent',
+    name: eventData.name,
+    description: eventData.descriptions || undefined,
+    startDate: eventData.time ? `${eventData.date}T${eventData.time}` : eventData.date,
+    image: eventImage,
+    url: `${BASE_URL}/event/${eventData.slug}`,
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: 'https://schema.org/EventScheduled',
+    location: {
+      '@type': 'Place',
+      name: eventData.location,
+      url: eventData.location_url || undefined,
+    },
+    organizer: {
+      '@type': 'Organization',
+      name: 'Sobat Sabtu',
+      url: BASE_URL,
+    },
+    maximumAttendeeCapacity: eventData.max_participants > 0
+      ? eventData.max_participants
+      : undefined,
+  };
+
+  return (
+    <>
+      <JsonLd data={eventSchema} />
+      <EventDetailClient eventData={eventData} initialTab={initialTab} />
+    </>
+  );
 }

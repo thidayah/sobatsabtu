@@ -134,9 +134,14 @@ export const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Title */}
+          {/* Visually hidden h1 with primary keyword (SEO + a11y, no visual change) */}
+          <h1 className="sr-only">
+            Komunitas Lari &amp; Olahraga Anak Muda Bandung
+          </h1>
+
+          {/* Slide Title */}
           <AnimatePresence mode="wait">
-            <motion.h1
+            <motion.h2
               key={`title-${currentSlide}`}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -145,7 +150,7 @@ export const Hero = () => {
               className="text-2xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-white max-w-7xl mx-auto"
             >
               {slides[currentSlide].title}
-            </motion.h1>
+            </motion.h2>
           </AnimatePresence>
 
           {/* Description */}
@@ -184,7 +189,7 @@ export const Hero = () => {
                 onClick={scrollToActivities}
                 className="rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 text-xs md:text-base text-white hover:bg-white/20 group cursor-pointer animate-bounce"
               >
-                Let's Explore
+                Let&apos;s Explore
                 <Icon icon="lucide:chevron-down" width="20" height="20" className="ml-2 " />
               </button>
             </motion.div>

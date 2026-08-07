@@ -4,7 +4,24 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-export const ActivityCard = ({ activity, isHovered }: { activity: any; isHovered: boolean }) => {
+interface Activity {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  date: string;
+  time: string;
+  location: string;
+  location_url?: string | null;
+  image_url: string;
+  descriptions?: string | null;
+  is_active?: boolean;
+  current_participants: number;
+  max_participants: number;
+  external_url?: string | null;
+}
+
+export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHovered: boolean }) => {
   // Check if event is closed (inactive or date already passed)
   const isEventClosed = () => {
     if (!activity.is_active) return true;

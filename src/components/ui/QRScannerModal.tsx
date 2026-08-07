@@ -79,7 +79,7 @@ export const QRScannerModal = ({ isOpen, onClose }: QRScannerModalProps) => {
               handleCodeDetected(decodedText);
             }
           },
-          (errorMessage) => {
+          () => {
             // Ignore scanning errors
           }
         );
@@ -238,7 +238,7 @@ export const QRScannerModal = ({ isOpen, onClose }: QRScannerModalProps) => {
             <div className="text-center py-8">
               <Icon icon="lucide:qr-code" width="64" height="64" className="mx-auto text-gray-400 mb-4" />
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Click the button below to start scanning participant's QR code
+                Click the button below to start scanning participant&apos;s QR code
               </p>
               <button
                 onClick={handleStartScanning}

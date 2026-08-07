@@ -5,115 +5,33 @@ import { motion, useInView } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
-import Link from 'next/link';
 import { ActivityCard } from "../ui/ActivityCard";
-
-// Data activities - dalam format 9:16 image_url/flyer
-const activitiesMock = [
-  {
-    id: 'asmr-1',
-    title: 'ASMR #42 - Bandung City Run',
-    type: 'ASMR',
-    date: 'Saturday, 24 May 2025',
-    time: '06:30 WIB',
-    location: 'Start: Bandung City Hall',
-    image_url: 'https://images.unsplash.com/photo-1638886050954-dbd7208412c0?q=80&w=987&auto=format&fit=crop',
-    participants: 48,
-    maxParticipants: 60,
-    isOpen: false,
-  },
-  {
-    id: 'night-run-12',
-    title: 'Night Run #12 - Lights & Night',
-    type: 'Night Run',
-    date: 'Tuesday, 20 May 2025',
-    time: '19:30 WIB',
-    location: 'Start: Gasibu Field',
-    image_url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=987&auto=format&fit=crop',
-    participants: 32,
-    maxParticipants: 50,
-    isOpen: false,
-  },
-  {
-    id: 'exercise-5',
-    title: 'Exercise Session #5 - Core Strength',
-    type: 'Exercise Session',
-    date: 'Thursday, 22 May 2025',
-    time: '19:00 WIB',
-    location: 'Taman Lalu Lintas',
-    image_url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=987&auto=format&fit=crop',
-    participants: 18,
-    maxParticipants: 30,
-    isOpen: true,
-  },
-  {
-    id: 'run-wood-8',
-    title: 'Run in the Wood #8 - Pine Forest',
-    type: 'Run in the Wood',
-    date: 'Sunday, 1 June 2025',
-    time: '06:00 WIB',
-    location: 'Start: Curug Malela',
-    image_url: 'https://images.unsplash.com/photo-1540539234-c14a20fb7c7b?q=80&w=987&auto=format&fit=crop',
-    participants: 24,
-    maxParticipants: 35,
-    isOpen: false,
-  },
-  {
-    id: 'nepak-3',
-    title: 'Sobat Nepak #3 - Badminton Night',
-    type: 'Sobat Nepak',
-    date: 'Friday, 23 May 2025',
-    time: '19:00 WIB',
-    location: 'GOR Badminton Buah Batu',
-    image_url: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=987&auto=format&fit=crop',
-    participants: 12,
-    maxParticipants: 20,
-    isOpen: false,
-  },
-  {
-    id: 'nyepak-2',
-    title: 'Sobat Nyepak #2 - Futsal Fun',
-    type: 'Sobat Nyepak',
-    date: 'Saturday, 24 May 2025',
-    time: '16:00 WIB',
-    location: 'Lapangan Futsal Saparua',
-    image_url: 'https://images.unsplash.com/photo-1575361204480-a3d5b3544f2b?q=80&w=987&auto=format&fit=crop',
-    participants: 14,
-    maxParticipants: 20,
-    isOpen: true,
-  },
-  {
-    id: 'hoops-1',
-    title: 'Sobat Hoops #1 - Basketball Session',
-    type: 'Sobat Hoops',
-    date: 'Sunday, 25 May 2025',
-    time: '08:00 WIB',
-    location: 'Lapangan Basket Gasibu',
-    image_url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=989&auto=format&fit=crop',
-    participants: 10,
-    maxParticipants: 20,
-    isOpen: false,
-  },
-  {
-    id: 'nyodok-4',
-    title: 'Sobat Nyodok #4 - Billiard Night',
-    type: 'Sobat Nyodok',
-    date: 'Monday, 26 May 2025',
-    time: '19:00 WIB',
-    location: 'Rocket Billiard Dago',
-    image_url: 'https://images.unsplash.com/photo-1623182081166-9e5b5e5b5b5b?q=80&w=987&auto=format&fit=crop',
-    participants: 8,
-    maxParticipants: 16,
-    isOpen: false,
-  }
-];
 
 // Categories for filtering
 // const categories = ['All', 'Running Series', 'Multi-Sport Series'];
 
-export const Activities = () => {
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
+interface Activity {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  date: string;
+  time: string;
+  location: string;
+  location_url?: string | null;
+  image_url: string;
+  descriptions?: string | null;
+  is_active?: boolean;
+  current_participants: number;
+  max_participants: number;
+  external_url?: string | null;
+}
+
+interface ActivitiesProps {
+  activities: Activity[];
+}
+
+export const Activities = ({ activities }: ActivitiesProps) => {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -121,32 +39,6 @@ export const Activities = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
-  // Fetch activities from API
-  useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          '/api/events?page=1&limit=8&sort_by=date&sort_order=desc'
-        );
-        const result = await response.json();
-
-        if (result.success) {
-          setActivities(result.data.items || []);
-        } else {
-          console.error('Failed to fetch activities:', result.message);
-        }
-      } catch (error) {
-        console.error('Error fetching activities:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchActivities();
-  }, []);
-
-  // const filteredActivities = activitiesMock;
   const filteredActivities = activities;
   // const filteredActivities = selectedCategory === 'All'
   //   ? activities
@@ -215,20 +107,12 @@ export const Activities = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-xs sm:text-xl text-gray-600 dark:text-gray-400"
             >
-              Don't miss out on the exciting and challenging activities we'll be hosting
+              Don&apos;t miss out on the exciting and challenging activities we&apos;ll be hosting
             </motion.p>
           </motion.div>
 
-          {/* Loading State */}
-          {loading && (
-            <div className="flex justify-center flex-col gap-4 items-center py-20">
-              <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent rounded-full animate-spin" />
-              <span className=" text-xs md:text-base">Loading ...</span>
-            </div>
-          )}
-
           {/* No Activities State */}
-          {!loading && filteredActivities.length === 0 && (
+          {filteredActivities.length === 0 && (
             <div className="text-center py-20">
               <Icon icon="mdi:calendar-blank" width="64" height="64" className="mx-auto text-gray-400 mb-4" />
               <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -262,7 +146,7 @@ export const Activities = () => {
           </motion.div> */}
 
           {/* Horizontal Scroll Section */}
-          {!loading && filteredActivities.length > 0 && (
+          {filteredActivities.length > 0 && (
             <div className="relative">
               {/* Left Arrow */}
               {showLeftArrow && (
@@ -300,7 +184,7 @@ export const Activities = () => {
                   msOverflowStyle: 'none',
                 }}
               >
-                {filteredActivities.map((activity: any, index) => (
+                {filteredActivities.map((activity: Activity, index) => (
                   <motion.div
                     key={activity.id}
                     initial={{ opacity: 0, x: 50 }}

@@ -73,7 +73,7 @@ export default function DashboardPage() {
   const [filterYear, setFilterYear] = useState(new Date().getFullYear());
   const [filterMonth, setFilterMonth] = useState('');
   const [isScannerOpen, setIsScannerOpen] = useState(false);
-  const [scanning, setScanning] = useState(false);
+  const [, setScanning] = useState(false);
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -263,7 +263,7 @@ export default function DashboardPage() {
           Welcome back, {user?.name || 'Admin'}!
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Here's an overview of your community activities
+          Here&apos;s an overview of your community activities
         </p>
       </div>
 
@@ -276,7 +276,7 @@ export default function DashboardPage() {
                 Scan QR Code for Attendance
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Scan participant's QR code to mark attendance
+                Scan participant&apos;s QR code to mark attendance
               </p>
             </div>
             {/* <Icon icon="lucide:qr-code" width="24" height="24" className="text-gray-400" /> */}

@@ -30,7 +30,7 @@ export default function DashboardLayout({
     // Check authentication on client-side only
     const authenticated = isAuthenticated();
 
-    setIsAuthenticatedState(authenticated);
+    setIsAuthenticatedState(authenticated); // eslint-disable-line react-hooks/set-state-in-effect -- client-only auth gate; must run in effect (localStorage unavailable during SSR)
 
     if (!authenticated) {
       router.push('/admin');

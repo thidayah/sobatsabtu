@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase';
-import { generateUniqueCode } from '@/lib/utils';
+import { generateUniqueCode, isEventPast } from '@/lib/utils';
 import { sendRegistrationEmail } from "@/lib/email";
 
 export async function GET(request: NextRequest) {
@@ -243,10 +243,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate event date is not passed
-    const eventDate = new Date(`${event.date}T${event.time}`);
-    const currentDate = new Date();
-
-    if (eventDate < currentDate) {
+    if (isEventPast(event.date, event.time)) {
       return NextResponse.json(
         {
           success: false,
@@ -275,7 +272,7 @@ export async function POST(request: NextRequest) {
     let memberData = null;
 
     // Build query to check existing member
-    let memberQuery = supabaseServer
+    const memberQuery = supabaseServer
       .from('ss_members')
       .select('*')
       .or(`email.eq.${body.email},ig_username.eq.${body.ig_username || ''}`)
@@ -299,7 +296,7 @@ export async function POST(request: NextRequest) {
       // Update existing member
       isExistingMember = true;
 
-      const updateData: any = {
+      const updateData: Record<string, unknown> = {
         full_name: body.full_name,
         email: body.email,
         gender: body.gender,
