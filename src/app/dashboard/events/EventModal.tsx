@@ -141,7 +141,7 @@ export const EventModal = ({ isOpen, onClose, event, onSuccess }: EventModalProp
       } else {
         setError(result.message || 'Failed to save event');
       }
-    } catch (err) {
+    } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);

@@ -130,7 +130,7 @@ export const Footer = () => {
                 )}
               </button>
               <p className="text-xs md:text-base text-gray-600 dark:text-white/60 leading-relaxed mt-2">
-                Since 2019, we've been transforming the "Mager" culture into positive energy through fun and inclusive sports activities in Bandung.
+                Since 2019, we&apos;ve been transforming the &quot;Mager&quot; culture into positive energy through fun and inclusive sports activities in Bandung.
               </p>
             </motion.div>
 

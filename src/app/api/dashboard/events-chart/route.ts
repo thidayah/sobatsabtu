@@ -21,7 +21,7 @@ const getEventsChartData = unstable_cache(
     // Get all registrations for events in the specified year
     const eventIds = events?.map(e => e.id) || [];
 
-    let registrationsData: any[] = [];
+    let registrationsData: { event_id: string; is_attendance: boolean }[] = [];
     if (eventIds.length > 0) {
       const { data: registrations, error: regError } = await supabaseServer
         .from('ss_registrations')

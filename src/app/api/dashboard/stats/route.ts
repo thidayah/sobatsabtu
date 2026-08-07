@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // const searchParams = request.nextUrl.searchParams;
     // const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString());

@@ -60,7 +60,7 @@ export async function PUT(
       );
     }
 
-    const updateData: any = { updated_at: new Date().toISOString() };
+    const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() };
     if (body.is_attendance !== undefined) updateData.is_attendance = body.is_attendance;
 
     // Update member

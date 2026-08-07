@@ -33,7 +33,13 @@ export async function GET(
 
     findQuery = findQuery.eq('code', identifier);
 
-    const { data: existingRegistration, error: findError } = await findQuery.single<any>();
+    const { data: existingRegistration, error: findError } = await findQuery.single<{
+      id: string;
+      code: string;
+      is_attendance: boolean;
+      event: { name: string; date: string; is_active: boolean };
+      member: { full_name: string; email: string; ig_username: string | null; gender: string | null };
+    }>();
 
     if (findError) {
       if (findError.code === 'PGRST116') {

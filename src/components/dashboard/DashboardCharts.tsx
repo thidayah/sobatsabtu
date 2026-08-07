@@ -42,12 +42,24 @@ interface DashboardChartsProps {
   filterYear: number;
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipPayloadItem {
+  value: number;
+  color?: string;
+  name?: string;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayloadItem[];
+  label?: string | number;
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 shadow-lg">
         <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">{label}</p>
-        {payload.map((p: any, index: number) => (
+        {payload.map((p, index) => (
           <p key={index} className="text-sm" style={{ color: p.color }}>
             Total: {p.value.toLocaleString()}
           </p>

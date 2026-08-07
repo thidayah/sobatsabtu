@@ -75,7 +75,7 @@ export default function MembersPage() {
 
   useEffect(() => {
     fetchMembers();
-  }, [pagination.page, filters.is_active, filters.start_date, filters.end_date, filters.sort_by, filters.sort_order]);
+  }, [pagination.page, filters.is_active, filters.start_date, filters.end_date, filters.sort_by, filters.sort_order]); // eslint-disable-line react-hooks/exhaustive-deps -- deps intentional (refetch on page/filter change)
 
   const handleSearch = () => {
     if (loading) return
@@ -85,7 +85,7 @@ export default function MembersPage() {
 
   const debouncedSearch = useDebounce(filters.search, 500); // 500ms delay
 
-  useEffect(() => handleSearch(), [debouncedSearch]);
+  useEffect(() => handleSearch(), [debouncedSearch]); // eslint-disable-line react-hooks/exhaustive-deps -- handleSearch fires only on debounced search value
 
   useEffect(() => {
     const auth = getAuth();

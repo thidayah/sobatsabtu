@@ -8,7 +8,6 @@ import { Table } from '@/components/ui/Table';
 import { Pagination } from '@/components/ui/Pagination';
 import { formatDate, formatDiff, exportToCSV } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
-import { useDebounce } from "@/lib/helpers";
 import { Toggle } from "@/components/ui/Toggle";
 
 interface Registration {
@@ -98,17 +97,13 @@ export default function RegistrationsPage() {
 
   useEffect(() => {
     fetchRegistrations();
-  }, [pagination.page, filters.event_id, filters.status, pagination.limit]);
+  }, [pagination.page, filters.event_id, filters.status, pagination.limit]); // eslint-disable-line react-hooks/exhaustive-deps -- deps intentional (refetch on page/filter change)
 
   const handleSearch = () => {
     if (loading) return
     setPagination(prev => ({ ...prev, page: 1 }));
     fetchRegistrations();
   };
-
-  const debouncedSearch = useDebounce(filters.search, 500); // 500ms delay
-
-  // useEffect(() => handleSearch(), [debouncedSearch]);
 
   const handleExport = () => {
     const headers = ['Member Name', 'Email', 'Instagram', 'Gender', 'Event', 'Event Date', 'Registered At'];
