@@ -81,6 +81,7 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-title" content="Sobat Sabtu" />
+        <meta name="google-site-verification" content="W_8GikSlYamXWIb3m3-RWktpmB6GP4P1Wjib2LYXO4o" />
       </head>
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <Providers>
