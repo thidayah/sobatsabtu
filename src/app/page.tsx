@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Render server pada setiap request → data event selalu fresh dari Supabase
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const activities = await getHomepageEvents(8);
 

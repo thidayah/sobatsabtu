@@ -19,6 +19,7 @@ export async function getHomepageEvents(limit = 8) {
   const { data: events, error } = await supabaseServer
     .from('ss_events')
     .select('*')
+    .eq('is_active', true)
     .order('date', { ascending: false })
     .limit(limit);
 
