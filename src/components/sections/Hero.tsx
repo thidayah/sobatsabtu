@@ -37,6 +37,13 @@ const slides = [
   //   description: 'Badminton, mini soccer, basketball, billiard - choose your activity!'
   // },
   {
+    id: 11,
+    type: 'image',
+    url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/bormar.jpg",
+    title: 'Road to Bormar 2026',
+    description: 'Interested in joining? Contact us immediately.'
+  },
+  {
     id: 1,
     type: 'image',
     url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/keptbdg.jpg",

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
@@ -9,18 +9,20 @@ import { Section } from '../ui/Section';
 
 // Data partner logos (ganti dengan logo asli nanti)
 const partners = [
-  { id: 1, name: 'Nike', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg', category: 'sport' },
-  { id: 2, name: 'Adidas', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg', category: 'sport' },
-  { id: 3, name: 'Puma', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Puma_logo.svg', category: 'sport' },
-  { id: 4, name: 'The North Face', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/The_North_Face_logo.svg', category: 'outdoor' },
-  { id: 5, name: 'Salomon', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Salomon_Logo.svg', category: 'outdoor' },
-  { id: 6, name: 'Garmin', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Garmin_logo.svg', category: 'tech' },
-  { id: 7, name: 'Suunto', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Suunto_logo.svg', category: 'tech' },
-  { id: 8, name: 'Red Bull', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Red_Bull_logo.svg', category: 'energy' },
-  { id: 9, name: 'Pocari Sweat', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Pocari_Sweat_logo.svg', category: 'beverage' },
-  { id: 10, name: 'Hydro Coco', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Hydro_Coco_logo.svg', category: 'beverage' },
-  { id: 11, name: 'Decathlon', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Decathlon_logo.svg', category: 'retail' },
-  { id: 12, name: 'REI', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/REI_logo.svg', category: 'retail' },
+  { id: 11, name: 'Samsung', logo: 'https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/partners/samsung-logo.jpeg', category: 'sport' },
+  { id: 22, name: 'Jete', logo: 'https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/partners/jete-logo.png', category: 'tech' },
+  // { id: 1, name: 'Nike', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg', category: 'sport' },
+  // { id: 2, name: 'Adidas', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg', category: 'sport' },
+  // { id: 3, name: 'Puma', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/88/Puma_logo.svg', category: 'sport' },
+  // { id: 4, name: 'The North Face', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/The_North_Face_logo.svg', category: 'outdoor' },
+  // { id: 5, name: 'Salomon', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Salomon_Logo.svg', category: 'outdoor' },
+  // { id: 6, name: 'Garmin', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Garmin_logo.svg', category: 'tech' },
+  // { id: 7, name: 'Suunto', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Suunto_logo.svg', category: 'tech' },
+  // { id: 8, name: 'Red Bull', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Red_Bull_logo.svg', category: 'energy' },
+  // { id: 9, name: 'Pocari Sweat', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Pocari_Sweat_logo.svg', category: 'beverage' },
+  // { id: 10, name: 'Hydro Coco', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Hydro_Coco_logo.svg', category: 'beverage' },
+  // { id: 11, name: 'Decathlon', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Decathlon_logo.svg', category: 'retail' },
+  // { id: 12, name: 'REI', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/REI_logo.svg', category: 'retail' },
 ];
 
 // Background activity images untuk collage
@@ -38,6 +40,33 @@ const backgroundImages = [
   'https://images.unsplash.com/photo-1616279969856-759f316a5ac1?q=80&w=2070&auto=format&fit=crop',
   'https://images.unsplash.com/photo-1705468616275-616b7c01d317?q=80&w=2070&auto=format&fit=crop',
 ];
+
+// Render logo partner dari URL, dengan fallback ke teks nama bila gambar gagal dimuat
+const PartnerLogo = ({ src, name }: { src: string; name: string }) => {
+  const [hasError, setHasError] = useState(false);
+
+  // Fallback: kondisi placeholder seperti sebelumnya
+  if (hasError) {
+    return (
+      <div className="w-full h-full bg-white/20 rounded-full flex items-center justify-center">
+        <span className="text-white/80 text-xs text-center font-medium px-2">
+          {name}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={`Logo ${name}`}
+      fill
+      sizes="(max-width: 768px) 16vw, 8vw"
+      className="object-contain p-1 md:p-4"
+      onError={() => setHasError(true)}
+    />
+  );
+};
 
 export const Collaboration = () => {
   const sectionRef = useRef(null);
@@ -199,12 +228,8 @@ export const Collaboration = () => {
                         />
                       </div>
 
-                      {/* Placeholder logo - ganti dengan gambar asli */}
-                      <div className="w-full h-full bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-white/80 text-xs text-center font-medium px-2">
-                          {partner.name}
-                        </span>
-                      </div>
+                      {/* Logo partner - fallback ke nama bila gambar gagal dimuat */}
+                      <PartnerLogo src={partner.logo} name={partner.name} />
                     </div>
                   </motion.div>
                 );
