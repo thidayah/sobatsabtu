@@ -7,7 +7,19 @@ import { Icon } from '@iconify/react';
 import { Container } from '../ui/Container';
 
 // Data untuk slides
-const slides = [
+type Slide = {
+  id: number;
+  type: 'image';
+  url: string;
+  title: string;
+  description: string;
+  // Opsional: jadikan sebagian teks deskripsi sebagai tautan
+  link?: { text: string; href: string };
+};
+
+const WHATSAPP_URL = process.env.NEXT_PUBLIC_WHATSAPP ?? 'https://wa.me/6287825801252';
+
+const slides: Slide[] = [
   // {
   //   id: 1,
   //   type: 'image',
@@ -41,7 +53,8 @@ const slides = [
     type: 'image',
     url: "https://biyurtytnwlmxuninybb.supabase.co/storage/v1/object/public/ss_images/banners/bormar.jpg",
     title: 'Road to Bormar 2026',
-    description: 'Interested in joining? Contact us immediately.'
+    description: 'Interested in joining? Contact us immediately.',
+    link: { text: 'Contact us', href: WHATSAPP_URL }
   },
   {
     id: 1,
@@ -79,6 +92,29 @@ const slides = [
     description: 'Weekend miles hit diffrent when your running with the right crew and the right gear'
   }
 ];
+
+// Render deskripsi slide. Jika slide punya `link`, teks tersebut dijadikan tautan
+// yang membuka tab baru (mis. langsung ke WhatsApp).
+const renderDescription = (slide: Slide) => {
+  if (!slide.link) return slide.description;
+
+  const [before, after] = slide.description.split(slide.link.text);
+
+  return (
+    <>
+      {before}
+      <a
+        href={slide.link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white font-semibold underline underline-offset-4 hover:text-sobat-yellow transition-colors"
+      >
+        {slide.link.text}
+      </a>
+      {after}
+    </>
+  );
+};
 
 export const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -170,7 +206,7 @@ export const Hero = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="mt-2 md:mt-6 text-xs sm:text-xl text-white/80 max-w-3xl mx-auto"
             >
-              {slides[currentSlide].description}
+              {renderDescription(slides[currentSlide])}
             </motion.p>
           </AnimatePresence>
 
