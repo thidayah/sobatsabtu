@@ -21,10 +21,12 @@ export function useDebounce(value: string, delay: number) {
 export function useOptionEvent() {
   return [
     'ASMR',
+    'Night Run',
     'Exercise',
     'Run In The Wood',
     'Hoops',
     'Nyepak',
     'Nepak',
+    'Nyodok',
   ]
 }
