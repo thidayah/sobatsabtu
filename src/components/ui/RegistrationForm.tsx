@@ -228,7 +228,12 @@ export const RegistrationForm = ({
 
       {/* Popup Notification */}
       {/* {showPopup && ( */}
-      <div className={`fixed top-20 md:top-28 right-4 z-50 max-w-md transform transition-all duration-300 ease-out ${showPopup ? 'translate-x-0' : 'translate-x-[125%]'} `}>
+      {/* Saat tersembunyi: invisible agar tidak bisa difokus dan tidak membuat scroll horizontal */}
+      <div
+        role={popupMessage.type === 'error' ? 'alert' : 'status'}
+        aria-live={popupMessage.type === 'error' ? 'assertive' : 'polite'}
+        className={`fixed top-20 md:top-28 left-4 right-4 sm:left-auto z-50 sm:max-w-md transition-[transform,opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${showPopup ? 'translate-x-0 opacity-100 visible' : 'translate-x-4 opacity-0 invisible pointer-events-none'} `}
+      >
         <div className={`p-4 shadow-xl flex items-start gap-3 border backdrop-blur-sm ${popupMessage.type === 'success'
           ? 'bg-green-50 dark:bg-green-900/50 border-green-200 dark:border-green-800'
           : 'bg-red-50 dark:bg-red-900/50 border-red-200 dark:border-red-800'
@@ -255,7 +260,9 @@ export const RegistrationForm = ({
             </p>
           </div>
           <button
+            type="button"
             onClick={() => setShowPopup(false)}
+            aria-label="Close notification"
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer transition-colors flex-shrink-0"
           >
             <Icon icon="lucide:x" width="16" height="16" />
@@ -278,7 +285,7 @@ export const RegistrationForm = ({
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
               placeholder="Type email or IG username..."
-              className="w-full px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
+              className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
             />
           </div>
           <button
@@ -332,15 +339,17 @@ export const RegistrationForm = ({
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Full Name */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label htmlFor="full_name" className="block text-sm font-medium mb-2">
             Full Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
+            id="full_name"
             name="full_name"
+            autoComplete="name"
             value={formData.full_name}
             onChange={handleChange}
-            className="w-full px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
+            className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
             placeholder="Enter your full name"
             required
           />
@@ -348,25 +357,27 @@ export const RegistrationForm = ({
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label htmlFor="email" className="block text-sm font-medium mb-2">
             Email <span className="text-red-500">*</span>
           </label>
           <input
             type="email"
+            id="email"
             name="email"
+            autoComplete="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
+            className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
             placeholder="Enter your email"
             required
           />
         </div>
 
         {/* Gender */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
+        <fieldset>
+          <legend className="block text-sm font-medium mb-2">
             Gender <span className="text-red-500">*</span>
-          </label>
+          </legend>
           <div className="flex gap-4">
             {['male', 'female'].map((g, index) => (
               <label key={index} className="flex items-center gap-2 cursor-pointer text-sm md:text-base">
@@ -382,70 +393,80 @@ export const RegistrationForm = ({
               </label>
             ))}
           </div>
-        </div>
+        </fieldset>
 
         {/* Username Instagram */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label htmlFor="ig_username" className="block text-sm font-medium mb-2">
             Instagram Username
           </label>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">@</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" aria-hidden="true">@</span>
             <input
               type="text"
+              id="ig_username"
               name="ig_username"
+              autoComplete="off"
+              aria-describedby="ig_username_help"
               value={formData.ig_username}
               onChange={handleChange}
-              className="w-full px-3 py-2 pl-8 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
+              className="w-full px-3 py-2 pl-8 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
               placeholder="username"
             />
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p id="ig_username_help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             We&apos;ll tag you in our event photos!
           </p>
         </div>
 
         {/* Emergency Contact */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
+        <fieldset>
+          <legend className="block text-sm font-medium mb-2">
             Emergency Contact <span className="text-red-500">*</span>
-          </label>
-          <div className="grid grid-cols-2 gap-3">
+          </legend>
+          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-3">
             <input
               type="text"
               name="emergency_contact_name"
+              aria-label="Emergency contact name"
+              autoComplete="off"
               value={formData.emergency_contact_name}
               onChange={handleChange}
-              className="px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
+              className="px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
               placeholder="Contact name"
               required
             />
             <input
               type="tel"
               name="emergency_contact_phone"
+              aria-label="Emergency contact phone number"
+              autoComplete="off"
+              inputMode="tel"
               value={formData.emergency_contact_phone}
               onChange={handleChange}
-              className="px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all "
+              className="px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
               placeholder="Phone number"
               required
             />
           </div>
-        </div>
+        </fieldset>
 
         {/* Conditions/Medical Notes */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label htmlFor="medical_notes" className="block text-sm font-medium mb-2">
             Medical Notes / Conditions
           </label>
           <textarea
+            id="medical_notes"
             name="medical_notes"
+            aria-describedby="medical_notes_help"
             value={formData.medical_notes}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-2 text-sm md:text-base border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all resize-none "
+            className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow resize-none "
             placeholder="Any medical conditions, allergies, or special requirements we should know about? (Optional)"
           />
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p id="medical_notes_help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             This information helps us ensure your safety during the activity.
           </p>
         </div>
@@ -475,14 +496,15 @@ export const RegistrationForm = ({
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-8 py-4 text-sm md:text-base bg-gradient-to-r from-sobat-blue to-blue-600 text-white rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            aria-busy={loading}
+            className="w-full px-8 py-3 min-h-12 text-sm md:text-base bg-sobat-blue text-white rounded-full font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? (
               <Icon icon="lucide:loader-2" width="20" height="20" className="animate-spin" />
             ) : (
-              <Icon icon="mdi:paper-plane" width="20" height="20" className="group-hover:scale-110 transition-transform" />
+              <Icon icon="mdi:paper-plane" width="20" height="20" />
             )}
-            {loading ? 'Processing...' : 'Send Registration'}
+            {loading ? 'Processing…' : 'Send Registration'}
           </button>
         </div>
       </form>

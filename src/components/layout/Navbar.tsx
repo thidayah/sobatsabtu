@@ -45,7 +45,7 @@ export const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${
+      className={`fixed w-full z-50 transition-[background-color,box-shadow,padding] duration-500 ease-out ${
         scrolled 
           ? 'bg-white dark:bg-black shadow-lg dark:shadow-white/5 py-4 md:py-5' 
           : 'bg-transparent py-8 md:py-10'
@@ -61,9 +61,9 @@ export const Navbar = () => {
               className="flex items-center gap-3"
             >
               {isDark ? (
-                <Image src={WhiteLogo} width={1321} height={541} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto transition-all duration-500" priority />
+                <Image src={WhiteLogo} width={1321} height={541} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto" priority />
               ) : (
-                <Image src={BlueLogo} width={1598} height={679} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto transition-all duration-500" priority />
+                <Image src={BlueLogo} width={1598} height={679} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto" priority />
               )}
             </motion.div>
           </Link>
@@ -74,7 +74,7 @@ export const Navbar = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             onClick={toggleTheme}
-            className={`p-3 rounded-full transition-all duration-500 cursor-pointer ${
+            className={`p-3 rounded-full transition-colors duration-500 cursor-pointer ${
               scrolled 
                 ? 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700' 
                 : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20'

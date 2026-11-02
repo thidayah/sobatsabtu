@@ -67,34 +67,6 @@ export const About = () => {
 
   return (
     <Section id="about" className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900">
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          animate={{
-            rotate: 360,
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-r from-sobat-blue/5 to-sobat-yellow/5 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            rotate: -360,
-            scale: [1, 1.3, 1],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-r from-sobat-yellow/5 to-sobat-blue/5 rounded-full blur-3xl"
-        />
-      </div>
-
       <Container fullWidth>
         <div ref={containerRef} className="relative px-4 sm:px-6 lg:px-8">
           {/* Story Section dengan Image */}
@@ -128,7 +100,7 @@ export const About = () => {
                   className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-4 md:mb-12"
                 >
                   <span className=" bg-black text-white dark:bg-white dark:text-black px-4">More Than Just</span>
-                  <span className="block text-gradient mt-2">A Sports Community</span>
+                  <span className="block mt-2">A Sports Community</span>
                 </motion.h2>
               </motion.div>
 
@@ -154,7 +126,7 @@ export const About = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl hover:scale-105 transition-transform"
+                    className="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl"
                   >
                     {/* <feature.icon className="w-8 h-8 text-sobat-blue dark:text-sobat-yellow mb-3" /> */}
                     <Icon icon={feature.icon} className="text-sobat-blue dark:text-sobat-yellow mb-3 size-8" />
@@ -178,8 +150,7 @@ export const About = () => {
                 {galleries.map((gallery, index) => (
                   <motion.div
                     key={index}
-                    whileHover={{ scale: 1.05 }}
-                    className={`relative aspect-[3/4] overflow-hidden duration-300 ${index === 1 ? 'mt-8' : index === 2 ? '-mt-8' : ''}`}
+                    className={`relative aspect-[3/4] overflow-hidden ${index === 1 ? 'mt-8' : index === 2 ? '-mt-8' : ''}`}
                   >
                     {gallery.type === 'video' && isInView ? (
                       <video
@@ -232,7 +203,7 @@ export const About = () => {
                   <div className="w-10 h-10 bg-sobat-blue/20 rounded-full" />
                   <div>
                     <p className="font-semibold">Pratama</p>
-                    <p className="text-xs text-gray-500">Member since 2021</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">Member since 2021</p>
                   </div>
                 </div>
               </motion.div>

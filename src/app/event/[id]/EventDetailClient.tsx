@@ -61,7 +61,6 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                   priority
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               </motion.div>
             </div>
 
@@ -72,7 +71,7 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-3 md:space-y-6"
               >
-                <h1 className="text-2xl lg:text-4xl font-bold">{eventData.name}</h1>
+                <h1 className="text-2xl lg:text-4xl font-bold text-balance [overflow-wrap:break-word] min-w-0">{eventData.name}</h1>
 
                 <div className="space-y-2 md:space-y-4">
                   <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm md:text-base">
@@ -86,14 +85,14 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                   <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm md:text-base">
                     <Icon icon="lucide:map-pin" className="size-4 md:size-6 text-sobat-blue dark:text-sobat-yellow" />
                     {eventData.location_url ?
-                      <a href={eventData.location_url} target="_blank" className=" underline-offset-2 underline hover:opacity-85">{eventData.location}</a>
+                      <a href={eventData.location_url} target="_blank" rel="noopener noreferrer" className=" underline-offset-2 underline hover:opacity-85">{eventData.location}</a>
                       :
                       <span>{eventData.location}</span>
                     }
                   </div>
                 </div>
 
-                <p className="text-xs md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-sm md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                   {eventData.descriptions}
                 </p>
 
@@ -105,12 +104,20 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                       {eventData.current_participants}/{eventData.max_participants}
                     </span>
                   </div>
-                  <div className="w-full h-1 md:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div
+                    className="w-full h-1 md:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                    role="progressbar"
+                    aria-label="Participants"
+                    aria-valuemin={0}
+                    aria-valuemax={eventData.max_participants}
+                    aria-valuenow={eventData.current_participants}
+                  >
+                    {/* Animasi pakai scaleX (transform), bukan width */}
                     <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(eventData.current_participants / eventData.max_participants) * 100}%` }}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: Math.min(eventData.current_participants / eventData.max_participants, 1) }}
                       transition={{ duration: 1 }}
-                      className="h-full bg-gradient-to-r from-sobat-blue to-sobat-yellow rounded-full"
+                      className="h-full w-full origin-left bg-sobat-blue dark:bg-sobat-yellow rounded-full"
                     />
                   </div>
                 </div>
@@ -118,12 +125,14 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
 
               {/* Tabs */}
               <div className="border-b border-gray-200 dark:border-gray-800 my-6 md:my-12">
-                <div className="flex gap-8">
+                <div className="flex gap-8" role="tablist">
                   {['registration', 'participants'].map((row, index) => (
                     <button
                       key={index}
+                      role="tab"
+                      aria-selected={activeTab === row}
                       onClick={() => setActiveTab(row as 'registration' | 'participants')}
-                      className={`pb-4 text-sm md:text-base font-medium transition-colors relative capitalize cursor-pointer ${activeTab === row
+                      className={`pb-4 min-h-11 text-sm md:text-base font-medium transition-colors relative capitalize cursor-pointer ${activeTab === row
                           ? 'text-sobat-blue dark:text-sobat-yellow'
                           : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
                         }`}

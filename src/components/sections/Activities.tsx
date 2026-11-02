@@ -98,14 +98,14 @@ export const Activities = ({ activities }: ActivitiesProps) => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-2xl sm:text-5xl lg:text-7xl font-bold mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
             >
-              Upcoming <span className="text-gradient">Activities &nbsp;</span>
+              Upcoming Activities
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-xs sm:text-xl text-gray-600 dark:text-gray-400"
+              className="text-sm sm:text-xl text-gray-600 dark:text-gray-400"
             >
               Don&apos;t miss out on the exciting and challenging activities we&apos;ll be hosting
             </motion.p>
@@ -238,8 +238,8 @@ const ArrowButton = ({ name, onClick }: { name: string; onClick: () => void }) =
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: isLeft ? - 20 : 20 }}
       onClick={onClick}
-      className={` ${isLeft ? 'left-0 -ml-6' : 'right-0 -mr-6'} absolute top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 transition-all duration-300 hidden lg:flex`}
-      aria-label="Scroll left"
+      className={` ${isLeft ? 'left-0 -ml-6' : 'right-0 -mr-6'} absolute top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-colors duration-300 hidden lg:flex`}
+      aria-label={isLeft ? 'Scroll left' : 'Scroll right'}
     >
       <Icon icon={`lucide:chevron-${name}`} width="24" height="24" />
     </motion.button>

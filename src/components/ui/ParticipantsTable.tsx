@@ -108,8 +108,9 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Search participants..."
-                className="w-full sm:w-80 px-4 py-2 pl-10 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-all text-sm md:text-base"
+                aria-label="Search participants"
+                placeholder="Search participants…"
+                className="w-full sm:w-80 px-4 py-2 pl-10 border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow text-sm md:text-base"
               />
               <Icon
                 icon="lucide:search"
@@ -120,6 +121,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
             </div>
             <button
               onClick={handleSearch}
+              aria-label="Search"
               disabled={searchLoading}
               className="px-6 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -128,7 +130,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
               ) : (
                 <Icon icon="lucide:search" width="18" height="18" className="md:hidden" />
               )}
-              <span className="hidden sm:inline">{searchLoading ? "Searching..." : "Search"}</span>
+              <span className="hidden sm:inline">{searchLoading ? "Searching…" : "Search"}</span>
             </button>
           </div>
         )}
@@ -227,6 +229,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                 {/* Previous Button */}
                 <button
                   onClick={() => handlePageChange(pagination.page - 1)}
+                  aria-label="Previous page"
                   disabled={!pagination.has_prev_page}
                   className="w-7 h-7 md:w-10 md:h-10 border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -267,12 +270,13 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                   return pages.map((page, idx) => (
                     page === '...' ? (
                       <span key={`ellipsis-${idx}`} className="w-7 h-7 md:w-10 md:h-10 flex items-center justify-center text-gray-500">
-                        ...
+                        …
                       </span>
                     ) : (
                       <button
                         key={page}
                         onClick={() => handlePageChange(page as number)}
+                        aria-current={pagination.page === page ? "page" : undefined}
                         className={`w-7 h-7 md:w-10 md:h-10 flex items-center justify-center text-sm font-medium transition-colors ${pagination.page === page
                           ? 'bg-sobat-blue text-white'
                           : 'border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -287,6 +291,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                 {/* Next Button */}
                 <button
                   onClick={() => handlePageChange(pagination.page + 1)}
+                  aria-label="Next page"
                   disabled={!pagination.has_next_page}
                   className="w-7 h-7 md:w-10 md:h-10 border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >

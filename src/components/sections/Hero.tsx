@@ -138,7 +138,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full min-h-svh overflow-hidden">
       {/* Background Slides */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -157,25 +157,15 @@ export const Hero = () => {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-black via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-black via-black/60 to-black/20" />
           {/* <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/80" /> */}
         </motion.div>
       </AnimatePresence>
 
       {/* Content */}
       <Container fullWidth>
-        <div className="relative h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-4 md:mb-6"
-          >
-            <span className="px-4 py-2 text-[10px] md:text-sm italic font-medium bg-white/10 text-white/90 backdrop-blur rounded-full border border-white/20">
-              #untalented
-            </span>
-          </motion.div>
+        <div className="relative min-h-svh flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center">
+          {/* Badge #untalented dihapus (Hallmark gate 54: eyebrow); hashtag tetap tampil di footer */}
 
           {/* Visually hidden h1 with primary keyword (SEO + a11y, no visual change) */}
           <h1 className="sr-only">
@@ -204,7 +194,7 @@ export const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="mt-2 md:mt-6 text-xs sm:text-xl text-white/80 max-w-3xl mx-auto"
+              className="mt-2 md:mt-6 text-sm sm:text-xl text-white max-w-3xl mx-auto"
             >
               {renderDescription(slides[currentSlide])}
             </motion.p>
@@ -230,7 +220,7 @@ export const Hero = () => {
             >
               <button
                 onClick={scrollToActivities}
-                className="rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 text-xs md:text-base text-white hover:bg-white/20 group cursor-pointer animate-bounce"
+                className="rounded-full font-semibold transition-colors duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 min-h-11 text-sm md:text-base text-white hover:bg-white/20 active:bg-white/30 group cursor-pointer"
               >
                 Let&apos;s Explore
                 <Icon icon="lucide:chevron-down" width="20" height="20" className="ml-2 " />
@@ -246,7 +236,9 @@ export const Hero = () => {
                       setCurrentSlide(index);
                       setIsAutoPlay(false);
                     }}
-                    className={`h-1 rounded-full transition-all duration-300 ${index === currentSlide
+                    aria-label={`Slide ${index + 1}`}
+                    aria-current={index === currentSlide}
+                    className={`h-1 rounded-full transition-colors duration-300 ${index === currentSlide
                       ? 'w-8 bg-white'
                       : 'w-4 bg-white/50 hover:bg-white/80'
                       }`}
@@ -257,7 +249,8 @@ export const Hero = () => {
               {/* Play/Pause */}
               <button
                 onClick={() => setIsAutoPlay(!isAutoPlay)}
-                className="p-2 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 transition-colors"
+                aria-label={isAutoPlay ? 'Pause slideshow' : 'Play slideshow'}
+                className="p-2 rounded-full bg-black/50 hover:bg-black/70 active:bg-black/80 transition-colors"
               >
                 {isAutoPlay ? (
                   <Icon icon="lucide:pause" width="16" height="16" className="text-white" />

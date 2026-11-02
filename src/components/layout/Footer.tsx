@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
@@ -13,7 +13,6 @@ const contacts = [
 
 export const Footer = () => {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
@@ -86,43 +85,32 @@ export const Footer = () => {
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 4px 4px, #ffffff 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 4px 4px, var(--color-sobat-white) 1px, transparent 0)`,
           backgroundSize: '40px 40px'
         }} />
       </div>
 
       <Container fullWidth>
         <div className="relative px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
-          {/* Main Heading dengan Animasi Mengetik */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="mb-8 lg:mb-16 text-center"
-          >
-            <h2 className="text-3xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight">
-              <span className="text-sobat-blue dark:text-gray-100">#</span>
-              <span className="bg-gradient-to-r from-sobat-blue to-gray-100 dark:from-white dark:to-gray-600 bg-clip-text text-transparent">
-                {displayText}
-              </span>
+          {/* Main Heading dengan Animasi Mengetik. Konten terlihat sejak awal (tanpa reveal yang menyembunyikan) */}
+          <div className="mb-8 lg:mb-16 text-center">
+            <h2 className="text-3xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight text-sobat-blue dark:text-white">
+              <span>#</span>
+              <span>{displayText}</span>
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
-                className="inline-block w-1 h-16 lg:h-24 bg-sobat-yellow ml-2 align-middle"
+                aria-hidden="true"
+                className="inline-block w-1 h-8 sm:h-16 lg:h-24 bg-sobat-yellow ml-2 align-middle"
               />
             </h2>
-          </motion.div>
+          </div>
 
           {/* Footer Content Grid */}
           <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 md:items-end border-t pt-8 border-gray-200 dark:border-white/10">
             {/* Brand Column */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className=" max-w-xl"
-            >
-              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className=" max-w-xl">
+              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
                 {isDark ? (
                   <Image src={WhiteLogo} width={1321} height={541} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto" />
                 ) : (
@@ -132,7 +120,7 @@ export const Footer = () => {
               <p className="text-xs md:text-base text-gray-600 dark:text-white/60 leading-relaxed mt-2">
                 Since 2019, we&apos;ve been transforming the &quot;Mager&quot; culture into positive energy through fun and inclusive sports activities in Bandung.
               </p>
-            </motion.div>
+            </div>
 
             <div>
               {/* Contact Us Icons */}
@@ -143,14 +131,8 @@ export const Footer = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -5 }}
-                    className="w-8 h-8 rounded-full bg-gray-600/90 hover:bg-gray-600 dark:bg-white/10 dark:hover:bg-white/20 flex items-center justify-center transition-all duration-300"
-                    style={{
-                      filter: 'grayscale(100%)',
-                      transition: 'filter 0.3s ease'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.filter = 'grayscale(0%)'}
-                    onMouseLeave={(e) => e.currentTarget.style.filter = 'grayscale(100%)'}
+                    aria-label={social.name}
+                    className="w-11 h-11 rounded-full bg-gray-600/90 hover:bg-gray-600 active:bg-gray-700 dark:bg-white/10 dark:hover:bg-white/20 dark:active:bg-white/30 flex items-center justify-center transition-colors duration-300"
                   >
                     <Icon icon={social.icon} width="16" height="16" className="text-white" />
                   </motion.a>
@@ -158,12 +140,7 @@ export const Footer = () => {
               </div>
 
               {/* Bottom Bar */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="flex flex-col md:items-end gap-2"
-              >
+              <div className="flex flex-col md:items-end gap-2">
                 {/* Copyright */}
                 <div className="text-gray-600 dark:text-white/60 text-xs md:text-sm md:text-center">
                   © {new Date().getFullYear()} Sobat Sabtu. All rights reserved.
@@ -172,17 +149,16 @@ export const Footer = () => {
                 {/* Developed By */}
                 <div className="flex items-center gap-1">
                   <span className="text-gray-600 dark:text-white/60 text-xs md:text-sm">Developed by</span>
-                  <motion.a
+                  <a
                     href="https://thidayah.github.io"
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    className="flex  "
+                    className="flex underline-offset-2 hover:underline"
                   >
                     <span className="text-gray-800 dark:text-white/80 text-xs md:text-sm font-medium"> Runminders</span>
-                  </motion.a>
+                  </a>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>

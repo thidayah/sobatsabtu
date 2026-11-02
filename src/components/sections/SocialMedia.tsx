@@ -68,7 +68,7 @@ export const SocialMedia = () => {
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, #0928d5 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 2px 2px, var(--color-sobat-blue) 1px, transparent 0)`,
           backgroundSize: '40px 40px'
         }} />
       </div>
@@ -88,14 +88,14 @@ export const SocialMedia = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-2xl sm:text-5xl lg:text-7xl font-bold mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
             >
-              Stay <span className=" text-gradient"> Connected</span>
+              Stay Connected
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-xs sm:text-xl text-gray-600 dark:text-gray-400"
+              className="text-sm sm:text-xl text-gray-600 dark:text-gray-400"
             >
               Follow our journey across all platforms and be part of the Sobat Sabtu community
             </motion.p>
@@ -117,7 +117,7 @@ export const SocialMedia = () => {
                 className="group relative block"
               >
                 {/* Card dengan efek glassmorphism */}
-                <div className="relative p-2 md:p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden">
+                <div className="relative p-2 md:p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-shadow duration-500 overflow-hidden">
                   {/* Hover Gradient Background */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -179,7 +179,7 @@ export const SocialMedia = () => {
                           backgroundColor: hoveredId === social.name ? social.color : 'transparent',
                           color: hoveredId === social.name ? 'white' : 'currentColor',
                         }}
-                        className="hidden md:block px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-300"
+                        className="hidden md:block px-3 py-1.5 rounded-full text-xs font-medium border transition-colors duration-300"
                         style={{
                           borderColor: hoveredId === social.name ? social.color : 'currentColor'
                         }}
