@@ -1,14 +1,10 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
-import { ActivityCard } from "../ui/ActivityCard";
-
-// Categories for filtering
-// const categories = ['All', 'Running Series', 'Multi-Sport Series'];
+import { formatDate, formatTime } from '@/lib/utils';
 
 interface Activity {
   id: string;
@@ -31,217 +27,128 @@ interface ActivitiesProps {
   activities: Activity[];
 }
 
+// Event tutup jika nonaktif atau tanggalnya sudah lewat (sama dengan ActivityCard)
+const isEventClosed = (activity: Activity) => {
+  if (!activity.is_active) return true;
+  const eventDateTime = new Date(`${activity.date}T${activity.time}`);
+  return eventDateTime < new Date();
+};
+
+// Tanggal dipecah agar hari dan tanggal bisa dicetak besar seperti papan jadwal
+const dateParts = (dateString: string) => {
+  const date = new Date(dateString);
+  return {
+    day: date.toLocaleDateString('en-US', { day: '2-digit' }),
+    month: date.toLocaleDateString('en-US', { month: 'short' }),
+    weekday: date.toLocaleDateString('en-US', { weekday: 'short' }),
+  };
+};
+
 export const Activities = ({ activities }: ActivitiesProps) => {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-
-  const filteredActivities = activities;
-  // const filteredActivities = selectedCategory === 'All'
-  //   ? activities
-  //   : activities.filter(a => a.category === selectedCategory);
-
-
-  // Check scroll position for arrows
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftArrow(scrollLeft > 20);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', checkScroll);
-      // Initial check
-      checkScroll();
-
-      // Check after activities change
-      setTimeout(checkScroll, 100);
-
-      return () => scrollContainer.removeEventListener('scroll', checkScroll);
-    }
-  }, [filteredActivities]);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 400; // Width of one card + gap
-      const newScrollLeft = scrollContainerRef.current.scrollLeft +
-        (direction === 'left' ? -scrollAmount : scrollAmount);
-
-      scrollContainerRef.current.scrollTo({
-        left: newScrollLeft,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
-    <Section id="activities" className="bg-paper-2 overflow-hidden">
-      <Container fullWidth>
-        <div ref={sectionRef} className="relative px-4 sm:px-6 lg:px-8 pt-16 md:pt-0">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="mb-8 lg:mb-16"
-          >
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-2xl sm:text-5xl lg:text-7xl font-bold mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
-            >
-              Upcoming Activities
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-sm sm:text-xl text-muted"
-            >
-              Don&apos;t miss out on the exciting and challenging activities we&apos;ll be hosting
-            </motion.p>
-          </motion.div>
-
-          {/* No Activities State */}
-          {filteredActivities.length === 0 && (
-            <div className="text-center py-20">
-              <Icon icon="mdi:calendar-blank" width="64" height="64" className="mx-auto text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-ink-2 mb-2">
-                No Upcoming Activities
-              </h3>
-              <p className="text-muted">
-                Check back soon for new events and activities!
-              </p>
-            </div>
-          )}
-
-          {/* Category Filter */}
-          {/* <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-3 mb-8 lg:mb-12"
-          >
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 font-medium transition-all duration-300 ${selectedCategory === category
-                    ? 'bg-sobat-blue text-white dark:bg-sobat-yellow dark:text-black scale-105'
-                    : 'bg-paper-2 text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
-          </motion.div> */}
-
-          {/* Horizontal Scroll Section */}
-          {filteredActivities.length > 0 && (
-            <div className="relative">
-              {/* Left Arrow */}
-              {showLeftArrow && (
-                <ArrowButton
-                  name="left"
-                  onClick={() => scroll('left')}
-                />
-              )}
-
-              {/* Right Arrow */}
-              {showRightArrow && (
-                <ArrowButton
-                  name="right"
-                  onClick={() => scroll('right')}
-                />
-              )}
-
-              {/* Gradient Overlays */}
-              {showLeftArrow && (
-                <div className="absolute -left-5 top-0 bottom-0 w-24 bg-gradient-to-r from-gray-50/50 dark:from-gray-900 to-transparent z-10 pointer-events-none hidden lg:block" />
-              )}
-              {showRightArrow && (
-                <div className="absolute -right-5 top-0 bottom-0 w-24 bg-gradient-to-l from-gray-50/50 dark:from-gray-900 to-transparent z-10 pointer-events-none hidden lg:block" />
-              )}
-
-              {/* Horizontal Scroll Container */}
-              <motion.div
-                ref={scrollContainerRef}
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="flex overflow-x-auto gap-2 md:gap-4 pb-12 px-4 -mx-4 no-scrollbar snap-x"
-                style={{
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                }}
-              >
-                {filteredActivities.map((activity: Activity, index) => (
-                  <motion.div
-                    key={activity.id}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.5, delay: 0.1 * index }}
-                    onHoverStart={() => setHoveredCard(activity.id)}
-                    onHoverEnd={() => setHoveredCard(null)}
-                    className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
-                  >
-                    <ActivityCard activity={activity} isHovered={hoveredCard === activity.id} />
-                  </motion.div>
-                ))}
-
-                {/* View All Card */}
-                {/* <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.1 * filteredActivities.length }}
-                  className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start"
-                >
-                  <Link href="/activities">
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      className="relative aspect-[9/16] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex flex-col items-center justify-center p-6 text-center cursor-pointer group"
-                    >
-                      <div className="w-20 h-20 bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <Icon icon="lucide:arrow-right" width="32" height="32" className="text-gray-900 dark:text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">View All</h3>
-                      <p className="text-ink-2">
-                        {filteredActivities.length} activities available
-                      </p>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </motion.div>
-                  </Link>
-                </motion.div> */}
-              </motion.div>
-            </div>
-          )}
+    <Section id="activities" className="bg-paper">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-16">
+        {/* Header */}
+        <div className="mb-8 lg:mb-12 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-end">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl">
+            Upcoming Activities
+          </h2>
+          <p className="text-base sm:text-xl text-muted md:justify-self-end md:text-right max-w-md">
+            Don&apos;t miss out on the exciting and challenging activities we&apos;ll be hosting
+          </p>
         </div>
-      </Container>
+
+        {/* No Activities State */}
+        {activities.length === 0 && (
+          <div className="border-t-2 border-ink py-20">
+            <h3 className="text-3xl mb-2">
+              No Upcoming Activities
+            </h3>
+            <p className="text-muted">
+              Check back soon for new events and activities!
+            </p>
+          </div>
+        )}
+
+        {/* Index: satu baris per event, tanggal besar di kiri */}
+        {activities.length > 0 && (
+          <ol className="border-t-2 border-ink">
+            {activities.map((activity) => (
+              <EventRow key={activity.id} activity={activity} />
+            ))}
+          </ol>
+        )}
+      </div>
     </Section>
   );
 };
 
-const ArrowButton = ({ name, onClick }: { name: string; onClick: () => void }) => {
-  const isLeft: boolean = name === 'left'
+const EventRow = ({ activity }: { activity: Activity }) => {
+  const closed = isEventClosed(activity);
+  const soldOut = !closed && activity.current_participants >= activity.max_participants;
+  const { day, month, weekday } = dateParts(activity.date);
+
   return (
-    <motion.button
-      initial={{ opacity: 0, x: isLeft ? - 20 : 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: isLeft ? - 20 : 20 }}
-      onClick={onClick}
-      className={` ${isLeft ? 'left-0 -ml-6' : 'right-0 -mr-6'} absolute top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-paper-2 flex items-center justify-center text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-colors duration-300 hidden lg:flex`}
-      aria-label={isLeft ? 'Scroll left' : 'Scroll right'}
-    >
-      <Icon icon={`lucide:chevron-${name}`} width="24" height="24" />
-    </motion.button>
-  )
-}
+    <li className={`grid grid-cols-[auto_minmax(0,1fr)] md:grid-cols-[7rem_5rem_minmax(0,1fr)_auto] gap-x-4 md:gap-x-8 gap-y-4 items-center py-6 border-b border-rule ${closed ? 'opacity-60' : ''}`}>
+      {/* Tanggal */}
+      <div className="font-display font-extrabold uppercase leading-none num">
+        <span className="block text-5xl md:text-6xl text-accent dark:text-sobat-yellow">{day}</span>
+        <span className="block text-lg">{weekday} {month}</span>
+      </div>
+
+      {/* Poster kecil */}
+      <div className="relative hidden md:block w-20 aspect-[9/16] overflow-hidden photo">
+        <Image
+          src={activity.image_url}
+          alt={activity.name}
+          fill
+          sizes="80px"
+          className="object-cover"
+        />
+      </div>
+
+      {/* Nama, waktu, tempat */}
+      <div className="min-w-0">
+        <p className="text-sm text-muted mb-1">{activity.type}</p>
+        <h3 className="text-2xl md:text-4xl">{activity.name}</h3>
+        <p className="mt-2 text-sm md:text-base text-ink-2">
+          <span className="sr-only">{formatDate(activity.date)}, </span>
+          {formatTime(activity.time)}, {activity.location}
+        </p>
+      </div>
+
+      {/* Aksi */}
+      <div className="col-span-2 md:col-span-1 flex gap-2 md:justify-end">
+        {closed ? (
+          <button disabled className="btn btn--secondary">
+            <Icon icon="lucide:lock" width="16" height="16" aria-hidden="true" />
+            Closed
+          </button>
+        ) : activity.external_url ? (
+          <Link href={activity.external_url} target="_blank" className="btn btn--primary">
+            <Icon icon="mdi:external-link" width="16" height="16" aria-hidden="true" />
+            Visit
+          </Link>
+        ) : (
+          <>
+            {soldOut ? (
+              <button disabled className="btn btn--secondary">
+                <Icon icon="lucide:alert-circle" width="16" height="16" aria-hidden="true" />
+                Sold Out
+              </button>
+            ) : (
+              <Link href={`/event/${activity.slug}?tab=registration`} className="btn btn--primary">
+                <Icon icon="mdi:sign-in" width="16" height="16" aria-hidden="true" />
+                Register
+              </Link>
+            )}
+            <Link href={`/event/${activity.slug}?tab=participants`} className="btn btn--secondary">
+              <Icon icon="lucide:list" width="16" height="16" aria-hidden="true" />
+              Participants
+            </Link>
+          </>
+        )}
+      </div>
+    </li>
+  );
+};

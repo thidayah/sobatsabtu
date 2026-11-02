@@ -1,11 +1,15 @@
-/* Hallmark · shape: kept · genre: playful · theme: Piste (deal 1/3, seed bandung-young-people-weekend-7102·5e2cadb7·2026-11-02·r0) · redesign: restyle · surface: absolute
- * hero: kept · nav: kept · footer: kept · imagery: photographs · signature: the community's own photographs under condensed capitals · piste: snow (light), night-piste (dark)
- * axes: light/display-condensed/cool · posture: committed · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P2 H2 E2 S2 R2 V2 · weakest: S, the layout is kept so the type and the square cut carry the change */
+/* Hallmark · shape: Marquee Hero, from draw 902a2b · genre: playful · theme: Piste (deal 1/3, seed bandung-young-people-weekend-7102·5e2cadb7·2026-11-02·r0) · redesign: full · surface: absolute
+ * hero: Marquee (slide title at 8rem, bottom-left, controls right) · nav: kept · footer: index columns under a typed mast · imagery: photographs · signature: the event schedule as a race board, dates set large · piste: snow (light), night-piste (dark)
+ * axes: light/display-condensed/cool · posture: committed · contrast: pass · fold: pass · draw: 902a2b · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H3 E2 S3 R2 V2 · weakest: E, no ticket tiers or questions exist, so the page closes on the channels and the mast */
 /* Hallmark · brand kept · sobat-blue is Piste's cobalt, sobat-yellow stays the dark-mode signal, the logo is unchanged */
 /* Hallmark · dropped #untalented · 54 names the hero badge an eyebrow; the footer h2 types the hashtag, so its captured text varies */
 /* Hallmark · dropped onMouseEnter, onMouseLeave · the footer contact icons' inline grayscale toggle was hover-only styling; hover now changes the background */
 /* Hallmark · dropped huricane collaborate, #pelarikonten · not removed: the hero slides and the footer typing rotate, so each capture holds a different heading */
+/* Hallmark · dropped /activities, setSelectedCategory · both lived only in commented-out code */
+/* Hallmark · dropped left, right, scroll, onClick, onHoverStart, onHoverEnd · the horizontal card scroller and its hover states became the event index, whose links (register, participants, visit) are all kept */
+/* Hallmark · reworded since 2019, mager concept, 8+ activities, 1000+ members, instagram, tiktok, twitter, strava, spotify, email · same words, now figure labels and list rows instead of h3 */
+/* Hallmark · dropped the Unsplash background wall in Collaboration · 83 names the photo wall; stock pictures, not the community's own */
 /* Hallmark · waive 7b · --color-sobat-black and --color-sobat-white are declared brand tokens · the brand is pure black and white by choice */
 @import "tailwindcss";
 @import "./tokens.css";

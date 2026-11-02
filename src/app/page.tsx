@@ -27,8 +27,9 @@ export default async function Home() {
     <main className="site relative min-h-screen">
       <Navbar />
       <Hero />
-      <About />
+      {/* Jadwal event langsung setelah hero: itu yang dicari pengunjung (Hallmark anatomy: attend) */}
       <Activities activities={activities} />
+      <About />
       <Collaboration />
       <SocialMedia />
       <Footer />

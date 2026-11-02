@@ -1,10 +1,8 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { Container } from '../ui/Container';
 import { Section } from '../ui/Section';
 
 // Data partner logos (ganti dengan logo asli nanti)
@@ -25,22 +23,7 @@ const partners = [
   // { id: 12, name: 'REI', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/REI_logo.svg', category: 'retail' },
 ];
 
-// Background activity images untuk collage
-const backgroundImages = [
-  'https://images.unsplash.com/photo-1638886050954-dbd7208412c0?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1644293230796-739c37cf4ffd?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1616279969856-759f316a5ac1?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1705468616275-616b7c01d317?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1616279969856-759f316a5ac1?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1705468616275-616b7c01d317?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1644293230796-739c37cf4ffd?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1638886050954-dbd7208412c0?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1616279969856-759f316a5ac1?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1705468616275-616b7c01d317?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1616279969856-759f316a5ac1?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1705468616275-616b7c01d317?q=80&w=2070&auto=format&fit=crop',
-];
-
+// Latar foto Unsplash dihapus (Hallmark 83: dinding foto stok); section ini kini pita warna brand
 // Render logo partner dari URL, dengan fallback ke teks nama bila gambar gagal dimuat
 const PartnerLogo = ({ src, name }: { src: string; name: string }) => {
   const [hasError, setHasError] = useState(false);
@@ -48,8 +31,8 @@ const PartnerLogo = ({ src, name }: { src: string; name: string }) => {
   // Fallback: kondisi placeholder seperti sebelumnya
   if (hasError) {
     return (
-      <div className="w-full h-full bg-white/20 flex items-center justify-center">
-        <span className="text-white/80 text-xs text-center font-medium px-2">
+      <div className="w-full h-full flex items-center justify-center">
+        <span className="text-black text-sm text-center font-medium px-2">
           {name}
         </span>
       </div>
@@ -69,190 +52,43 @@ const PartnerLogo = ({ src, name }: { src: string; name: string }) => {
 };
 
 export const Collaboration = () => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-
   return (
-    <Section id="collaboration" className="relative overflow-hidden bg-black">
-      {/* Background Image Collage dengan Gradasi */}
-      <div className="absolute inset-0">
-        {/* Grid of background images */}
-        <div className="absolute inset-0 grid grid-cols-6 gap-0.5 opacity-30">
-          {backgroundImages.map((img, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 1.2 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 1, delay: index * 0.1 }}
-              className="relative w-full h-full min-h-[25vh] overflow-hidden"
-            >
-              <Image
-                src={img}
-                alt="Activity background"
-                fill
-                sizes="(max-width: 768px) 33vw, 16vw"
-                className="object-cover"
-              />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Multiple Gradient Layers untuk efek unik */}
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/50 to-black/10" /> */}
-        {/* <div className="absolute inset-0 bg-gradient-to-r from-sobat-blue via-transparent to-sobat-yellow mix-blend-overlay" /> */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/70" />
-
-        {/* Animated gradient orbs */}
-        {/* <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-            x: [0, 100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-20 left-20 w-96 h-96 bg-sobat-blue blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
-            x: [0, -100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{ duration: 18, repeat: Infinity }}
-          className="absolute bottom-20 right-20 w-96 h-96 bg-sobat-yellow blur-3xl"
-        /> */}
-      </div>
-
-      <Container fullWidth>
-        <div ref={sectionRef} className="relative z-10 px-4 sm:px-6 lg:px-8 py-0 lg:py-16 ">
-          {/* Header */}
-          <div className=" flex items-center justify-between mb-8 lg:mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-              className=" "
-            >
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-2xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 border-l-4 md:border-l-8 border-sobat-blue pl-2 md:pl-4"
-              >
-                Trusted By The Best
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-sm sm:text-xl text-white/85"
-              >
-                We&apos;re proud to collaborate with leading brands that share our passion
-                for sports and community building.
-              </motion.p>
-            </motion.div>
-
-            {/* CTA Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 1.2 }}
-              className=" hidden md:block text-center"
-            >
-              <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn whitespace-nowrap bg-white text-black hover:bg-gray-100 active:bg-gray-200 group"
-                href={process.env.NEXT_PUBLIC_WHATSAPP}
-                target="_blank"
-              >
-                <Icon icon="mdi:handshake" width="20" height="20" />
-                Become a Partner
-              </motion.a>
-            </motion.div>
+    <Section id="collaboration" className="bg-accent text-accent-ink">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-16">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end">
+          <div>
+            <h2 className="text-5xl sm:text-7xl lg:text-8xl">
+              Trusted By The Best
+            </h2>
+            <p className="mt-6 text-base sm:text-xl max-w-xl">
+              We&apos;re proud to collaborate with leading brands that share our passion
+              for sports and community building.
+            </p>
           </div>
 
-          {/* Logo Grid - Unik Layout */}
-          <div className="relative">
-            {/* Decorative elements */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-2 border-white/5 z-0" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border-2 border-white/10 z-0" />
-
-            {/* Floating Logo Circles */}
-            <div className="relative grid grid-cols-6 lg:grid-cols-12 gap-2 lg:gap-6">
-              {partners.map((partner, index) => {
-                // Hitung posisi untuk efek floating yang berbeda-beda
-                const delay = index * 0.1;
-                const rotateOffset = (index % 5) * 5 - 10;
-
-                return (
-                  <motion.div
-                    key={partner.id}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.5 + delay,
-                      type: "spring",
-                      stiffness: 100
-                    }}
-                    whileHover={{
-                      scale: 1.2,
-                      rotate: rotateOffset,
-                      y: -10,
-                      transition: { duration: 0.3 }
-                    }}
-                    className="relative group"
-                  >
-                    {/* Logo container */}
-                    <div className="relative aspect-square bg-white/10 border border-white/20 p-1 md:p-4 flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
-                      {/* Animated border */}
-                      <div className="absolute inset-0  overflow-hidden">
-                        <motion.div
-                          animate={{
-                            x: ['-100%', '100%'],
-                          }}
-                          transition={{
-                            duration: 3,
-                            delay: index * 0.2,
-                            repeat: Infinity,
-                            repeatDelay: 5,
-                          }}
-                          className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white to-transparent"
-                        />
-                      </div>
-
-                      {/* Logo partner - fallback ke nama bila gambar gagal dimuat */}
-                      <PartnerLogo src={partner.logo} name={partner.name} />
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 1.2 }}
-            className=" md:hidden text-center mt-8 relative"
-          >
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="btn whitespace-nowrap bg-white text-black active:bg-gray-200 group"
+          <div className="lg:justify-self-end">
+            <a
+              className="btn bg-white text-black hover:bg-gray-100 active:bg-gray-200 whitespace-nowrap"
               href={process.env.NEXT_PUBLIC_WHATSAPP}
               target="_blank"
+              rel="noopener noreferrer"
             >
-              <Icon icon="mdi:handshake" width="16" height="16" />
+              <Icon icon="mdi:handshake" width="20" height="20" aria-hidden="true" />
               Become a Partner
-            </motion.a>
-          </motion.div>
+            </a>
+          </div>
         </div>
-      </Container>
+
+        {/* Logo partner di atas petak putih, dipisah garis */}
+        <ul className="mt-12 md:mt-16 border-t-2 border-white grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] gap-px">
+          {partners.map((partner) => (
+            <li key={partner.id} className="relative aspect-[3/2] bg-white mt-4 mr-4">
+              {/* Logo partner - fallback ke nama bila gambar gagal dimuat */}
+              <PartnerLogo src={partner.logo} name={partner.name} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </Section>
   );
 };

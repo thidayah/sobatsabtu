@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Icon } from '@iconify/react';
-import { Container } from '../ui/Container';
 
 // Data untuk slides
 type Slide = {
@@ -157,76 +156,60 @@ export const Hero = () => {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-black via-black/60 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
           {/* <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-transparent to-black/80" /> */}
         </motion.div>
       </AnimatePresence>
 
-      {/* Content */}
-      <Container fullWidth>
-        <div className="relative min-h-svh flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center">
-          {/* Badge #untalented dihapus (Hallmark gate 54: eyebrow); hashtag tetap tampil di footer */}
+      {/* Content: marquee hero, judul slide besar rata kiri di bawah, kontrol di kanan */}
+      <div className="relative mx-auto max-w-[1440px] min-h-svh flex flex-col justify-end px-4 sm:px-6 lg:px-16 pt-32 pb-10 md:pb-16">
+        {/* Visually hidden h1 with primary keyword (SEO + a11y, no visual change) */}
+        <h1 className="sr-only">
+          Komunitas Lari &amp; Olahraga Anak Muda Bandung
+        </h1>
 
-          {/* Visually hidden h1 with primary keyword (SEO + a11y, no visual change) */}
-          <h1 className="sr-only">
-            Komunitas Lari &amp; Olahraga Anak Muda Bandung
-          </h1>
-
-          {/* Slide Title */}
-          <AnimatePresence mode="wait">
-            <motion.h2
-              key={`title-${currentSlide}`}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.75 }}
-              className="text-2xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-white max-w-7xl mx-auto"
-            >
-              {slides[currentSlide].title}
-            </motion.h2>
-          </AnimatePresence>
-
-          {/* Description */}
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={`desc-${currentSlide}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mt-2 md:mt-6 text-sm sm:text-xl text-white max-w-3xl mx-auto"
-            >
-              {renderDescription(slides[currentSlide])}
-            </motion.p>
-          </AnimatePresence>
-
-          {/* Tagline */}
-          {/* <motion.p
-            initial={{ opacity: 0, y: 20 }}
+        {/* Slide Title */}
+        <AnimatePresence mode="wait">
+          <motion.h2
+            key={`title-${currentSlide}`}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-4 text-2xl sm:text-3xl font-light text-white/60 max-w-3xl mx-auto"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-5xl sm:text-7xl lg:text-8xl xl:text-[8rem] text-white max-w-[14ch]"
           >
-            Turn Your Weekend Laziness Into Adventure
-          </motion.p> */}
+            {slides[currentSlide].title}
+          </motion.h2>
+        </AnimatePresence>
+
+        <div className="mt-6 md:mt-10 grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+          <div>
+            {/* Description */}
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={`desc-${currentSlide}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-base sm:text-xl text-white max-w-xl"
+              >
+                {renderDescription(slides[currentSlide])}
+              </motion.p>
+            </AnimatePresence>
+
+            {/* CTA Button */}
+            <button
+              onClick={scrollToActivities}
+              className="btn btn--primary mt-6"
+            >
+              Let&apos;s Explore
+              <Icon icon="lucide:chevron-down" width="20" height="20" aria-hidden="true" />
+            </button>
+          </div>
 
           {/* Slide Controls */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-y-20">
-            {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <button
-                onClick={scrollToActivities}
-                className=" font-semibold transition-colors duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 min-h-11 text-sm md:text-base text-white hover:bg-white/20 active:bg-white/30 group cursor-pointer"
-              >
-                Let&apos;s Explore
-                <Icon icon="lucide:chevron-down" width="20" height="20" className="ml-2 " />
-              </button>
-            </motion.div>
-            <div className=" flex flex-row items-center gap-4">
+          <div className="flex flex-row items-center gap-4">
               {/* Indicators */}
               <div className="flex gap-2">
                 {slides.map((_, index) => (
@@ -258,10 +241,9 @@ export const Hero = () => {
                   <Icon icon="lucide:play" width="16" height="16" className="text-white" />
                 )}
               </button>
-            </div>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 };
