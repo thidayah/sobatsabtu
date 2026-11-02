@@ -64,7 +64,7 @@ export const SocialMedia = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
-    <Section id="social" className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900">
+    <Section id="social" className="relative overflow-hidden bg-paper">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -95,7 +95,7 @@ export const SocialMedia = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-sm sm:text-xl text-gray-600 dark:text-gray-400"
+              className="text-sm sm:text-xl text-muted"
             >
               Follow our journey across all platforms and be part of the Sobat Sabtu community
             </motion.p>
@@ -117,7 +117,7 @@ export const SocialMedia = () => {
                 className="group relative block"
               >
                 {/* Card dengan efek glassmorphism */}
-                <div className="relative p-2 md:p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-shadow duration-500 overflow-hidden">
+                <div className="relative p-2 md:p-6 bg-paper-2 border border-rule transition-shadow duration-500 overflow-hidden">
                   {/* Hover Gradient Background */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -136,7 +136,7 @@ export const SocialMedia = () => {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredId === social.name ? 1 : 0 }}
-                    className="absolute inset-0 rounded-xl"
+                    className="absolute inset-0"
                     style={{
                       boxShadow: `0 0 0 2px ${social.color}`,
                     }}
@@ -154,7 +154,7 @@ export const SocialMedia = () => {
                               : 'grayscale(100%)'
                           }}
                           transition={{ duration: 0.3 }}
-                          className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden"
+                          className="w-12 h-12 bg-paper-3 flex items-center justify-center overflow-hidden"
                         >
                           <Icon
                             icon={social.icon}
@@ -163,12 +163,12 @@ export const SocialMedia = () => {
                             style={{
                               color: hoveredId === social.name ? social.color : undefined
                             }}
-                            className={hoveredId === social.name ? '' : 'text-gray-500 dark:text-gray-400'}
+                            className={hoveredId === social.name ? '' : 'text-muted'}
                           />
                         </motion.div>
                         <div>
                           <h3 className="font-bold text-sm md:text-lg">{social.name}</h3>
-                          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{social.description}</p>
+                          <p className="text-xs md:text-sm text-muted">{social.description}</p>
                         </div>
                       </div>
 
@@ -179,7 +179,7 @@ export const SocialMedia = () => {
                           backgroundColor: hoveredId === social.name ? social.color : 'transparent',
                           color: hoveredId === social.name ? 'white' : 'currentColor',
                         }}
-                        className="hidden md:block px-3 py-1.5 rounded-full text-xs font-medium border transition-colors duration-300"
+                        className="hidden md:block px-3 py-1.5 text-xs font-medium border transition-colors duration-300"
                         style={{
                           borderColor: hoveredId === social.name ? social.color : 'currentColor'
                         }}
@@ -224,13 +224,13 @@ export const SocialMedia = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="mt-16 text-center"
           >
-            <div className="inline-flex flex-wrap items-center justify-center gap-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Platforms:</span>
+            <div className="inline-flex flex-wrap items-center justify-center gap-4 p-4 bg-paper-3">
+              <span className="text-sm text-muted">Platforms:</span>
               {socialMedia.map((social, index) => (
                 <motion.div
                   key={social.name}
                   whileHover={{ scale: 1.1 }}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-700 rounded-full shadow-sm"
+                  className="flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-700"
                 >
                   <Icon
                     icon={social.icon}

@@ -188,10 +188,10 @@ export const RegistrationForm = ({
 
   if (isEventClosed) {
     return (
-      <div className="text-center py-12 px-4 bg-gray-50 dark:bg-gray-900 ">
+      <div className="text-center py-12 px-4 bg-paper-2 ">
         <Icon icon="lucide:lock" width="48" height="48" className="mx-auto text-gray-400 mb-4" />
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Event Closed</h3>
-        <p className="text-gray-500 dark:text-gray-400">
+        <h3 className="text-xl font-semibold text-ink-2 mb-2">Event Closed</h3>
+        <p className="text-muted">
           This event is no longer accepting registrations.
         </p>
       </div>
@@ -200,10 +200,10 @@ export const RegistrationForm = ({
 
   if (isPast) {
     return (
-      <div className="text-center py-12 px-4 bg-gray-50 dark:bg-gray-900 ">
+      <div className="text-center py-12 px-4 bg-paper-2 ">
         <Icon icon="lucide:calendar-x" width="48" height="48" className="mx-auto text-gray-400 mb-4" />
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Event Has Ended</h3>
-        <p className="text-gray-500 dark:text-gray-400">
+        <h3 className="text-xl font-semibold text-ink-2 mb-2">Event Has Ended</h3>
+        <p className="text-muted">
           This event has already taken place and is no longer accepting registrations.
         </p>
       </div>
@@ -212,10 +212,10 @@ export const RegistrationForm = ({
 
   if (isSoldOut) {
     return (
-      <div className="text-center py-12 px-4 bg-gray-50 dark:bg-gray-900 ">
+      <div className="text-center py-12 px-4 bg-paper-2 ">
         <Icon icon="lucide:alert-circle" width="48" height="48" className="mx-auto text-orange-500 mb-4" />
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Sold Out</h3>
-        <p className="text-gray-500 dark:text-gray-400">
+        <h3 className="text-xl font-semibold text-ink-2 mb-2">Sold Out</h3>
+        <p className="text-muted">
           All {max_participants} spots for this event have been filled.
         </p>
       </div>
@@ -234,7 +234,7 @@ export const RegistrationForm = ({
         aria-live={popupMessage.type === 'error' ? 'assertive' : 'polite'}
         className={`fixed top-20 md:top-28 left-4 right-4 sm:left-auto z-50 sm:max-w-md transition-[transform,opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${showPopup ? 'translate-x-0 opacity-100 visible' : 'translate-x-4 opacity-0 invisible pointer-events-none'} `}
       >
-        <div className={`p-4 shadow-xl flex items-start gap-3 border backdrop-blur-sm ${popupMessage.type === 'success'
+        <div className={`p-4 flex items-start gap-3 border backdrop-blur-sm ${popupMessage.type === 'success'
           ? 'bg-green-50 dark:bg-green-900/50 border-green-200 dark:border-green-800'
           : 'bg-red-50 dark:bg-red-900/50 border-red-200 dark:border-red-800'
           }`}>
@@ -273,7 +273,7 @@ export const RegistrationForm = ({
 
       {/* Search Section */}
       <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 hidden">
-        <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-xs md:text-sm font-medium text-muted mb-4">
           Enter your email or instagram username to auto-fill your details if you&apos;ve registered before.
         </p>
 
@@ -285,13 +285,13 @@ export const RegistrationForm = ({
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
               placeholder="Type email or IG username..."
-              className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
+              className="w-full px-3 py-2 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
             />
           </div>
           <button
             onClick={handleSearch}
             disabled={searchLoading}
-            className="px-6 py-2 bg-sobat-blue text-white rounded-full font-medium hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="px-6 py-2 bg-sobat-blue text-white font-medium hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {searchLoading ? (
               <Icon icon="lucide:loader-2" className=" size-4 md:size-5 animate-spin" />
@@ -309,7 +309,7 @@ export const RegistrationForm = ({
             : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
             }`}>
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${searchResult.error
+              <div className={`w-10 h-10 flex items-center justify-center ${searchResult.error
                 ? 'bg-red-100 dark:bg-red-900'
                 : 'bg-green-100 dark:bg-green-900'
                 }`}>
@@ -324,7 +324,7 @@ export const RegistrationForm = ({
                 <p className="text-sm md:text-base font-medium">
                   {searchResult.error ? 'Member not found' : 'Member found!'}
                 </p>
-                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs md:text-sm text-muted">
                   {searchResult.error
                     ? 'No member found with that email or username.'
                     : 'Your details have been auto-filled below.'}
@@ -349,7 +349,7 @@ export const RegistrationForm = ({
             autoComplete="name"
             value={formData.full_name}
             onChange={handleChange}
-            className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
+            className="w-full px-3 py-2 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
             placeholder="Enter your full name"
             required
           />
@@ -367,7 +367,7 @@ export const RegistrationForm = ({
             autoComplete="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
+            className="w-full px-3 py-2 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
             placeholder="Enter your email"
             required
           />
@@ -410,11 +410,11 @@ export const RegistrationForm = ({
               aria-describedby="ig_username_help"
               value={formData.ig_username}
               onChange={handleChange}
-              className="w-full px-3 py-2 pl-8 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
+              className="w-full px-3 py-2 pl-8 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
               placeholder="username"
             />
           </div>
-          <p id="ig_username_help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p id="ig_username_help" className="text-xs text-muted mt-1">
             We&apos;ll tag you in our event photos!
           </p>
         </div>
@@ -432,7 +432,7 @@ export const RegistrationForm = ({
               autoComplete="off"
               value={formData.emergency_contact_name}
               onChange={handleChange}
-              className="px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
+              className="px-3 py-2 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
               placeholder="Contact name"
               required
             />
@@ -444,7 +444,7 @@ export const RegistrationForm = ({
               inputMode="tel"
               value={formData.emergency_contact_phone}
               onChange={handleChange}
-              className="px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
+              className="px-3 py-2 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow "
               placeholder="Phone number"
               required
             />
@@ -463,16 +463,16 @@ export const RegistrationForm = ({
             value={formData.medical_notes}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-2 text-sm md:text-base border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow resize-none "
+            className="w-full px-3 py-2 text-sm md:text-base border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow resize-none "
             placeholder="Any medical conditions, allergies, or special requirements we should know about? (Optional)"
           />
-          <p id="medical_notes_help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p id="medical_notes_help" className="text-xs text-muted mt-1">
             This information helps us ensure your safety during the activity.
           </p>
         </div>
 
         <div className="mb-8 p-3 md:p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-          <p className="text-xs md:text-sm font-medium  text-gray-600 dark:text-gray-400 mb-2">
+          <p className="text-xs md:text-sm font-medium  text-muted mb-2">
             I agree to the Terms & Conditions and Waiver of Liability <span className="text-red-500">*</span>
           </p>
           <div className="flex items-start gap-3">
@@ -485,7 +485,7 @@ export const RegistrationForm = ({
               className="w-4 h-4 text-sobat-blue mt-1 cursor-pointer"
               required
             />
-            <label htmlFor="is_agree" className="text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+            <label htmlFor="is_agree" className="text-sm text-ink-2 cursor-pointer">
               By checking this box, I acknowledge that I have read, understood, and agree to the event terms, waiver of liability, and understand the risks associated with this activity.
             </label>
           </div>
@@ -497,7 +497,7 @@ export const RegistrationForm = ({
             type="submit"
             disabled={loading}
             aria-busy={loading}
-            className="w-full px-8 py-3 min-h-12 text-sm md:text-base bg-sobat-blue text-white rounded-full font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="btn btn--primary w-full"
           >
             {loading ? (
               <Icon icon="lucide:loader-2" width="20" height="20" className="animate-spin" />

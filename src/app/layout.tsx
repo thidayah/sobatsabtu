@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter, Poppins, Barlow, Barlow_Condensed } from 'next/font/google';
 import { Providers } from './providers';
 import { JsonLd } from '@/components/ui/JsonLd';
 import './globals.css';
@@ -9,6 +9,17 @@ const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-poppins'
+});
+// Font halaman publik (tema Piste): Barlow untuk teks, Barlow Condensed 800 untuk judul
+const barlow = Barlow({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  variable: '--font-barlow'
+});
+const barlowCondensed = Barlow_Condensed({
+  weight: ['800'],
+  subsets: ['latin'],
+  variable: '--font-barlow-condensed'
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL!
@@ -78,7 +89,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" className={`${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-title" content="Sobat Sabtu" />
         <meta name="google-site-verification" content="W_8GikSlYamXWIb3m3-RWktpmB6GP4P1Wjib2LYXO4o" />

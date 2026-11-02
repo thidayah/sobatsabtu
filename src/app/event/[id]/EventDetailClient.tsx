@@ -39,7 +39,7 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
   const [activeTab, setActiveTab] = useState(initialTab);
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black">
+    <main className="site min-h-screen bg-paper">
       <Navbar />
 
       <Container fullWidth>
@@ -51,7 +51,7 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="relative w-full aspect-[9/16] overflow-hidden shadow-2xl "
+                className="relative w-full aspect-[9/16] overflow-hidden "
               >
                 <Image
                   src={eventData.image_url}
@@ -74,15 +74,15 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                 <h1 className="text-2xl lg:text-4xl font-bold text-balance [overflow-wrap:break-word] min-w-0">{eventData.name}</h1>
 
                 <div className="space-y-2 md:space-y-4">
-                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm md:text-base">
+                  <div className="flex items-center gap-2 text-ink-2 text-sm md:text-base">
                     <Icon icon="lucide:calendar" className="size-4 md:size-6 text-sobat-blue dark:text-sobat-yellow" />
                     <span>{formatDate(eventData.date)}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm md:text-base">
+                  <div className="flex items-center gap-2 text-ink-2 text-sm md:text-base">
                     <Icon icon="lucide:clock" className="size-4 md:size-6 text-sobat-blue dark:text-sobat-yellow" />
                     <span>{formatTime(eventData.time)}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm md:text-base">
+                  <div className="flex items-center gap-2 text-ink-2 text-sm md:text-base">
                     <Icon icon="lucide:map-pin" className="size-4 md:size-6 text-sobat-blue dark:text-sobat-yellow" />
                     {eventData.location_url ?
                       <a href={eventData.location_url} target="_blank" rel="noopener noreferrer" className=" underline-offset-2 underline hover:opacity-85">{eventData.location}</a>
@@ -92,12 +92,12 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                   </div>
                 </div>
 
-                <p className="text-sm md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-sm md:text-lg text-muted leading-relaxed">
                   {eventData.descriptions}
                 </p>
 
                 {/* Participants Progress */}
-                <div className="p-3 md:p-6 bg-gray-50 dark:bg-gray-900">
+                <div className="p-3 md:p-6 bg-paper-2">
                   <div className="flex justify-between mb-2">
                     <span className="text-xs md:text-base font-semibold">Participants</span>
                     <span className="text-xs md:text-base text-sobat-blue dark:text-sobat-yellow font-bold">
@@ -105,7 +105,7 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                     </span>
                   </div>
                   <div
-                    className="w-full h-1 md:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                    className="w-full h-1 md:h-2 bg-gray-200 dark:bg-gray-700 overflow-hidden"
                     role="progressbar"
                     aria-label="Participants"
                     aria-valuemin={0}
@@ -117,14 +117,14 @@ export function EventDetailClient({ eventData, initialTab }: EventDetailClientPr
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: Math.min(eventData.current_participants / eventData.max_participants, 1) }}
                       transition={{ duration: 1 }}
-                      className="h-full w-full origin-left bg-sobat-blue dark:bg-sobat-yellow rounded-full"
+                      className="h-full w-full origin-left bg-sobat-blue dark:bg-sobat-yellow"
                     />
                   </div>
                 </div>
               </motion.div>
 
               {/* Tabs */}
-              <div className="border-b border-gray-200 dark:border-gray-800 my-6 md:my-12">
+              <div className="border-b border-rule my-6 md:my-12">
                 <div className="flex gap-8" role="tablist">
                   {['registration', 'participants'].map((row, index) => (
                     <button

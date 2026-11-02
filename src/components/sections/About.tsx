@@ -66,7 +66,7 @@ export const About = () => {
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
 
   return (
-    <Section id="about" className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900">
+    <Section id="about" className="relative overflow-hidden bg-paper">
       <Container fullWidth>
         <div ref={containerRef} className="relative px-4 sm:px-6 lg:px-8">
           {/* Story Section dengan Image */}
@@ -87,7 +87,7 @@ export const About = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.4, delay: 0.2 }}
-                  className="inline-block px-4 py-2 text-sm font-medium bg-sobat-blue/10 dark:bg-sobat-yellow/10 text-sobat-blue dark:text-sobat-yellow rounded-full border border-sobat-blue/20 dark:border-sobat-yellow/20 mb-6"
+                  className="inline-block px-4 py-2 text-sm font-medium bg-sobat-blue/10 dark:bg-sobat-yellow/10 text-sobat-blue dark:text-sobat-yellow border border-sobat-blue/20 dark:border-sobat-yellow/20 mb-6"
                 >
                   <Icon icon="mdi:run-fast" className="inline w-4 h-4 mr-2" />
                   All About Us
@@ -104,14 +104,14 @@ export const About = () => {
                 </motion.h2>
               </motion.div>
 
-              <p className="text-sm md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+              <p className="text-sm md:text-lg text-ink-2 leading-relaxed mb-4">
                 Founded in Bandung, we transform the &quot;Mager&quot; (lazy mood) culture into positive energy through fun and inclusive sports activities.
                 We started with a simple idea: what if we could make sports fun for young people who think
                 they&apos;re &quot;too lazy&quot; to exercise? We package physical activities in engaging content and create
                 a welcoming space for everyone, regardless of their athletic ability.
               </p>
 
-              <p className="text-sm md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-sm md:text-lg text-ink-2 leading-relaxed">
                 Our hashtag <span className="font-semibold text-sobat-blue dark:text-sobat-yellow italic">#pelarikonten</span> reflects our philosophy —
                 we&apos;re content creators who happen to run, not runners who create content. Every run, every
                 game, every session is an opportunity to create memorable moments.
@@ -126,12 +126,12 @@ export const About = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl"
+                    className="p-6 bg-paper-2"
                   >
                     {/* <feature.icon className="w-8 h-8 text-sobat-blue dark:text-sobat-yellow mb-3" /> */}
                     <Icon icon={feature.icon} className="text-sobat-blue dark:text-sobat-yellow mb-3 size-8" />
                     <h3 className="text-xl font-semibold">{feature.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mt-2">
+                    <p className="text-muted mt-2">
                       {feature.description}
                     </p>
                   </motion.div>
@@ -183,27 +183,27 @@ export const About = () => {
               {/* <motion.div
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -top-6 -right-6 glass p-4 rounded-2xl hidden lg:block"
+                className="absolute -top-6 -right-6 glass p-4 hidden lg:block"
               >
                 <p className="text-sm font-medium">Since 2019</p>
-                <p className="text-xs text-gray-600 dark:text-gray-400">5+ years of community</p>
+                <p className="text-xs text-muted">5+ years of community</p>
               </motion.div> */}
 
               {/* Floating Card */}
               <motion.div
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -top-6 -right-6 bg-white/70 dark:bg-black/70  p-6 rounded-xl max-w-xs hidden lg:block"
+                className="absolute -top-6 -right-6 bg-white/70 dark:bg-black/70  p-6 max-w-xs hidden lg:block"
               >
                 <p className="text-sm">
                   &quot;Best decision ever! I never thought I&apos;d enjoy running,
                   but Sobat Sabtu made it fun and social.&quot;
                 </p>
                 <div className="mt-4 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-sobat-blue/20 rounded-full" />
+                  <div className="w-10 h-10 bg-sobat-blue/20" />
                   <div>
                     <p className="font-semibold">Pratama</p>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">Member since 2021</p>
+                    <p className="text-xs text-ink-2">Member since 2021</p>
                   </div>
                 </div>
               </motion.div>

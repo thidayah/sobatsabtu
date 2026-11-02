@@ -24,7 +24,7 @@ export default async function Home() {
   const activities = await getHomepageEvents(8);
 
   return (
-    <main className="relative min-h-screen">
+    <main className="site relative min-h-screen">
       <Navbar />
       <Hero />
       <About />

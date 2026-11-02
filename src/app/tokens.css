@@ -1,0 +1,62 @@
+/* Hallmark · Piste tokens, mapped onto the Sobat Sabtu brand.
+ * The shared text scale (text-xs … text-3xl) and eases are left to Tailwind's defaults so
+ * the dashboard and admin keep their sizes; only new names are added here. */
+@theme static {
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem);
+  --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.5rem);
+  --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem);
+  --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --color-error: oklch(52% 0.19 27);
+  --color-success: oklch(50% 0.12 150);
+  /* Paper and ink switch with .dark (night-piste), so one class serves both modes */
+  --color-paper: var(--ss-paper);
+  --color-paper-2: var(--ss-paper-2);
+  --color-paper-3: var(--ss-paper-3);
+  --color-ink: var(--ss-ink);
+  --color-ink-2: var(--ss-ink-2);
+  --color-muted: var(--ss-muted);
+  --color-rule: var(--ss-rule);
+  /* The brand's cobalt is the accent; yellow stays the brand's dark-mode signal */
+  --color-accent: var(--ss-accent);
+  --color-accent-deep: var(--ss-accent-deep);
+  --color-accent-ink: oklch(98.5% 0.004 260);
+  --color-focus: var(--ss-focus);
+  --color-field: var(--color-accent);
+  --font-display: var(--font-barlow-condensed), "Barlow Condensed", ui-sans-serif, sans-serif;
+  --font-body: var(--font-barlow), "Barlow", ui-sans-serif, sans-serif;
+  --radius-card: 0;
+  --radius-pill: 0;
+  --shadow-card: none;
+  --tracking-display: -0.005em;
+}
+
+:root {
+  --ss-paper: oklch(98.5% 0.005 260);
+  --ss-paper-2: oklch(95.5% 0.008 260);
+  --ss-paper-3: oklch(91% 0.01 260);
+  --ss-ink: oklch(16% 0.012 260);
+  --ss-ink-2: oklch(30% 0.014 260);
+  --ss-muted: oklch(46% 0.016 260);
+  --ss-rule: oklch(88% 0.01 260);
+  --ss-accent: var(--color-sobat-blue);
+  --ss-accent-deep: oklch(30% 0.2 266);
+  --ss-focus: oklch(58% 0.22 28);
+  --rule-hair: 1px;
+  --rule-bar: 2px;
+  --display-weight: 800;
+  --dur-micro: 120ms;
+}
+
+.dark {
+  --ss-paper: oklch(14% 0.01 260);
+  --ss-paper-2: oklch(19% 0.012 260);
+  --ss-paper-3: oklch(24% 0.014 260);
+  --ss-ink: oklch(98% 0.004 260);
+  --ss-ink-2: oklch(86% 0.008 260);
+  --ss-muted: oklch(72% 0.012 260);
+  --ss-rule: oklch(34% 0.014 260);
+  --ss-accent: oklch(56% 0.25 265);
+  --ss-accent-deep: oklch(48% 0.22 266);
+  --ss-focus: oklch(64% 0.22 28);
+}

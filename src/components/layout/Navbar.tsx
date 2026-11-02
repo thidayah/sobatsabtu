@@ -47,7 +47,7 @@ export const Navbar = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed w-full z-50 transition-[background-color,box-shadow,padding] duration-500 ease-out ${
         scrolled 
-          ? 'bg-white dark:bg-black shadow-lg dark:shadow-white/5 py-4 md:py-5' 
+          ? 'bg-paper border-b-2 border-ink py-4 md:py-5' 
           : 'bg-transparent py-8 md:py-10'
       }`}
     >
@@ -74,9 +74,9 @@ export const Navbar = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             onClick={toggleTheme}
-            className={`p-3 rounded-full transition-colors duration-500 cursor-pointer ${
+            className={`p-3 transition-colors duration-500 cursor-pointer ${
               scrolled 
-                ? 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700' 
+                ? 'bg-paper-3 hover:bg-gray-200 dark:hover:bg-gray-700' 
                 : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20'
             }`}
             aria-label="Toggle theme"

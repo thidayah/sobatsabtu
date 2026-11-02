@@ -110,7 +110,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                 onKeyPress={handleKeyPress}
                 aria-label="Search participants"
                 placeholder="Search participants…"
-                className="w-full sm:w-80 px-4 py-2 pl-10 border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow text-sm md:text-base"
+                className="w-full sm:w-80 px-4 py-2 pl-10 border border-ink-2 bg-paper focus:outline-none focus:ring-2 focus:ring-sobat-blue dark:focus:ring-sobat-yellow transition-shadow text-sm md:text-base"
               />
               <Icon
                 icon="lucide:search"
@@ -123,7 +123,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
               onClick={handleSearch}
               aria-label="Search"
               disabled={searchLoading}
-              className="px-6 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-paper-3 text-ink-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300 flex items-center gap-2 text-sm cursor-pointer justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {searchLoading ? (
                 <Icon icon="lucide:loader-2" width="18" height="18" className="animate-spin" />
@@ -139,16 +139,16 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
       {/* Loading State */}
       {loading ? (
         <div className="flex justify-center items-center py-20">
-          <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-sobat-blue border-t-transparent animate-spin" />
         </div>
       ) : participants.length === 0 ? (
         /* Empty State */
-        <div className="text-center py-16 bg-gray-50 dark:bg-gray-900 rounded-xl">
+        <div className="text-center py-16 bg-paper-2">
           {/* <Icon icon="lucide:users" width="48" height="48" className="mx-auto text-gray-400 mb-4" /> */}
-          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <h3 className="text-lg font-semibold text-ink-2 mb-2">
             No participants found
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-muted">
             {searchQuery
               ? `No results found for "${searchQuery}"`
               : "Be the first to register for this event!"}
@@ -168,10 +168,10 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
       ) : (
         <>
           {/* Participants Table */}
-          <div className="bg-white dark:bg-gray-900 mb-6 overflow-hidden">
+          <div className="bg-paper mb-6 overflow-hidden">
             <div className="overflow-x-auto no-scrollbar">
               <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-800 border-b border-rule">
                   <tr>
                     <th className="px-4 md:px-6 py-3 md:py-4 text-left text-sm font-semibold text-gray-900 dark:text-white w-16">No</th>
                     <th className="px-4 md:px-6 py-3 md:py-4 min-w-48 text-left text-sm font-semibold text-gray-900 dark:text-white">Participant</th>
@@ -181,8 +181,8 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                   {participants.map((participant, index) => (
-                    <tr key={participant.id} className=" border-b border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                      <td className="px-4 md:px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                    <tr key={participant.id} className=" border-b border-rule hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                      <td className="px-4 md:px-6 py-3 text-sm text-ink-2">
                         {startIndex + index}
                       </td>
                       <td className="px-4 md:px-6 py-3">
@@ -191,21 +191,21 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
                               {participant.member.full_name}
                             </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-xs text-muted">
                               {participant.member.gender === 'male' ? 'Male' : participant.member.gender === 'female' ? 'Female' : 'Other'}
                             </p>
                           </div>
                         </div>
                       </td>
-                      {/* <td className="px-4 md:px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                      {/* <td className="px-4 md:px-6 py-3 text-sm text-ink-2">
                         {participant.member.ig_username ? `@${participant.member.ig_username}` : '-'}
                       </td> */}
                       <td className="px-4 md:px-6 py-3">
                         <div>
-                          <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                          <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                             {participant.status === 'confirmed' ? 'Confirmed' : participant.status}
                           </span>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          <p className="text-xs text-muted mt-1">
                             {formatDiff(participant.created_at)}
                           </p>
                         </div>
@@ -220,7 +220,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
           {/* Pagination */}
           {pagination.total_pages > 0 && (
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-xs md:text-sm text-muted">
                 Showing <span className="font-medium">{startIndex}</span> to <span className="font-medium">{endIndex}</span> of{' '}
                 <span className="font-medium">{pagination.total}</span> participants
               </p>
@@ -231,7 +231,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                   onClick={() => handlePageChange(pagination.page - 1)}
                   aria-label="Previous page"
                   disabled={!pagination.has_prev_page}
-                  className="w-7 h-7 md:w-10 md:h-10 border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-7 h-7 md:w-10 md:h-10 border border-rule flex items-center justify-center text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Icon icon="lucide:chevron-left" width="18" height="18" />
                 </button>
@@ -279,7 +279,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                         aria-current={pagination.page === page ? "page" : undefined}
                         className={`w-7 h-7 md:w-10 md:h-10 flex items-center justify-center text-sm font-medium transition-colors ${pagination.page === page
                           ? 'bg-sobat-blue text-white'
-                          : 'border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                          : 'border border-rule text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-800'
                           }`}
                       >
                         {page}
@@ -293,7 +293,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                   onClick={() => handlePageChange(pagination.page + 1)}
                   aria-label="Next page"
                   disabled={!pagination.has_next_page}
-                  className="w-7 h-7 md:w-10 md:h-10 border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-7 h-7 md:w-10 md:h-10 border border-rule flex items-center justify-center text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Icon icon="lucide:chevron-right" width="18" height="18" />
                 </button>
@@ -303,13 +303,13 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
 
           {/* Export Options Modal (hidden by default) */}
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-md w-full mx-4">
+            <div className="bg-paper p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-bold mb-4">Export Participants</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-muted mb-6">
                 Choose your preferred format to export the participants list.
               </p>
               <div className="space-y-3 mb-6">
-                <button className="w-full p-4 border border-gray-200 dark:border-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left flex items-center justify-between">
+                <button className="w-full p-4 border border-rule hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Icon icon="lucide:file-text" width="20" height="20" className="text-sobat-blue" />
                     <div>
@@ -319,7 +319,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                   </div>
                   <Icon icon="lucide:chevron-right" width="20" height="20" className="text-gray-400" />
                 </button>
-                <button className="w-full p-4 border border-gray-200 dark:border-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left flex items-center justify-between">
+                <button className="w-full p-4 border border-rule hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Icon icon="lucide:file-spreadsheet" width="20" height="20" className="text-green-600" />
                     <div>
@@ -329,7 +329,7 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                   </div>
                   <Icon icon="lucide:chevron-right" width="20" height="20" className="text-gray-400" />
                 </button>
-                <button className="w-full p-4 border border-gray-200 dark:border-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left flex items-center justify-between">
+                <button className="w-full p-4 border border-rule hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Icon icon="lucide:file-text" width="20" height="20" className="text-red-600" />
                     <div>
@@ -341,10 +341,10 @@ export const ParticipantsTable = ({ slug, current_participants }: ParticipantsTa
                 </button>
               </div>
               <div className="flex gap-3">
-                <button className="flex-1 px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-xl font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <button className="flex-1 px-3 py-2 border border-rule font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   Cancel
                 </button>
-                <button className="flex-1 px-3 py-2 bg-sobat-blue text-white rounded-xl font-medium hover:bg-blue-600 transition-colors">
+                <button className="flex-1 px-3 py-2 bg-sobat-blue text-white font-medium hover:bg-blue-600 transition-colors">
                   Export
                 </button>
               </div>

@@ -82,7 +82,7 @@ export const Activities = ({ activities }: ActivitiesProps) => {
   };
 
   return (
-    <Section id="activities" className="bg-gray-50 dark:bg-gray-900 overflow-hidden">
+    <Section id="activities" className="bg-paper-2 overflow-hidden">
       <Container fullWidth>
         <div ref={sectionRef} className="relative px-4 sm:px-6 lg:px-8 pt-16 md:pt-0">
           {/* Header */}
@@ -105,7 +105,7 @@ export const Activities = ({ activities }: ActivitiesProps) => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-sm sm:text-xl text-gray-600 dark:text-gray-400"
+              className="text-sm sm:text-xl text-muted"
             >
               Don&apos;t miss out on the exciting and challenging activities we&apos;ll be hosting
             </motion.p>
@@ -115,10 +115,10 @@ export const Activities = ({ activities }: ActivitiesProps) => {
           {filteredActivities.length === 0 && (
             <div className="text-center py-20">
               <Icon icon="mdi:calendar-blank" width="64" height="64" className="mx-auto text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              <h3 className="text-xl font-semibold text-ink-2 mb-2">
                 No Upcoming Activities
               </h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted">
                 Check back soon for new events and activities!
               </p>
             </div>
@@ -135,9 +135,9 @@ export const Activities = ({ activities }: ActivitiesProps) => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${selectedCategory === category
-                    ? 'bg-sobat-blue text-white dark:bg-sobat-yellow dark:text-black shadow-lg scale-105'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                className={`px-6 py-3 font-medium transition-all duration-300 ${selectedCategory === category
+                    ? 'bg-sobat-blue text-white dark:bg-sobat-yellow dark:text-black scale-105'
+                    : 'bg-paper-2 text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
               >
                 {category}
@@ -210,11 +210,11 @@ export const Activities = ({ activities }: ActivitiesProps) => {
                       whileHover={{ scale: 1.02 }}
                       className="relative aspect-[9/16] overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 flex flex-col items-center justify-center p-6 text-center cursor-pointer group"
                     >
-                      <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <div className="w-20 h-20 bg-white/20 backdrop-blur flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                         <Icon icon="lucide:arrow-right" width="32" height="32" className="text-gray-900 dark:text-white" />
                       </div>
                       <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">View All</h3>
-                      <p className="text-gray-700 dark:text-gray-300">
+                      <p className="text-ink-2">
                         {filteredActivities.length} activities available
                       </p>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -238,7 +238,7 @@ const ArrowButton = ({ name, onClick }: { name: string; onClick: () => void }) =
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: isLeft ? - 20 : 20 }}
       onClick={onClick}
-      className={` ${isLeft ? 'left-0 -ml-6' : 'right-0 -mr-6'} absolute top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-colors duration-300 hidden lg:flex`}
+      className={` ${isLeft ? 'left-0 -ml-6' : 'right-0 -mr-6'} absolute top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-paper-2 flex items-center justify-center text-ink-2 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-colors duration-300 hidden lg:flex`}
       aria-label={isLeft ? 'Scroll left' : 'Scroll right'}
     >
       <Icon icon={`lucide:chevron-${name}`} width="24" height="24" />

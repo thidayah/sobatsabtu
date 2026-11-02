@@ -43,7 +43,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHo
   return (
     <div className="relative w-full group">
       {/* Card dengan rasio 9:16 (portrait) */}
-      <div className="relative aspect-[9/16] overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-500">
+      <div className="relative aspect-[9/16] overflow-hidden transition-shadow duration-500">
         {/* Background Image dengan overlay gradient */}
         <div className="absolute inset-0">
           <Image
@@ -59,7 +59,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHo
 
         {/* Category Badge */}
         <div className="absolute top-4 left-4 z-10">
-          <span className={`px-3 py-2 text-[10px] md:text-xs font-medium rounded-full bg-sobat-blue-50 text-white shadow-lg`}>
+          <span className={`px-3 py-2 text-[10px] md:text-xs font-medium bg-sobat-blue-50 text-white`}>
             {activity.type}
           </span>
         </div>
@@ -100,7 +100,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHo
             // Jika event closed, tampilkan satu button "Closed" disabled
             <button
               disabled
-              className="w-full py-2.5 rounded-full font-medium text-sm bg-white/20 text-white/70 cursor-not-allowed"
+              className="w-full min-h-11 py-2.5 font-display font-extrabold uppercase text-base bg-white/20 text-white/70 cursor-not-allowed"
             >
               <span className="flex text-xs md:text-base items-center justify-center gap-2">
                 <Icon icon="lucide:lock" width="16" height="16" />
@@ -112,7 +112,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHo
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full py-2.5 rounded-full font-medium text-sm transition-colors duration-300 bg-white text-gray-900 hover:bg-white/90 active:bg-white/80 cursor-pointer`}
+                className={`w-full min-h-11 py-2.5 font-display font-extrabold uppercase text-base transition-colors duration-300 bg-white text-gray-900 hover:bg-white/90 active:bg-white/80 cursor-pointer`}
               >
                 <span className="flex text-xs md:text-base items-center justify-center gap-2">
                   <Icon icon="mdi:external-link" width="16" height="16" />
@@ -128,7 +128,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHo
                   whileHover={!soldOut ? { scale: 1.02 } : {}}
                   whileTap={!soldOut ? { scale: 0.98 } : {}}
                   disabled={soldOut}
-                  className={`w-full py-2.5 rounded-full font-medium text-sm transition-colors duration-300  ${soldOut
+                  className={`w-full min-h-11 py-2.5 font-display font-extrabold uppercase text-base transition-colors duration-300  ${soldOut
                     ? 'bg-red-500/50 text-white/70 cursor-not-allowed'
                     : 'bg-white text-gray-900 hover:bg-white/90 cursor-pointer'
                     }`}
@@ -146,7 +146,7 @@ export const ActivityCard = ({ activity, isHovered }: { activity: Activity; isHo
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   aria-label="Participants"
-                  className="w-full py-2.5 rounded-full font-medium text-sm bg-white/20 text-white backdrop-blur-sm hover:bg-white/30 active:bg-white/40 transition-colors duration-300 border border-white/30 cursor-pointer"
+                  className="w-full min-h-11 py-2.5 font-display font-extrabold uppercase text-base bg-white/20 text-white backdrop-blur-sm hover:bg-white/30 active:bg-white/40 transition-colors duration-300 border border-white/30 cursor-pointer"
                 >
                   <span className="flex text-xs md:text-base items-center justify-center gap-2">
                     <Icon icon="lucide:list" width="16" height="16" />

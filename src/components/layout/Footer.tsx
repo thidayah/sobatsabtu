@@ -81,7 +81,7 @@ export const Footer = () => {
 
   return (
     // <footer ref={sectionRef} className="relative bg-gray-900 dark:bg-black text-white overflow-hidden">
-    <footer ref={sectionRef} className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-black  overflow-hidden">
+    <footer ref={sectionRef} className="relative bg-paper-2  overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -107,7 +107,7 @@ export const Footer = () => {
           </div>
 
           {/* Footer Content Grid */}
-          <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 md:items-end border-t pt-8 border-gray-200 dark:border-white/10">
+          <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-0 md:items-end border-t pt-8 border-rule">
             {/* Brand Column */}
             <div className=" max-w-xl">
               <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
@@ -117,7 +117,7 @@ export const Footer = () => {
                   <Image src={BlueLogo} width={1598} height={679} alt="Sobat Sabtu Logo" className="w-24 lg:w-40 h-auto" />
                 )}
               </button>
-              <p className="text-xs md:text-base text-gray-600 dark:text-white/60 leading-relaxed mt-2">
+              <p className="text-xs md:text-base text-muted leading-relaxed mt-2">
                 Since 2019, we&apos;ve been transforming the &quot;Mager&quot; culture into positive energy through fun and inclusive sports activities in Bandung.
               </p>
             </div>
@@ -132,7 +132,7 @@ export const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.name}
-                    className="w-11 h-11 rounded-full bg-gray-600/90 hover:bg-gray-600 active:bg-gray-700 dark:bg-white/10 dark:hover:bg-white/20 dark:active:bg-white/30 flex items-center justify-center transition-colors duration-300"
+                    className="w-11 h-11 bg-gray-600/90 hover:bg-gray-600 active:bg-gray-700 dark:bg-white/10 dark:hover:bg-white/20 dark:active:bg-white/30 flex items-center justify-center transition-colors duration-300"
                   >
                     <Icon icon={social.icon} width="16" height="16" className="text-white" />
                   </motion.a>
@@ -142,20 +142,20 @@ export const Footer = () => {
               {/* Bottom Bar */}
               <div className="flex flex-col md:items-end gap-2">
                 {/* Copyright */}
-                <div className="text-gray-600 dark:text-white/60 text-xs md:text-sm md:text-center">
+                <div className="text-muted text-xs md:text-sm md:text-center">
                   © {new Date().getFullYear()} Sobat Sabtu. All rights reserved.
                 </div>
 
                 {/* Developed By */}
                 <div className="flex items-center gap-1">
-                  <span className="text-gray-600 dark:text-white/60 text-xs md:text-sm">Developed by</span>
+                  <span className="text-muted text-xs md:text-sm">Developed by</span>
                   <a
                     href="https://thidayah.github.io"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex underline-offset-2 hover:underline"
                   >
-                    <span className="text-gray-800 dark:text-white/80 text-xs md:text-sm font-medium"> Runminders</span>
+                    <span className="text-ink-2 text-xs md:text-sm font-medium"> Runminders</span>
                   </a>
                 </div>
               </div>

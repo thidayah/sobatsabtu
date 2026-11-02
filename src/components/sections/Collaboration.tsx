@@ -48,7 +48,7 @@ const PartnerLogo = ({ src, name }: { src: string; name: string }) => {
   // Fallback: kondisi placeholder seperti sebelumnya
   if (hasError) {
     return (
-      <div className="w-full h-full bg-white/20 rounded-full flex items-center justify-center">
+      <div className="w-full h-full bg-white/20 flex items-center justify-center">
         <span className="text-white/80 text-xs text-center font-medium px-2">
           {name}
         </span>
@@ -111,7 +111,7 @@ export const Collaboration = () => {
             y: [0, -50, 0],
           }}
           transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-20 left-20 w-96 h-96 bg-sobat-blue rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-96 h-96 bg-sobat-blue blur-3xl"
         />
         <motion.div
           animate={{
@@ -121,7 +121,7 @@ export const Collaboration = () => {
             y: [0, 50, 0],
           }}
           transition={{ duration: 18, repeat: Infinity }}
-          className="absolute bottom-20 right-20 w-96 h-96 bg-sobat-yellow rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-sobat-yellow blur-3xl"
         /> */}
       </div>
 
@@ -165,7 +165,7 @@ export const Collaboration = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white text-black rounded-full font-semibold whitespace-nowrap hover:bg-gray-100 active:bg-gray-200 transition-colors duration-300 inline-flex items-center gap-2 group cursor-pointer"
+                className="btn whitespace-nowrap bg-white text-black hover:bg-gray-100 active:bg-gray-200 group"
                 href={process.env.NEXT_PUBLIC_WHATSAPP}
                 target="_blank"
               >
@@ -178,8 +178,8 @@ export const Collaboration = () => {
           {/* Logo Grid - Unik Layout */}
           <div className="relative">
             {/* Decorative elements */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-2 border-white/5 rounded-full z-0" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border-2 border-white/10 rounded-full z-0" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-2 border-white/5 z-0" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border-2 border-white/10 z-0" />
 
             {/* Floating Logo Circles */}
             <div className="relative grid grid-cols-6 lg:grid-cols-12 gap-2 lg:gap-6">
@@ -243,7 +243,7 @@ export const Collaboration = () => {
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-3 min-h-11 bg-white text-black rounded-full text-sm font-semibold whitespace-nowrap active:bg-gray-200 transition-colors inline-flex items-center gap-2 group cursor-pointer"
+              className="btn whitespace-nowrap bg-white text-black active:bg-gray-200 group"
               href={process.env.NEXT_PUBLIC_WHATSAPP}
               target="_blank"
             >

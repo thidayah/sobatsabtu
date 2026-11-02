@@ -220,7 +220,7 @@ export const Hero = () => {
             >
               <button
                 onClick={scrollToActivities}
-                className="rounded-full font-semibold transition-colors duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 min-h-11 text-sm md:text-base text-white hover:bg-white/20 active:bg-white/30 group cursor-pointer"
+                className=" font-semibold transition-colors duration-300 inline-flex items-center justify-center px-4 md:px-6 py-2 md:py-3 min-h-11 text-sm md:text-base text-white hover:bg-white/20 active:bg-white/30 group cursor-pointer"
               >
                 Let&apos;s Explore
                 <Icon icon="lucide:chevron-down" width="20" height="20" className="ml-2 " />
@@ -238,7 +238,7 @@ export const Hero = () => {
                     }}
                     aria-label={`Slide ${index + 1}`}
                     aria-current={index === currentSlide}
-                    className={`h-1 rounded-full transition-colors duration-300 ${index === currentSlide
+                    className={`h-1 transition-colors duration-300 ${index === currentSlide
                       ? 'w-8 bg-white'
                       : 'w-4 bg-white/50 hover:bg-white/80'
                       }`}
@@ -250,7 +250,7 @@ export const Hero = () => {
               <button
                 onClick={() => setIsAutoPlay(!isAutoPlay)}
                 aria-label={isAutoPlay ? 'Pause slideshow' : 'Play slideshow'}
-                className="p-2 rounded-full bg-black/50 hover:bg-black/70 active:bg-black/80 transition-colors"
+                className="p-2 bg-black/50 hover:bg-black/70 active:bg-black/80 transition-colors"
               >
                 {isAutoPlay ? (
                   <Icon icon="lucide:pause" width="16" height="16" className="text-white" />
