@@ -71,8 +71,8 @@ export const About = () => {
           More Than Just A Sports Community
         </h2>
 
-        {/* Cerita di kiri, empat momen sesi di kanan */}
-        <div className="mt-10 md:mt-16 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 items-start">
+        {/* Cerita di kiri, kutipan anggota di kanan */}
+        <div className="mt-10 md:mt-16 grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 items-start">
           <div className="space-y-4 text-base md:text-lg text-ink-2 leading-relaxed max-w-[60ch]">
             <p>
               Founded in Bandung, we transform the &quot;Mager&quot; (lazy mood) culture into positive energy through fun and inclusive sports activities.
@@ -85,9 +85,10 @@ export const About = () => {
               we&apos;re content creators who happen to run, not runners who create content. Every run, every
               game, every session is an opportunity to create memorable moments.
             </p>
+          </div>
 
-            {/* Kutipan anggota, dicetak sebagai teks, bukan kartu melayang */}
-            <figure className="pt-8">
+          {/* Kutipan anggota, dicetak sebagai teks, bukan kartu melayang */}
+          <figure className="lg:border-l lg:border-rule lg:pl-10">
               <blockquote className="font-display font-extrabold uppercase text-3xl md:text-4xl leading-none text-ink">
                 &ldquo;Best decision ever! I never thought I&apos;d enjoy running,
                 but Sobat Sabtu made it fun and social.&rdquo;
@@ -95,10 +96,11 @@ export const About = () => {
               <figcaption className="mt-4 text-sm text-muted">
                 <span className="font-medium text-ink">Pratama</span>, member since 2021
               </figcaption>
-            </figure>
-          </div>
+          </figure>
+        </div>
 
-          <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2 md:gap-4">
+        {/* Empat video sesi, sejajar dalam satu baris */}
+        <div className="mt-10 md:mt-16 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:grid-cols-4 gap-2 md:gap-4">
             {galleries.map((gallery, index) => (
               <figure key={index} className="relative aspect-[3/4] overflow-hidden photo">
                 {gallery.type === 'video' && isInView ? (
@@ -119,7 +121,7 @@ export const About = () => {
                     src={gallery.image}
                     alt={gallery.title}
                     fill
-                    sizes="(max-width: 1024px) 50vw, 30vw"
+                    sizes="(max-width: 768px) 50vw, 25vw"
                     className="object-cover"
                   />
                 )}
@@ -127,7 +129,6 @@ export const About = () => {
                 <figcaption className="absolute bottom-2 md:bottom-4 left-2 md:left-4 right-2 text-white text-sm md:text-base">{gallery.title}</figcaption>
               </figure>
             ))}
-          </div>
         </div>
 
         {/* Papan angka: fakta komunitas dicetak besar */}

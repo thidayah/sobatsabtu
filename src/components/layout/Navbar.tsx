@@ -47,11 +47,11 @@ export const Navbar = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed w-full z-50 transition-[background-color,box-shadow,padding] duration-500 ease-out ${
         scrolled 
-          ? 'bg-paper border-b-2 border-ink py-4 md:py-5' 
+          ? 'bg-paper border-b border-ink py-4 md:py-5' 
           : 'bg-transparent py-8 md:py-10'
       }`}
     >
-      <div className=" mx-auto px-4 md:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-16">
         <div className="flex justify-between items-center">
           {/* Logo Sobat Sabtu */}
           <Link href="/">
@@ -74,11 +74,7 @@ export const Navbar = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             onClick={toggleTheme}
-            className={`p-3 transition-colors duration-500 cursor-pointer ${
-              scrolled 
-                ? 'bg-paper-3 hover:bg-gray-200 dark:hover:bg-gray-700' 
-                : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20'
-            }`}
+            className="p-3 cursor-pointer"
             aria-label="Toggle theme"
           >
             {isDark ? (

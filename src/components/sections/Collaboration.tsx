@@ -82,7 +82,7 @@ export const Collaboration = () => {
         {/* Logo partner di atas petak putih, dipisah garis */}
         <ul className="mt-12 md:mt-16 border-t-2 border-white grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] gap-px">
           {partners.map((partner) => (
-            <li key={partner.id} className="relative aspect-[3/2] bg-white mt-4 mr-4">
+            <li key={partner.id} className="relative aspect-[3/2] bg-transparent mt-4 mr-4">
               {/* Logo partner - fallback ke nama bila gambar gagal dimuat */}
               <PartnerLogo src={partner.logo} name={partner.name} />
             </li>

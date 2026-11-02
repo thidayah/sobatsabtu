@@ -79,7 +79,7 @@ export const Footer = () => {
   }, []);
 
   return (
-    <footer ref={sectionRef} className="relative bg-paper-2 border-t-2 border-ink">
+    <footer ref={sectionRef} className="relative bg-paper-2 border-t border-ink">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-16 py-12 lg:py-16">
         {/* Kolom indeks: merek, kontak, kredit */}
         <div className="grid gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]">

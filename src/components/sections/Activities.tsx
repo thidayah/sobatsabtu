@@ -46,7 +46,8 @@ const dateParts = (dateString: string) => {
 
 export const Activities = ({ activities }: ActivitiesProps) => {
   return (
-    <Section id="activities" className="bg-paper">
+    // scroll-mt: beri ruang untuk navbar fixed saat discroll lewat tombol "Let's Explore"
+    <Section id="activities" className="bg-paper scroll-mt-20">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-16">
         {/* Header */}
         <div className="mb-8 lg:mb-12 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-end">
